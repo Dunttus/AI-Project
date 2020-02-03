@@ -8,8 +8,8 @@ Helpful information coming your way soon(tm).
 '''
 }
 
-if [[ -z "$1" ]]; then display_help
-	echo ERROR: No arguments specified 
+if [[ $# != 2 ]]; then display_help
+	echo ERROR: Not enough arguments
 	exit
 fi
 
@@ -19,8 +19,10 @@ check_user() {
 	fi
 }
 
-while read line; do
-	curl -XPOST localhost:9200/$1/_doc/?filter_path=_seq_no \
-	-H 'Content-type:application/json' \
-	-d "$line"
-done < $2
+populate_database {
+	while read line; do
+		curl -XPOST localhost:9200/$1/_doc/?filter_path=_seq_no \
+		-H 'Content-type:application/json' \
+		-d "$line"
+	done < $2
+}
