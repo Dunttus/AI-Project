@@ -1,7 +1,9 @@
 #!/bin/bash
-# Parses metadata from journalctl json output
+# Parses metadata away from journalctl json output,
+# and formats the data to csv: "message",priority [0-7]
+# There might be no priority number!
 
-sudo journalctl -o json --output-fields=PRIORITY,MESSAGE |
+sudo journalctl -n 5 -o json --output-fields=PRIORITY,MESSAGE |
 sed -E 's/"__CURSOR":"[^"]*"//;
 	s/"_BOOT_ID":"[^"]*"//;
 	s/"__MONOTONIC_TIMESTAMP":"[^"]*"//;
@@ -12,10 +14,8 @@ sed -E 's/"__CURSOR":"[^"]*"//;
 	s/,*}$//;
 # Trim separator to only one comma
 	s/",*"/","/;
-# Parses priority to a mere number
+# If the priority is now first, move it to end
+	s/^("PRIORITY":"[0-9]?"),(.*)/\2,\1/;
+# Remove labels
 	s/"PRIORITY":"([0-7]?)"/\1/;
-# Remove more
 	s/"MESSAGE"://' > testdataset.json
-	
-# TODO: the order varies, make it constant (priority,"message")	
-
