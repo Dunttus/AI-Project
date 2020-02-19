@@ -18,4 +18,4 @@ sed -E 's/"__CURSOR":"[^"]*"//;
 	s/^("PRIORITY":"[0-9]?"),(.*)/\2,\1/;
 # Remove labels
 	s/"PRIORITY":"([0-7]?)"/\1/;
-	s/"MESSAGE"://' > testdataset.json
+	s/"MESSAGE"://' > testdataset
