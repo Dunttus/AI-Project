@@ -17,7 +17,8 @@ print(df)
 # https://pandas.pydata.org/pandas-docs/stable/user_guide/io.html#io-json-reader
 # Example file can be created with journalctl:
 # sudo journalctl -n 5 -o json --output-fields=PRIORITY,MESSAGE > pandatest.json
-pandajson = pd.read_json("pandatest.json", lines=True)
-
-# Next: stripping the object from metadata
-
+logs = pd.read_json("pandatest.json", lines=True)
+print(logs.columns)
+# This leaves only the wanted columns
+parsed_logs = logs.drop(['__CURSOR','__MONOTONIC_TIMESTAMP', '_BOOT_ID', '__REALTIME_TIMESTAMP'], axis=1)
+print(parsed_logs)
