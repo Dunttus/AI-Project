@@ -4,7 +4,7 @@ This repository is designed be cloned with PyCharm Pro. The runtime environment 
 
 ### Directories:  
 **/.idea** - PyCharm configuration files \
-**/PyCharm_docker_test** - Testing files\
+**/testing** - Testing or studying code bits \
 **/datasets** - Sample datasets for machine learning \
 **/docker** - Project runtime container (tensorflow etc.) \
 **/log_parsing** - Bash scripts that manipulate journalctl generated JSON files \
