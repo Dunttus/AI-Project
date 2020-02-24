@@ -2,11 +2,12 @@
 
 This directory contains scripts that manipulate journalctl generated JSON files.
 
+- elasticsearch database population with bulk API
 - elasticsearch database population with curl loop
-- journalctl simple parser
+- journalctl simple sed-based parser to csv format
 
 ## TODO:
-- _bulk API instead of a slow curl loop
+- fix bulk API-script crash on large files (600M+), memory issue?
 - parse underscores somehow so elasticsearch can use them better
 - make simple parser to CSV format
 - examine "Unexpected character ('p' (code 112))" Errors
