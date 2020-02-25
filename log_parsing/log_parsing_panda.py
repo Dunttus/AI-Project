@@ -2,7 +2,7 @@ import pandas as pd
 import re
 
 LOG_DATA = ['PRIORITY', 'MESSAGE']
-# RegExp for three dots
+# RegExp for one or more dots in the end of MESSAGE
 ENDING_DOTS = re.compile('[.]{1,}$')
 
 pd.set_option('display.max_colwidth', None)
@@ -17,8 +17,7 @@ print(f"Total words in the message data: {word_count}")
 # Preprocess text:
 # https://en.wikipedia.org/wiki/Stop_words
 # Log data can be thought as a language on it's own, so lets not drop stop
-# words (most common ones) yet. Looking at the test data, three dots '...'
-# can be at least filtered out with regular expression.
+# words (most common ones) yet.
 
 def remove_dots(text):
     return ENDING_DOTS.sub('', text)
