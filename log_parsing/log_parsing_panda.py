@@ -28,4 +28,4 @@ print(df)
 
 print(f"Total words in the message data: {word_count}")
 print("Value distribution in 'PRIORITY':")
-print(df['PRIORITY'].value_counts())
+print(df['PRIORITY'].value_counts(dropna=False))
