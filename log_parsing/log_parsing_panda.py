@@ -1,5 +1,6 @@
 import pandas as pd
 import re
+from sklearn.model_selection import train_test_split
 
 LOG_DATA = ['PRIORITY', 'MESSAGE']
 # RegExp for one or more dots in the end of MESSAGE
@@ -29,3 +30,16 @@ print(df)
 print(f"Total words in the message data: {word_count}")
 print("Value distribution in 'PRIORITY':")
 print(df['PRIORITY'].value_counts(dropna=False))
+
+# Splitting the dataset to training and testing sets
+x = df.PRIORITY
+y = df.MESSAGE
+x_train, x_test, y_train, y_test = train_test_split(x, y)
+print("\nPRIORITY training set:")
+print(x_train)
+print("\nPRIORITY test set:")
+print(x_test)
+print("\nMESSAGE training set:")
+print(y_train)
+print("\nMESSAGE test set:")
+print(y_test)
