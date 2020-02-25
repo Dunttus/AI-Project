@@ -2,7 +2,6 @@
 
 This directory contains scripts that manipulate journalctl generated JSON files. Big files need lots of memory, but the speedup with bulk API is considerable.
 
-- python script to handle json data (pandas -library)
 - elasticsearch database population with bulk API  
   Configurations in /etc/elasticsearch/
   * elastisearch.yml:
@@ -19,7 +18,6 @@ This directory contains scripts that manipulate journalctl generated JSON files.
 - make journalctl metadata timestamps human readable:
 	__MONOTONIC_TIMESTAMP __REALTIME_TIMESTAMP
 - format conversion, as everything is {"string":"string"}
-- import scikit-learn to interpreter environment to test classifier algorithms
 
 ### More TODO:
 - systemd-journald-remote usage
