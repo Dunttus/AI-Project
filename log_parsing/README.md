@@ -2,8 +2,9 @@
 
 This directory contains scripts that manipulate journalctl generated JSON files. Big files need lots of memory, but the speedup with bulk API is considerable.
 
+- python script to handle json data (pandas -library)
 - elasticsearch database population with bulk API  
-  Configure with (/etc/elasticsearch/):
+  Configurations in /etc/elasticsearch/
   * elastisearch.yml:
     * http.max_content_length: 1000mb
   * jvm.options:
@@ -14,10 +15,11 @@ This directory contains scripts that manipulate journalctl generated JSON files.
 
 ## TODO:
 - don't redirect curl output to /dev/null on bulk_writer to see if there were errors
-- parse underscores somehow so elasticsearch can use them better
+- parse underscores for elasticsearch import
 - make journalctl metadata timestamps human readable:
 	__MONOTONIC_TIMESTAMP __REALTIME_TIMESTAMP
 - format conversion, as everything is {"string":"string"}
+- import scikit-learn to interpreter environment to test classifier algorithms
 
 ### More TODO:
 - systemd-journald-remote usage
