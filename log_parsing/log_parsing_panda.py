@@ -7,12 +7,11 @@ ENDING_DOTS = re.compile('[.]{1,}$')
 
 pd.set_option('display.max_colwidth', None)
 
-# With a large file, this takes time to execute!
+# With a large file, this takes some time to execute!
 raw_df = pd.read_json("ubuntu_logs_test", lines=True)
 df = raw_df[LOG_DATA]
 print(df)
 word_count = df['MESSAGE'].apply(lambda txt: len(txt.split(' '))).sum()
-print(f"Total words in the message data: {word_count}")
 
 # Preprocess text:
 # https://en.wikipedia.org/wiki/Stop_words
@@ -22,5 +21,11 @@ print(f"Total words in the message data: {word_count}")
 def remove_dots(text):
     return ENDING_DOTS.sub('', text)
 
+# Check the SettingWithCopyWarning, code works though.
 print("Periods and tbc dots away!")
-print(df['MESSAGE'].apply(remove_dots))
+df['MESSAGE'] = df['MESSAGE'].apply(remove_dots)
+print(df)
+
+print(f"Total words in the message data: {word_count}")
+print("Value distribution in 'PRIORITY':")
+print(df['PRIORITY'].value_counts())
