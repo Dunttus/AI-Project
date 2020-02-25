@@ -4,11 +4,11 @@ This repository is designed be cloned with PyCharm Pro. The runtime environment 
 
 ### Directories:  
 **/.idea** - PyCharm configuration files \
-**/testing** - Testing or studying code bits \
+**/classifier** - Log classifier code \
 **/datasets** - Sample datasets for machine learning \
-**/docker** - Project runtime container (tensorflow etc.) \
-**/log_parsing** - Bash scripts that manipulate journalctl generated JSON files \
-
+**/docker** - Project runtime container \
+**/log_parsing** - Journalctl JSON scripts and ElasticSearch database population \
+**/testing** - Testing or studying code bits \
 
 ## Follow the project blog:
 [https://ailogs.design.blog/](https://ailogs.design.blog/)  
