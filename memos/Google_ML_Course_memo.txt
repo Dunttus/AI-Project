@@ -1,8 +1,8 @@
 ________________________________________________________________________________________________________________________________
 
-Google Machine Learning Crash Course memo
+Google Machine Learning Crash Course key-points memo
 ________________________________________________________________________________________________________________________________
-** Introduction to ML 5min **
+** Introduction to ML (5min) **
 You can make programs that you have no idea how to code by your self like face recognize.
 You can save time by not making 10s of thousands of lines of code of how to recongnize speech
 
@@ -10,7 +10,7 @@ COMPARED TO SOFTWARE ENGINEERING
 Coding by hand: Logically and mathemically
 Machine learning: Focus shifts from mathemical science to natural science
 ________________________________________________________________________________________________________________________________
-** Framing 15min & Descending into ML 20min **
+** Framing (15min) & Descending into ML (20min) **
 LABELS, FEATURE AND MODEL
 Task of is email message spam or not spam?
 E-mail label = Spam/Not Spam			--> Output target
@@ -19,13 +19,13 @@ E-mail model = "from to user" + "Header"	--> prediction output
 
 MSE = Mean Squared Error = Calculated Error rate for machine learning 
 ________________________________________________________________________________________________________________________________
-** REDUCING LOSS 60min **
+** REDUCING LOSS (60min) **
 Loss vs. Weight meter goes over data curve and takes step back.
 
 A Machine Learning model is trained by starting with an initial guess for the weights and bias and iteratively adjusting 
 those guesses until learning the weights and bias with the lowest possible loss.
 
-gradiant decent in TensorFlow handles all the gradient computations automaticly for you, so you don't actually have to 
+Gradiant decent in TensorFlow handles all the gradient computations automaticly for you, so you don't actually have to 
 understand the calculus provided in Googles ml crash course.
 
 Play with reduce loss:
@@ -34,15 +34,49 @@ http://playground.tensorflow.org/
 TensorFlow 2 quickstart for beginners:
 https://www.tensorflow.org/tutorials/quickstart/beginner
 ________________________________________________________________________________________________________________________________
-** First Steps with TensorFlow 60min **
+** First Steps with TensorFlow (60min) **
+tf.estimator = high lvl API that contain functions like model, loss, optimizer and other metrics. So estimator lowers 
+numbers of lines of code end user writes.
+High lvl APIs have less flexibility but easyer to get working. If better flexibility is needed move one level lower.
+Estimator process of training dataset choose model: LinearClassifier --> train dataset: classifier.train(input) --> 
+predict from testdata: classifier.predict(input).
 
-
-
+TensorFlow uses graph execution by defaut. Graph mode execute all code in 1 go so its really hard to debug code with 
+out cell execution. So. you have to use cell execution to link code together and execute it in small portions.
 ________________________________________________________________________________________________________________________________
+** Generalization (15min) **
+Dataset has to be simple, over fitting model can cause miscategorization.
+Linear model may have error rate but its better then having 100% model that can't handle new data coming to the model 
+and miscategorize never before seen examples of data.
+Separating dataset in 2 subsets: Training set and test set with unseen data helps performance the dataset.
+________________________________________________________________________________________________________________________________
+** Training and test sets (25min) **
+________________________________________________________________________________________________________________________________
+** Validation Set (40min) **
+________________________________________________________________________________________________________________________________
+** Representation (65min) **
+________________________________________________________________________________________________________________________________
+** Feature Crosses (70min) **
+________________________________________________________________________________________________________________________________
+** Regularization: Simplicity (40min) **
+________________________________________________________________________________________________________________________________
+** Logistic Regression (20min) **
+________________________________________________________________________________________________________________________________
+** Classification (90min) **
+________________________________________________________________________________________________________________________________
+** Reqularization: Sparsity (45min) **
+________________________________________________________________________________________________________________________________
+** Neural Networks (55min) **
+________________________________________________________________________________________________________________________________
+** Training Neural Nets (40min) **
+________________________________________________________________________________________________________________________________
+** Multi-Class Neural Nets (50min) **
+________________________________________________________________________________________________________________________________
+** Embeddings (80min) **
+________________________________________________________________________________________________________________________________
+
 SOURCES:
 Google Machine Learning Crash Course: https://developers.google.com/machine-learning/crash-course/
 Licence Creative Commons Attribution 4.0: https://creativecommons.org/licenses/by/4.0/
 ________________________________________________________________________________________________________________________________
-
-
 
