@@ -9,6 +9,7 @@ This repository is designed be cloned with PyCharm Pro. The runtime environment 
 **/docker** - Project runtime container \
 **/log_parsing** - Journalctl JSON scripts and ElasticSearch database population \
 **/testing** - Testing or studying code bits \
+**/memos** - Memorandums
 
 ## Follow the project blog:
 [https://ailogs.design.blog/](https://ailogs.design.blog/)  

@@ -1,0 +1,48 @@
+________________________________________________________________________________________________________________________________
+
+Google Machine Learning Crash Course memo
+________________________________________________________________________________________________________________________________
+** Introduction to ML 5min **
+You can make programs that you have no idea how to code by your self like face recognize.
+You can save time by not making 10s of thousands of lines of code of how to recongnize speech
+
+COMPARED TO SOFTWARE ENGINEERING
+Coding by hand: Logically and mathemically
+Machine learning: Focus shifts from mathemical science to natural science
+________________________________________________________________________________________________________________________________
+** Framing 15min & Descending into ML 20min **
+LABELS, FEATURE AND MODEL
+Task of is email message spam or not spam?
+E-mail label = Spam/Not Spam			--> Output target
+E-mail feature = "From to user"			--> Data that helps ML decide
+E-mail model = "from to user" + "Header"	--> prediction output
+
+MSE = Mean Squared Error = Calculated Error rate for machine learning 
+________________________________________________________________________________________________________________________________
+** REDUCING LOSS 60min **
+Loss vs. Weight meter goes over data curve and takes step back.
+
+A Machine Learning model is trained by starting with an initial guess for the weights and bias and iteratively adjusting 
+those guesses until learning the weights and bias with the lowest possible loss.
+
+gradiant decent in TensorFlow handles all the gradient computations automaticly for you, so you don't actually have to 
+understand the calculus provided in Googles ml crash course.
+
+Play with reduce loss:
+http://playground.tensorflow.org/
+
+TensorFlow 2 quickstart for beginners:
+https://www.tensorflow.org/tutorials/quickstart/beginner
+________________________________________________________________________________________________________________________________
+** First Steps with TensorFlow 60min **
+
+
+
+________________________________________________________________________________________________________________________________
+SOURCES:
+Google Machine Learning Crash Course: https://developers.google.com/machine-learning/crash-course/
+Licence Creative Commons Attribution 4.0: https://creativecommons.org/licenses/by/4.0/
+________________________________________________________________________________________________________________________________
+
+
+
