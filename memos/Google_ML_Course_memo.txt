@@ -19,7 +19,7 @@ E-mail model = "from to user" + "Header"	--> prediction output
 
 MSE = Mean Squared Error = Calculated Error rate for machine learning 
 ________________________________________________________________________________________________________________________________
-** REDUCING LOSS (60min) **
+** Reducing loss (60min) **
 Loss vs. Weight meter goes over data curve and takes step back.
 
 A Machine Learning model is trained by starting with an initial guess for the weights and bias and iteratively adjusting 
@@ -45,16 +45,43 @@ TensorFlow uses graph execution by defaut. Graph mode execute all code in 1 go s
 out cell execution. So. you have to use cell execution to link code together and execute it in small portions.
 ________________________________________________________________________________________________________________________________
 ** Generalization (15min) **
-Dataset has to be simple, over fitting model can cause miscategorization.
+Dataset has to be simple, overfitting model can cause miscategorization and model may fails to make correct predictions 
+on newdata.
 Linear model may have error rate but its better then having 100% model that can't handle new data coming to the model 
 and miscategorize never before seen examples of data.
 Separating dataset in 2 subsets: Training set and test set with unseen data helps performance the dataset.
 ________________________________________________________________________________________________________________________________
 ** Training and test sets (25min) **
+Train - train machine learning model with this data.
+Test - test trained machine learning model with this data.
+If you only have one train data you should slit your data set into train and test data. Test dataset should me around 10-15%
+and from random parts of the dataset.
+You never wan't to train with your test data or your model will be unrealistic and may even give 100% results.
 ________________________________________________________________________________________________________________________________
 ** Validation Set (40min) **
+Using same dataset to validate data may cause overfitting of the model.
+Validation set - validates machine learning model before test dataset can help with overfitting models.
+Using validation set to evaluiate training set results, help with overfitting because machine learning model is learning 
+all data you feed it. 
 ________________________________________________________________________________________________________________________________
 ** Representation (65min) **
+Taking features from raw data is called feature engineering, and thats what 75% of the time machine learning pople end up doing.
+If feature onlt occurs a non-zero value extremely rarely or once, it should be filtered out in pre processing of dataset.
+Feature values should not change in new datasets to completely different values also feature value should not have 
+extreme outliers.
+Good habits: Visualize data, debug data and monitor data.
+
+Good feature values should appear more then 5 times in training dataset. So ,the model learns how value relates to label value.
+Avoid rare or enique feature values like: unique_phone_sm_id: SM-123-aSd-123. Good features are easily recognizable and 
+obvious meaning like: phone_model: galaxy_a8. Unique features bad because model cant learn anything from its unique label. 
+Bad for datasets: Forgoten values (forgotten values), duplicate exaples (same log twice), bad labels (wrong info) and bad 
+feature values (extra digits).
+
+Discrete feature - value that has only finite set of possible outcome values (usually gategorical value).
+Feature engineering - determining which featurea are usefull in training dataset model.
+Magic values - if dataset has floatig point value of 0-100, you cant use -1 as label value.
+Bucketing - putting same data in same bucket like ages 1-15 in same bin and 16-30 in second bin.
+NaN trap - one of the numbers becomes NaN in training phase and eventually turn other numbers NaN.
 ________________________________________________________________________________________________________________________________
 ** Feature Crosses (70min) **
 ________________________________________________________________________________________________________________________________
@@ -79,4 +106,6 @@ SOURCES:
 Google Machine Learning Crash Course: https://developers.google.com/machine-learning/crash-course/
 Licence Creative Commons Attribution 4.0: https://creativecommons.org/licenses/by/4.0/
 ________________________________________________________________________________________________________________________________
+
+
 
