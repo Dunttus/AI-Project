@@ -62,6 +62,7 @@ dg.groupby('event.outcome')['event.outcome'].count()
 
 # %%
 
+# Re-naming column names example: @timestamp --> time
 df.rename({'@timestamp': 'time', 'user.name': 'user', 'source.geo.country_iso_code': 'geo', 'event.outcome': 'event'},
           axis='columns', inplace=True)
 
@@ -77,11 +78,15 @@ df['geo'] = df.geo.cat.codes
 df['event'] = pd.Categorical(df['event'])
 df['event'] = df.event.cat.codes
 
-
 # %%
 
+# Reading pandas object TRAIN_DATASET first 5 lines test
 df.head()
 
 # %%
 
+# List data types of TRAIN_DATASET
 df.dtypes
+
+# %%
+
