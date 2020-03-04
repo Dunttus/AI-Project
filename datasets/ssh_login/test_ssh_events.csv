@@ -90,7 +90,7 @@
 "Feb 21, 2020 @ 19:57:30.000",root,CN,failure
 "Feb 21, 2020 @ 19:57:30.000",kristofvps,CN,failure
 "Feb 21, 2020 @ 19:57:30.000",root,CN,failure
-"Feb 21, 2020 @ 19:57:30.000",root,CN,
+"Feb 21, 2020 @ 19:57:30.000",root,CN,success
 "Feb 21, 2020 @ 19:57:29.000",dolphin,FR,failure
 "Feb 21, 2020 @ 19:57:28.000",kristofvps,CN,failure
 "Feb 21, 2020 @ 19:57:27.000",root,CN,failure
@@ -105,7 +105,7 @@
 "Feb 21, 2020 @ 19:57:11.000",news,VN,failure
 "Feb 21, 2020 @ 19:57:09.000",pt,FR,failure
 "Feb 21, 2020 @ 19:57:07.000",root,CN,failure
-"Feb 21, 2020 @ 19:57:07.000",root,CN,
+"Feb 21, 2020 @ 19:57:07.000",root,CN,success
 "Feb 21, 2020 @ 19:57:07.000",pt,FR,failure
 "Feb 21, 2020 @ 19:57:03.000",root,CN,failure
 "Feb 21, 2020 @ 19:57:00.000",root,CN,failure
@@ -199,7 +199,7 @@
 "Feb 21, 2020 @ 19:52:00.000",ftp,CN,failure
 "Feb 21, 2020 @ 19:51:57.000",hadoop,CN,failure
 "Feb 21, 2020 @ 19:51:56.000",hadoop,CN,failure
-"Feb 21, 2020 @ 19:51:47.000",root,CN,
+"Feb 21, 2020 @ 19:51:47.000",joni,CN,success
 "Feb 21, 2020 @ 19:51:42.000",root,CN,failure
 "Feb 21, 2020 @ 19:51:30.000",root,FR,failure
 "Feb 21, 2020 @ 19:51:21.000",test,VN,failure
@@ -227,8 +227,8 @@
 "Feb 21, 2020 @ 19:50:09.000",root,CN,failure
 "Feb 21, 2020 @ 19:50:06.000",root,CN,failure
 "Feb 21, 2020 @ 19:50:05.000",root,CN,failure
-"Feb 21, 2020 @ 19:50:00.000",root,CN,
-"Feb 21, 2020 @ 19:50:00.000",root,CN,
+"Feb 21, 2020 @ 19:50:00.000",root,CN,success
+"Feb 21, 2020 @ 19:50:00.000",admin,CN,success
 "Feb 21, 2020 @ 19:49:54.000",root,CN,failure
 "Feb 21, 2020 @ 19:49:51.000",root,CN,failure
 "Feb 21, 2020 @ 19:49:48.000",root,CN,failure
@@ -239,9 +239,9 @@
 "Feb 21, 2020 @ 19:49:41.000",root,CO,failure
 "Feb 21, 2020 @ 19:49:40.000",bb2server,CN,failure
 "Feb 21, 2020 @ 19:49:39.000",root,CN,failure
-"Feb 21, 2020 @ 19:49:39.000",root,CN,
+"Feb 21, 2020 @ 19:49:39.000",test321,BR,success
 "Feb 21, 2020 @ 19:49:38.000","ec2-user",VN,failure
-"Feb 21, 2020 @ 19:49:36.000",root,CN,
+"Feb 21, 2020 @ 19:49:36.000",root,VN,success
 "Feb 21, 2020 @ 19:49:36.000","ec2-user",VN,failure
 "Feb 21, 2020 @ 19:49:30.000",root,CN,failure
 "Feb 21, 2020 @ 19:49:29.000",teamspeak,CN,failure
