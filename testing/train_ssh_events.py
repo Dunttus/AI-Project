@@ -63,51 +63,9 @@ dfb.groupby('event.outcome')['event.outcome'].count()
 
 # %%
 
-# Re-naming column names df example: @timestamp --> time
-df.rename({'@timestamp': 'time', 'user.name': 'user', 'source.geo.country_iso_code': 'geo', 'event.outcome': 'event'},
-          axis='columns', inplace=True)
-# Re-naming column names dfb
-dfb.rename({'@timestamp': 'time', 'user.name': 'user', 'source.geo.country_iso_code': 'geo', 'event.outcome': 'event'},
-          axis='columns', inplace=True)
-
-# %%
-
-# Convert df data from object to numeric category values
-df['time'] = pd.Categorical(df['time'])
-df['time'] = df.time.cat.codes
-df['user'] = pd.Categorical(df['user'])
-df['user'] = df.user.cat.codes
-df['geo'] = pd.Categorical(df['geo'])
-df['geo'] = df.geo.cat.codes
-df['event'] = pd.Categorical(df['event'])
-df['event'] = df.event.cat.codes
-
-# Convert dfb data from object to numeric category values
-dfb['time'] = pd.Categorical(dfb['time'])
-dfb['time'] = dfb.time.cat.codes
-dfb['user'] = pd.Categorical(dfb['user'])
-dfb['user'] = dfb.user.cat.codes
-dfb['geo'] = pd.Categorical(dfb['geo'])
-dfb['geo'] = dfb.geo.cat.codes
-dfb['event'] = pd.Categorical(dfb['event'])
-dfb['event'] = dfb.event.cat.codes
-
-# %%
-
 # Add new column predict with values 1 or 0
 df['predict'] = 0
 dfb['predict'] = 1
-
-# %%
-
-# Reading pandas object TRAIN_DATASET first 5 lines test
-dfb.head();
-
-
-# %%
-
-# List data types of TRAIN_DATASET
-dfb.dtypes
 
 # %%
 
@@ -117,8 +75,32 @@ print(dfc)
 
 # %%
 
-# Count number of events in dfc
-dfc.groupby('event')['event'].count()
+# count number of BAD_DATASET logs
+dfc.groupby('event.outcome')['event.outcome'].count()
+
+# %%
+
+# Re-naming column names dfc
+dfc.rename({'@timestamp': 'time', 'user.name': 'user', 'source.geo.country_iso_code': 'geo', 'event.outcome': 'event'},
+          axis='columns', inplace=True)
+
+# %%
+
+# Convert dfc data from object to numeric category values
+dfc['time'] = pd.Categorical(dfc['time'])
+dfc['time'] = dfc.time.cat.codes
+dfc['user'] = pd.Categorical(dfc['user'])
+dfc['user'] = dfc.user.cat.codes
+dfc['geo'] = pd.Categorical(dfc['geo'])
+dfc['geo'] = dfc.geo.cat.codes
+dfc['event'] = pd.Categorical(dfc['event'])
+dfc['event'] = dfc.event.cat.codes
+print(dfc)
+
+# %%
+
+# List data types of TRAIN_DATASET
+dfc.dtypes
 
 # %%
 
@@ -182,3 +164,4 @@ prediction = pd.DataFrame(dft)
 print(prediction)
 
 # %%
+
