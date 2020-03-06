@@ -4,6 +4,7 @@
 # Code works with PyCharm View --> Scientific mode or Jupyter notebook.
 # Code not fully functional yet
 
+
 # %%
 
 from __future__ import absolute_import, division, print_function, unicode_literals
@@ -11,12 +12,15 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import tensorflow as tf
 import pandas as pd
 import numpy as np
+from matplotlib import pyplot as plt
+
 
 # %%
 
 # test that GPU is working
 print(f"TensorFlow: {tf.__version__}")
 tf.config.list_physical_devices('GPU')
+
 
 # %%
 
@@ -30,6 +34,7 @@ train_file_path = tf.keras.utils.get_file("train.csv", TRAIN_DATASET)
 test_file_path = tf.keras.utils.get_file("test.csv", TEST_DATASET)
 bad_file_path = tf.keras.utils.get_file("bad.csv", BAD_DATASET)
 
+
 # %%
 
 # Creating Pandas object "df"
@@ -41,25 +46,30 @@ dft = pd.read_csv(TEST_DATASET)
 # Creating Pandas object "dfb"
 dfb = pd.read_csv(BAD_DATASET)
 
+
 # %%
 
 # Testing to read pandas object BAD_DATASET first 5 lines
 dfb.head()
+
 
 # %%
 
 # count number of TRAIN_DATASET logs
 df.groupby('event.outcome')['event.outcome'].count()
 
+
 # %%
 
 # count number of TEST_DATASET logs
 dft.groupby('event.outcome')['event.outcome'].count()
 
+
 # %%
 
 # count number of BAD_DATASET logs
 dfb.groupby('event.outcome')['event.outcome'].count()
+
 
 # %%
 
@@ -67,22 +77,26 @@ dfb.groupby('event.outcome')['event.outcome'].count()
 df['predict'] = 0
 dfb['predict'] = 1
 
+
 # %%
 
 # Combine df and dfb into dfc
 dfc = df.append(dfb)
 print(dfc)
 
+
 # %%
 
 # count number of BAD_DATASET logs
 dfc.groupby('event.outcome')['event.outcome'].count()
 
+
 # %%
 
 # Re-naming column names dfc
 dfc.rename({'@timestamp': 'time', 'user.name': 'user', 'source.geo.country_iso_code': 'geo', 'event.outcome': 'event'},
-          axis='columns', inplace=True)
+           axis='columns', inplace=True)
+
 
 # %%
 
@@ -97,53 +111,56 @@ dfc['event'] = pd.Categorical(dfc['event'])
 dfc['event'] = dfc.event.cat.codes
 print(dfc)
 
+
 # %%
 
 # List data types of TRAIN_DATASET
-dfc.dtypes
+dfc.tail()
+
 
 # %%
 
 # target value predict with pop
 target = dfc.pop('predict')
 
+
 # %%
 
 dataset = tf.data.Dataset.from_tensor_slices((dfc.values, target.values))
+
 
 # %%
 
 # shuffle dfc dataset
 train_dataset = dataset.shuffle(len(dfc)).batch(1)
 
-# %%
-
-# Teach model
-inputs = {key: tf.keras.layers.Input(shape=(), name=key) for key in dfc.keys()}
-x = tf.stack(list(inputs.values()), axis=-1)
-
-x = tf.keras.layers.Dense(10, activation='relu')(x)
-output = tf.keras.layers.Dense(1)(x)
-
-model_func = tf.keras.Model(inputs=inputs, outputs=output)
-
-model_func.compile(optimizer='adam', loss=tf.keras.losses.BinaryCrossentropy(from_logits=True), metrics=['accuracy'])
-
 
 # %%
 
-dict_slices = tf.data.Dataset.from_tensor_slices((dfc.to_dict('list'), target.values)).batch(16)
+# Making model
+def training_model():
+    model = tf.keras.Sequential([
+        tf.keras.layers.Embedding(10000, 10),
+        tf.keras.layers.Dense(10, activation='relu'),
+        tf.keras.layers.Dense(1, activation='sigmoid'),
+    ])
+    model.compile(optimizer='adam', loss=tf.keras.losses.BinaryCrossentropy, metrics=['accuracy'])
+    return model
+
 
 # %%
 
 # Increasing accuracy of model, current value not optimised. Having high value may decrease model reliability.
-model_func.fit(dict_slices, epochs=5)
+model = training_model()
+model.fit(train_dataset, epochs=2, batch_size=500, verbose=1)
+
 
 # %%
 
-# Re-naming column names dfb
+# Re-naming column names dft
 dft.rename({'@timestamp': 'time', 'user.name': 'user', 'source.geo.country_iso_code': 'geo', 'event.outcome': 'event'},
-          axis='columns', inplace=True)
+           axis='columns', inplace=True)
+
 
 # %%
 
@@ -158,10 +175,26 @@ dft['event'] = pd.Categorical(dft['event'])
 dft['event'] = dft.event.cat.codes
 print(dft)
 
+
+# %%
+
+results = model.evaluate(dft)
+print(results)
+
+
+#%%
+dft_test = dft[0]
+predict = model.predict([dft_test])
+print("Data: ")
+print("Prediction: " + int(predict[0]))
+print(results)
+
+
 # %%
 
 prediction = pd.DataFrame(dft)
 print(prediction)
+
 
 # %%
 
