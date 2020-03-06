@@ -131,7 +131,7 @@ dataset = tf.data.Dataset.from_tensor_slices((dfc.values, target.values))
 
 # %%
 
-# shuffle dfc dataset
+# shuffle dfc dataset with new object train_dataset
 train_dataset = dataset.shuffle(len(dfc)).batch(1)
 
 
@@ -140,11 +140,11 @@ train_dataset = dataset.shuffle(len(dfc)).batch(1)
 # Making model
 def training_model():
     model = tf.keras.Sequential([
-        tf.keras.layers.Embedding(10000, 10),
         tf.keras.layers.Dense(10, activation='relu'),
-        tf.keras.layers.Dense(1, activation='sigmoid'),
+        tf.keras.layers.Dense(10, activation='relu'),
+        tf.keras.layers.Dense(1, activation='sigmoid')
     ])
-    model.compile(optimizer='adam', loss=tf.keras.losses.BinaryCrossentropy, metrics=['accuracy'])
+    model.compile(optimizer='adam', loss=tf.keras.losses.BinaryCrossentropy(from_logits=True), metrics=['accuracy'])
     return model
 
 
@@ -152,7 +152,7 @@ def training_model():
 
 # Increasing accuracy of model, current value not optimised. Having high value may decrease model reliability.
 model = training_model()
-model.fit(train_dataset, epochs=2, batch_size=500, verbose=1)
+model.fit(train_dataset, epochs=2, verbose=1)
 
 
 # %%
@@ -174,6 +174,10 @@ dft['geo'] = dft.geo.cat.codes
 dft['event'] = pd.Categorical(dft['event'])
 dft['event'] = dft.event.cat.codes
 print(dft)
+
+
+# %%
+dataset = tf.data.Dataset.from_tensor_slices((dft.values, target.values))
 
 
 # %%
