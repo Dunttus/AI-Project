@@ -99,8 +99,28 @@ Good model to predict housing prices in certain area could be:
 One feature cross: [binned latitude X binned longitude X binned roomsPerPerson]
 ________________________________________________________________________________________________________________________________
 ** Regularization: Simplicity (40min) **
+Model complexity - functions of the model features with nonzero weights --> a feature weight with a high absolute value 
+is more complex than a feature weight with low value.
+Regularization - Minimizing loss may cause overfitting and model may become unreliable, regularization can help with by 
+stopping training earlier or adding more complexity to the model.
+Generalization curve - A loss curve model that shows both the validation on train datasets.
+Overfitting - model matches too closely to training data that the model fails to make correct predictions.
+Lambda - Synonym for regularization rate.
+Regularization rate - reduces overfitting but may make the model less accurate.
+
+Overcrossing playground examples:
+https://developers.google.com/machine-learning/crash-course/regularization-for-simplicity/playground-exercise-overcrossing
+https://developers.google.com/machine-learning/crash-course/regularization-for-simplicity/playground-exercise-examining-l2-
+regularization
 ________________________________________________________________________________________________________________________________
 ** Logistic Regression (20min) **
+Probabilities are bound to 0 to 1 numbers, but what if model gives values outside that range, we can actually chance loss 
+value to and prediction method to get probability model never exceeds 0 to 1 value range. In Tensorflow model layers this 
+function is named Sigmoid.
+
+Sigmoid function - will yield a value (a probability) between 0 and 1.
+Binary classification - Classification task that only has 2 outputs like "true" or "not true".
+Logistic regression - classification model with sigmoid function to convert linear model's predictions into value from 0 to 1.
 ________________________________________________________________________________________________________________________________
 ** Classification (90min) **
 ________________________________________________________________________________________________________________________________
@@ -115,12 +135,10 @@ ________________________________________________________________________________
 ** Embeddings (80min) **
 ________________________________________________________________________________________________________________________________
 
-Portions of this page are modifications based on work created and shared by Google and used according to terms described in 
-the Creative Commons 4.0 Attribution License.
-
 SOURCES:
 Google Machine Learning Crash Course: https://developers.google.com/machine-learning/crash-course/
 License Creative Commons Attribution 4.0: https://creativecommons.org/licenses/by/4.0/
-Google Site Policies: https://developers.google.com/terms/site-policies
 ________________________________________________________________________________________________________________________________
+
+
 
