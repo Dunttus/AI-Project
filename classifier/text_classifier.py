@@ -1,7 +1,7 @@
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras.preprocessing.text import Tokenizer
-from tensorflow.keras.preprocessing.sequence import pad_sequences
+from tensorflow.keras.preprocessing.sequence import pad_sequences as pad
 import pandas as pd
 
 # Testing file
@@ -18,5 +18,5 @@ tok.fit_on_texts(df.MESSAGE)
 # Here we see some numbers get attention, do we want that?
 print(tok.word_index)
 print(tok.word_counts)
-seq = pad_sequences(tok.texts_to_sequences(df.MESSAGE),maxlen=None)
+seq = pad(tok.texts_to_sequences(df.MESSAGE),maxlen=None)
 print(seq)
