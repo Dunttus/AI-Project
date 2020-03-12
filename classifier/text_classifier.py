@@ -1,3 +1,6 @@
+# As from Ashu Prasad's blog, with small modifications
+# https://towardsdatascience.com/natural-language-processing-with-tensorflow-e0a701ef5cef
+
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras.preprocessing.text import Tokenizer
@@ -20,3 +23,24 @@ print(tok.word_index)
 print(tok.word_counts)
 seq = pad(tok.texts_to_sequences(df.MESSAGE),maxlen=None)
 print(seq)
+
+# Hyperparameters
+vocab_size = 1000
+embedding_dim = 16
+max_length = 16
+trunc_type='post'
+padding_type='post'
+oov_tok = '<OOV>'
+training_size = 20000
+
+# The model
+# Embedding layer needs to be examined closer!
+model = keras.Sequential([
+    keras.layers.Embedding(vocab_size, embedding_dim, input_length=max_length),
+    keras.layers.Flatten(),
+    keras.layers.Dense(6, activation='relu'),
+    keras.layers.Dense(1, activation='sigmoid')
+])
+model.summary()
+
+# tbc...
