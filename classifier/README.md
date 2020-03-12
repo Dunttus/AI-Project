@@ -9,7 +9,7 @@ size        file
 652395735   ubuntu_logs.json
 734891684   upcloudarch3_logs.json
 ```
-__Lines per log level per file:__
+__Running the Parser Panda counting fuction:__
 ```
 Reading file: ubuntu_logs.json...
 5.0    73877
@@ -35,5 +35,17 @@ Reading file: upcloudarch3_logs.json...
 7.0      2194
 3.0        94
 2.0        27
+Name: PRIORITY, dtype: int64
+```
+__Parser Panda in action:__
+```
+Generated dataframe value counts:
+6.0    3000
+5.0    3000
+4.0    3000
+7.0    2344
+3.0     602
+2.0     574
+1.0       9
 Name: PRIORITY, dtype: int64
 ```
