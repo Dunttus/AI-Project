@@ -1,4 +1,4 @@
-@timestamp,"source.geo.country_iso_code","user.name","system.auth.ssh.event"
+"@timestamp","source.geo.country_iso_code","user.name","system.auth.ssh.event"
 Feb 21, 2020 @ 19:51:19.000,test,VN,success
 Feb 21, 2020 @ 19:51:16.000,test1,CN,success
 Feb 21, 2020 @ 19:51:14.000,ubuntu,FR,success
