@@ -6,6 +6,9 @@ FILES = ["ubuntu_logs.json", "archelk_logs.json", "upcloudarch3_logs.json"]
 TESTFILE = "ubuntu_logs_tail.json"
 LOG_DATA = ['PRIORITY', 'MESSAGE']
 
+# The new dataframe to add entries into
+DATASET = pd.DataFrame(columns=LOG_DATA)
+
 # Convenience function to check initial value counts
 def count_lines_per_loglevel():
     for file in FILES:
@@ -17,15 +20,20 @@ def count_lines_per_loglevel():
 # 1000 from each file, randomized if there are more than 1000 in the category.
 # We don't have data from zero level, just skipping it for now.
 
-df = pd.read_json(DS_LOC + FILES[0], lines=True)
+#df = pd.read_json(DS_LOC + FILES[0], lines=True)
+df = pd.read_json(TESTFILE, lines=True)
 
 for i in range(1,8):
-    test = df.loc[df['PRIORITY'] == i]
+    part = df.loc[df['PRIORITY'] == i]
     print("Log level " + str(i) + ": ", end ='')
-    if test['PRIORITY'].size > 1000:
+    if part['PRIORITY'].size > 1:
         # These entries have to be reduced
-        print(">1000")
+        # A random picker function here!
+        print(">1000, make smaller before appending")
     else:
         # These entries go straight into the dataset
-        print("<1000")
+        DATASET = pd.concat([DATASET,part[LOG_DATA]])
+        print("<1000, added to dataset.")
 
+
+print(DATASET)
