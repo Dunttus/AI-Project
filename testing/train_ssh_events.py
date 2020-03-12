@@ -87,7 +87,7 @@ dfTestbad.groupby('event.outcome')['event.outcome'].count()
 
 # %%
 
-# Add new column predict with values 1 as normal or 0 as not normal "labeling data"
+# Add new column predict with values 0 as normal or 1 as not normal "labeling data"
 dfTraingood['predict'] = 0
 dfTrainbad['predict'] = 1
 
@@ -134,13 +134,15 @@ dfTraincombined.dtypes
 
 # %%
 
-# target value predict with pop
+# target whole dataset dfTraincombined with value predict
 target = dfTraincombined.pop('predict')
 
 
 # %%
 
+# Creating input pipeline from dataset for Tensorflow
 dataset = tf.data.Dataset.from_tensor_slices((dfTraincombined.values, target.values))
+
 
 
 # %%
@@ -165,15 +167,16 @@ def training_model():
 
 # %%
 
-# Increasing accuracy of model, current value not optimised. Having high value may decrease model reliability.
+# Starts building model
+# Having more epochs increase accuracy of the model. Having too high value may decrease model reliability.
 # 1 epochs take about 10-min with gtx 1050TI
 model = training_model()
-model.fit(train_dataset, epochs=1, verbose=1)
+model.fit(train_dataset, epochs=2, verbose=1)
 
 
 # %%
 
-# Add new column predict with values 1 as normal or 0 as not normal "labeling data"
+# Add new column predict with values 0 as normal or 1 as not normal "labeling data"
 dfTestgood['predict'] = 0
 dfTestbad['predict'] = 1
 
@@ -194,7 +197,13 @@ dfTestcombined.rename({'@timestamp': 'time', 'user.name': 'user', 'source.geo.co
 
 # %%
 
-# Convert dft data from object to numeric category values
+# Data types of dfTestcombined
+dfTestcombined.dtypes
+
+
+# %%
+
+# Convert dfTestcombined data from object to numeric category values
 dfTestcombined['time'] = pd.Categorical(dfTestcombined['time'])
 dfTestcombined['time'] = dfTestcombined.time.cat.codes
 dfTestcombined['user'] = pd.Categorical(dfTestcombined['user'])
@@ -214,16 +223,18 @@ dfTestcombined.dtypes
 
 # %%
 
+# target whole dataset dfTestcombined with value predict
 target = dfTestcombined.pop('predict')
 
 # %%
 
+# Creating input pipeline from dataset for Tensorflow
 datasetTest = tf.data.Dataset.from_tensor_slices((dfTestcombined.values, target.values))
 
 
 # %%
 
-# shuffle dfc dataset with new object test_dataset
+# shuffle dfTestcombined dataset with new object test_dataset
 test_dataset = datasetTest.shuffle(len(dfTestcombined)).batch(1)
 
 
@@ -235,7 +246,7 @@ print(results)
 
 # %%
 
-prediction = pd.DataFrame(dfTestcombined)
+prediction = model.predict(dfTestcombined)
 print(prediction)
 
 
