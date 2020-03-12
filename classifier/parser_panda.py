@@ -4,6 +4,8 @@ import pandas as pd
 DS_LOC = "../datasets/loglevels/"
 FILES = ["ubuntu_logs.json", "archelk_logs.json", "upcloudarch3_logs.json"]
 TESTFILE = "ubuntu_logs_tail.json"
+
+LOG_COUNT = 1000
 LOG_DATA = ['PRIORITY', 'MESSAGE']
 
 # The new dataframe to add entries into
@@ -25,15 +27,9 @@ df = pd.read_json(DS_LOC + FILES[0], lines=True)
 
 for i in range(1,8):
     part = df.loc[df['PRIORITY'] == i]
-    print("Log level " + str(i) + ": ", end ='')
-    if part['PRIORITY'].size > 1000:
-        # These entries have to be reduced
-        # A random picker function here!
-        print(">1000, make smaller before appending")
-    else:
-        # These entries go straight into the dataset
-        DATASET = pd.concat([DATASET,part[LOG_DATA]])
-        print("<1000, added to dataset.")
+    if part['PRIORITY'].size > LOG_COUNT:
+        part = part.sample(n=LOG_COUNT)
+    DATASET = pd.concat([DATASET,part[LOG_DATA]])
 
 print("\nGenerated dataframe value counts:")
 print(DATASET['PRIORITY'].value_counts())
