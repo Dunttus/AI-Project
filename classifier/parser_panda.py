@@ -1,9 +1,10 @@
-# Generate an class-evened dataset for classification with pandas
+# Generate an class-evened dataset with pandas for classification
 import pandas as pd
 
 DS_LOC = "../datasets/loglevels/"
 FILES = ["ubuntu_logs.json", "archelk_logs.json", "upcloudarch3_logs.json"]
 TESTFILE = "ubuntu_logs_tail.json"
+LOG_DATA = ['PRIORITY', 'MESSAGE']
 
 def count_lines_per_loglevel():
     for file in FILES:
@@ -11,5 +12,15 @@ def count_lines_per_loglevel():
         df = pd.read_json(DS_LOC + file, lines=True)
         print(df['PRIORITY'].value_counts())
 
-count_lines_per_loglevel()
+# Uncomment to count
+#count_lines_per_loglevel()
 
+# Looking at the data, we'll start small. Maximum of 3000 entries per level,
+# 1000 from each file, randomized if there are more than 1000 in the category.
+# We don't have data from zero level, just skipping it for now.
+
+df = pd.read_json(TESTFILE, lines=True)
+
+for i in range(4,7):
+    test = df.loc[df['PRIORITY'] == i]
+    print(test[LOG_DATA])
