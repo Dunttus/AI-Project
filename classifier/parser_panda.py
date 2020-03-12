@@ -22,14 +22,19 @@ def count_lines_per_loglevel():
 # 1000 from each file, randomized if there are more than 1000 in the category.
 # We don't have data from zero level, just skipping it for now.
 
-df = pd.read_json(DS_LOC + FILES[0], lines=True)
-#df = pd.read_json(TESTFILE, lines=True)
+for file in FILES:
 
-for i in range(1,8):
-    part = df.loc[df['PRIORITY'] == i]
-    if part['PRIORITY'].size > LOG_COUNT:
-        part = part.sample(n=LOG_COUNT)
-    DATASET = pd.concat([DATASET,part[LOG_DATA]])
+    df = pd.read_json(DS_LOC + file, lines=True)
+
+    for i in range(1,8):
+        part = df.loc[df['PRIORITY'] == i]
+
+        if part['PRIORITY'].size > LOG_COUNT:
+            part = part.sample(n=LOG_COUNT)
+
+        DATASET = pd.concat([DATASET,part[LOG_DATA]])
 
 print("\nGenerated dataframe value counts:")
 print(DATASET['PRIORITY'].value_counts())
+
+# Make a json file to examine the data...
