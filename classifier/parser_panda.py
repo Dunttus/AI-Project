@@ -1,6 +1,5 @@
 # Generate an class-evened dataset with pandas for classification
 import pandas as pd
-import json
 
 DS_LOC = "../datasets/loglevels/"
 FILES = ["ubuntu_logs.json", "archelk_logs.json", "upcloudarch3_logs.json"]
