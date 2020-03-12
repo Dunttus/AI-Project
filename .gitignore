@@ -1,2 +1,3 @@
 log_parsing/testdataset
 log_parsing/*.json
+datasets/loglevels/*_logs.json
