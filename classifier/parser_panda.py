@@ -39,4 +39,4 @@ print("\nGenerated dataframe value counts:")
 print(DATASET['PRIORITY'].value_counts())
 
 # Make a json file to examine the data...
-DATASET.to_json("training_logs.json", orient="records", lines=True)
+DATASET.to_json(DS_LOC + "training_logs.json", orient="records", lines=True)
