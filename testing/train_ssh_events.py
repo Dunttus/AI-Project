@@ -25,114 +25,128 @@ tf.config.list_physical_devices('GPU')
 # %%
 
 # Downloading .csv files from github to local computer
-TRAIN_DATASET = "https://raw.githubusercontent.com/Dunttus/AI-Project/master/datasets/ssh_login/train_ssh_events.csv"
-TEST_DATASET = "https://raw.githubusercontent.com/Dunttus/AI-Project/master/datasets/ssh_login/test_ssh_events.csv"
-BAD_DATASET = "https://raw.githubusercontent.com/Dunttus/AI-Project/master/datasets/ssh_login/bad_ssh_events.csv"
+TRAIN_DATASET_GOOD = \
+    "https://raw.githubusercontent.com/Dunttus/AI-Project/master/datasets/ssh_login/train_ssh_event_good.csv"
+TRAIN_DATASET_BAD = \
+    "https://raw.githubusercontent.com/Dunttus/AI-Project/master/datasets/ssh_login/train_ssh_events_bad.csv"
+TEST_DATASET_GOOD = \
+    "https://raw.githubusercontent.com/Dunttus/AI-Project/master/datasets/ssh_login/test_ssh_events_good.csv"
+TEST_DATASET_BAD = \
+    "https://raw.githubusercontent.com/Dunttus/AI-Project/master/datasets/ssh_login/test_ssh_events_bad.csv"
 
 # Naming dataset's
-train_file_path = tf.keras.utils.get_file("train.csv", TRAIN_DATASET)
-test_file_path = tf.keras.utils.get_file("test.csv", TEST_DATASET)
-bad_file_path = tf.keras.utils.get_file("bad.csv", BAD_DATASET)
+traing_file_path = tf.keras.utils.get_file("traing.csv", TRAIN_DATASET_GOOD)
+trainb_file_path = tf.keras.utils.get_file("trainb.csv", TRAIN_DATASET_BAD)
+testg_file_path = tf.keras.utils.get_file("testg.csv", TEST_DATASET_GOOD)
+testb_file_path = tf.keras.utils.get_file("testb.csv", TEST_DATASET_BAD)
 
 
 # %%
 
-# Creating Pandas object "df"
-df = pd.read_csv(TRAIN_DATASET)
+# Creating Pandas variable "dfTraingood"
+dfTraingood = pd.read_csv(TRAIN_DATASET_GOOD)
 
-# Creating Pandas object "dft"
-dft = pd.read_csv(TEST_DATASET)
+# Creating Pandas variable "dfTrainbad"
+dfTrainbad = pd.read_csv(TRAIN_DATASET_BAD)
 
-# Creating Pandas object "dfb"
-dfb = pd.read_csv(BAD_DATASET)
+# Creating Pandas variable "dfTestgood"
+dfTestgood = pd.read_csv(TEST_DATASET_GOOD)
 
+# Creating Pandas variable "dfTestbad"
+dfTestbad = pd.read_csv(TEST_DATASET_BAD)
 
 # %%
 
 # Testing to read pandas object BAD_DATASET first 5 lines
-dfb.head()
+dfTraingood.head()
 
 
 # %%
 
-# count number of TRAIN_DATASET logs
-df.groupby('event.outcome')['event.outcome'].count()
+# count number of TRAIN_DATASET_GOOD logs
+dfTraingood.groupby('event.outcome')['event.outcome'].count()
 
 
 # %%
 
-# count number of TEST_DATASET logs
-dft.groupby('event.outcome')['event.outcome'].count()
+# count number of TRAIN_DATASET_BAD logs
+dfTrainbad.groupby('event.outcome')['event.outcome'].count()
 
 
 # %%
 
-# count number of BAD_DATASET logs
-dfb.groupby('event.outcome')['event.outcome'].count()
+# count number of TEST_DATASET_BAD logs
+dfTestgood.groupby('event.outcome')['event.outcome'].count()
 
 
 # %%
 
-# Add new column predict with values 1 or 0
-df['predict'] = 0
-dfb['predict'] = 1
+# count number of TEST_DATASET_BAD logs
+dfTestbad.groupby('event.outcome')['event.outcome'].count()
 
 
 # %%
 
-# Combine df and dfb into dfc
-dfc = df.append(dfb)
-print(dfc)
+# Add new column predict with values 1 as normal or 0 as not normal "labeling data"
+dfTraingood['predict'] = 0
+dfTrainbad['predict'] = 1
 
 
 # %%
 
-# count number of BAD_DATASET logs
-dfc.groupby('event.outcome')['event.outcome'].count()
+# Combine dfTraingood and dfTrainbad into dfTraincombined
+dfTraincombined = dfTraingood.append(dfTrainbad)
+print(dfTraincombined)
 
 
 # %%
 
-# Re-naming column names dfc
-dfc.rename({'@timestamp': 'time', 'user.name': 'user', 'source.geo.country_iso_code': 'geo', 'event.outcome': 'event'},
-           axis='columns', inplace=True)
+# count number of dfTraincombined logs
+dfTraincombined.groupby('event.outcome')['event.outcome'].count()
 
 
 # %%
 
-# Convert dfc data from object to numeric category values
-dfc['time'] = pd.Categorical(dfc['time'])
-dfc['time'] = dfc.time.cat.codes
-dfc['user'] = pd.Categorical(dfc['user'])
-dfc['user'] = dfc.user.cat.codes
-dfc['geo'] = pd.Categorical(dfc['geo'])
-dfc['geo'] = dfc.geo.cat.codes
-dfc['event'] = pd.Categorical(dfc['event'])
-dfc['event'] = dfc.event.cat.codes
-print(dfc)
+# Re-naming column names of dfTraincombined
+dfTraincombined.rename({'@timestamp': 'time', 'user.name': 'user', 'source.geo.country_iso_code': 'geo',
+                        'event.outcome': 'event'}, axis='columns', inplace=True)
 
 
 # %%
 
-# List data types of TRAIN_DATASET
-dfc.tail()
+# Convert dfTraincombined data from object to numeric category values
+dfTraincombined['time'] = pd.Categorical(dfTraincombined['time'])
+dfTraincombined['time'] = dfTraincombined.time.cat.codes
+dfTraincombined['user'] = pd.Categorical(dfTraincombined['user'])
+dfTraincombined['user'] = dfTraincombined.user.cat.codes
+dfTraincombined['geo'] = pd.Categorical(dfTraincombined['geo'])
+dfTraincombined['geo'] = dfTraincombined.geo.cat.codes
+dfTraincombined['event'] = pd.Categorical(dfTraincombined['event'])
+dfTraincombined['event'] = dfTraincombined.event.cat.codes
+print(dfTraincombined)
+
+
+# %%
+
+# List data types of data
+dfTraincombined.dtypes
 
 
 # %%
 
 # target value predict with pop
-target = dfc.pop('predict')
+target = dfTraincombined.pop('predict')
 
 
 # %%
 
-dataset = tf.data.Dataset.from_tensor_slices((dfc.values, target.values))
+dataset = tf.data.Dataset.from_tensor_slices((dfTraincombined.values, target.values))
 
 
 # %%
 
 # shuffle dfc dataset with new object train_dataset
-train_dataset = dataset.shuffle(len(dfc)).batch(1)
+train_dataset = dataset.shuffle(len(dfTraincombined)).batch(1)
 
 
 # %%
@@ -141,6 +155,7 @@ train_dataset = dataset.shuffle(len(dfc)).batch(1)
 def training_model():
     model = tf.keras.Sequential([
         tf.keras.layers.Dense(10, activation='relu'),
+        tf.keras.layers.Dense(1, activation='relu'),
         tf.keras.layers.Dense(10, activation='relu'),
         tf.keras.layers.Dense(1, activation='sigmoid')
     ])
@@ -151,52 +166,76 @@ def training_model():
 # %%
 
 # Increasing accuracy of model, current value not optimised. Having high value may decrease model reliability.
+# 1 epochs take about 10-min with gtx 1050TI
 model = training_model()
-model.fit(train_dataset, epochs=2, verbose=1)
+model.fit(train_dataset, epochs=1, verbose=1)
 
 
 # %%
 
-# Re-naming column names dft
-dft.rename({'@timestamp': 'time', 'user.name': 'user', 'source.geo.country_iso_code': 'geo', 'event.outcome': 'event'},
-           axis='columns', inplace=True)
+# Add new column predict with values 1 as normal or 0 as not normal "labeling data"
+dfTestgood['predict'] = 0
+dfTestbad['predict'] = 1
+
+
+# %%
+
+# Combine dfTestgood and dfTestbad into dfTestcombined
+dfTestcombined = dfTestgood.append(dfTestbad)
+print(dfTestcombined)
+
+
+# %%
+
+# Re-naming column names dfTestcombined
+dfTestcombined.rename({'@timestamp': 'time', 'user.name': 'user', 'source.geo.country_iso_code': 'geo',
+                       'event.outcome': 'event'}, axis='columns', inplace=True)
 
 
 # %%
 
 # Convert dft data from object to numeric category values
-dft['time'] = pd.Categorical(dft['time'])
-dft['time'] = dft.time.cat.codes
-dft['user'] = pd.Categorical(dft['user'])
-dft['user'] = dft.user.cat.codes
-dft['geo'] = pd.Categorical(dft['geo'])
-dft['geo'] = dft.geo.cat.codes
-dft['event'] = pd.Categorical(dft['event'])
-dft['event'] = dft.event.cat.codes
-print(dft)
-
-
-# %%
-dataset = tf.data.Dataset.from_tensor_slices((dft.values, target.values))
+dfTestcombined['time'] = pd.Categorical(dfTestcombined['time'])
+dfTestcombined['time'] = dfTestcombined.time.cat.codes
+dfTestcombined['user'] = pd.Categorical(dfTestcombined['user'])
+dfTestcombined['user'] = dfTestcombined.user.cat.codes
+dfTestcombined['geo'] = pd.Categorical(dfTestcombined['geo'])
+dfTestcombined['geo'] = dfTestcombined.geo.cat.codes
+dfTestcombined['event'] = pd.Categorical(dfTestcombined['event'])
+dfTestcombined['event'] = dfTestcombined.event.cat.codes
+print(dfTestcombined)
 
 
 # %%
 
-results = model.evaluate(dft)
+# Data types of dfTestcombined
+dfTestcombined.dtypes
+
+
+# %%
+
+target = dfTestcombined.pop('predict')
+
+# %%
+
+datasetTest = tf.data.Dataset.from_tensor_slices((dfTestcombined.values, target.values))
+
+
+# %%
+
+# shuffle dfc dataset with new object test_dataset
+test_dataset = datasetTest.shuffle(len(dfTestcombined)).batch(1)
+
+
+# %%
+
+results = model.evaluate(test_dataset)
 print(results)
 
 
-#%%
-dft_test = dft[0]
-predict = model.predict([dft_test])
-print("Data: ")
-print("Prediction: " + int(predict[0]))
-print(results)
-
-
 # %%
 
-prediction = pd.DataFrame(dft)
+prediction = pd.DataFrame(dfTestcombined)
 print(prediction)
 
 
