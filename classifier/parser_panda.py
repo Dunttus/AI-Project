@@ -24,9 +24,12 @@ def count_lines_per_loglevel():
 
 for file in FILES:
 
+    print("Reading file: ", file)
     df = pd.read_json(DS_LOC + file, lines=True)
 
     for i in range(1,8):
+
+        print("Getting messages from log level ", i)
         part = df.loc[df['PRIORITY'] == i]
 
         if part['PRIORITY'].size > LOG_COUNT:
