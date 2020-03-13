@@ -17,27 +17,27 @@ FILE = "ubuntu_logs_tail.json"
 df = pd.read_json(FILE, lines=True)
 df = df[['PRIORITY', 'MESSAGE']] # ubuntu_logs_tail needs this
 
-# Bring on the Tokenizer!
-# default: filters='!"#$%&()*+,-./:;<=>?@[\\]^_`{|}~\t\n'
-tok = Tokenizer(num_words=100, oov_token="<OOV>")
-tok.fit_on_texts(df.MESSAGE)
-# Here we see some numbers get attention, do we want that?
-#print(tok.word_index)
-#print(tok.word_counts)
-# This is essentially the feature vector. Feed it to the NN!
-log_text_data = pad(tok.texts_to_sequences(df.MESSAGE),maxlen=None)
-# One-hot-encoding the classes
+def log_message_tokenizer():
+    # default: filters='!"#$%&()*+,-./:;<=>?@[\\]^_`{|}~\t\n'
+    tok = Tokenizer(num_words=100, oov_token="<OOV>")
+    tok.fit_on_texts(df.MESSAGE)
+    return pad(tok.texts_to_sequences(df.MESSAGE),maxlen=None)
+
+log_text_data = log_message_tokenizer()
+
+# One-hot-encode the classes
 classes = to_categorical(df['PRIORITY'])
 
-model = Sequential()
-# Hidden layer 1
-model.add(Dense(16, input_dim=log_text_data.shape[1], activation='relu'))
-# Hidden layer 2
-model.add(Dense(8, activation='relu'))
-# Output layer
-model.add(Dense(classes.shape[1], activation='softmax'))
+def training_model():
+    model = Sequential()
+    model.add(Dense(16, input_dim=log_text_data.shape[1], activation='relu'))
+    model.add(Dense(8, activation='relu'))
+    model.add(Dense(classes.shape[1], activation='softmax'))
+    model.compile(loss='categorical_crossentropy', optimizer='adam')
 
-model.compile(loss='categorical_crossentropy', optimizer='adam')
+    return model
+
+model = training_model()
 model.fit(log_text_data,classes,verbose=2,epochs=50)
 
 # Predictions
