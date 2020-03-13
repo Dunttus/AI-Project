@@ -40,3 +40,11 @@ model.add(Dense(classes.shape[1],activation='softmax'))
 # earlier.
 model.compile(loss='categorical_crossentropy', optimizer='adam')
 model.fit(flower_data,classes,verbose=2,epochs=100)
+
+# Prediction accuracy, now we are seeing the results defined by the softmax
+# function. So this is a probability distribution for the class the metrics
+# likely refer to.
+pred = model.predict(flower_data)
+# Turns off scientific notation (3.51e-04 to 0.000351)
+np.set_printoptions(suppress=True)
+print(pred)
