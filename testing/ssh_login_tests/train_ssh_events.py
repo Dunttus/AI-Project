@@ -130,13 +130,13 @@ dataset = tf.data.Dataset.from_tensor_slices((dfTraincombined.values, target.val
 
 # %%
 
+# print 10 first lines
 dfTraincombined.head()
 
 # %%
 
 # shuffle dfc dataset with new object train_dataset
 train_dataset = dataset.shuffle(len(dfTraincombined)).batch(1)
-
 
 # %%
 
@@ -151,12 +151,11 @@ def training_model():
     model.compile(optimizer='adam', loss=tf.keras.losses.BinaryCrossentropy(from_logits=True), metrics=['accuracy'])
     return model
 
-
 # %%
 
 # Starts building model
 # Having more epochs increase accuracy of the model. Having too high value may decrease model reliability.
-# 1 epochs take about 10-min with gtx 1050TI
+# 1 epochs take about 10-min with gtx 1050TI with 220k logs
 model = training_model()
 model.fit(train_dataset, epochs=2, verbose=1)
 
@@ -233,14 +232,12 @@ print(prediction)
 # First position result
 np.argmax(prediction[0])
 
-
 # %%
 
 # Loop results
 for i in range(277):
     fullRange = np.argmax(prediction[i])
     print(fullRange)
-
 
 # %%
 
@@ -249,13 +246,6 @@ for i in range(277):
     fullRanged = np.argmax(dfTestcombined)
     print(fullRanged)
 
-
 # %%
 
-# Predictions from test dataset
-prediction = model.predict(dfTestcombined)
-print(prediction)
-
-
-# %%
 
