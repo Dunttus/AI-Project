@@ -19,14 +19,14 @@ df = pd.read_json(FILE, lines=True)
 
 def log_message_tokenizer():
     # default: filters='!"#$%&()*+,-./:;<=>?@[\\]^_`{|}~\t\n'
-    tok = Tokenizer(num_words=1000, oov_token="<OOV>")
+    tok = Tokenizer(num_words=2000, oov_token="<OOV>")
     tok.fit_on_texts(df.MESSAGE)
     return pad(tok.texts_to_sequences(df.MESSAGE),maxlen=None)
 
 def training_model():
     model = Sequential()
-    model.add(Dense(16, input_dim=log_text_data.shape[1], activation='relu'))
-    model.add(Dense(8, activation='relu'))
+    model.add(Dense(64, input_dim=log_text_data.shape[1], activation='relu'))
+    model.add(Dense(64, activation='relu'))
     model.add(Dense(classes.shape[1], activation='softmax'))
     model.compile(loss='categorical_crossentropy', optimizer='adam')
     return model
@@ -42,7 +42,7 @@ log_text_data = log_message_tokenizer()
 # One-hot-encode the classes
 classes = to_categorical(df['PRIORITY'])
 model = training_model()
-model.fit(log_text_data,classes,verbose=2,epochs=50)
+model.fit(log_text_data,classes,verbose=2,epochs=100)
 evaluate_model()
 
 
