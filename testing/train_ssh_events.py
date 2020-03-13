@@ -14,13 +14,11 @@ import pandas as pd
 import numpy as np
 from matplotlib import pyplot as plt
 
-
 # %%
 
 # test that GPU is working
 print(f"TensorFlow: {tf.__version__}")
 tf.config.list_physical_devices('GPU')
-
 
 # %%
 
@@ -39,7 +37,6 @@ traing_file_path = tf.keras.utils.get_file("traing.csv", TRAIN_DATASET_GOOD)
 trainb_file_path = tf.keras.utils.get_file("trainb.csv", TRAIN_DATASET_BAD)
 testg_file_path = tf.keras.utils.get_file("testg.csv", TEST_DATASET_GOOD)
 testb_file_path = tf.keras.utils.get_file("testb.csv", TEST_DATASET_BAD)
-
 
 # %%
 
@@ -60,30 +57,25 @@ dfTestbad = pd.read_csv(TEST_DATASET_BAD)
 # Testing to read pandas object BAD_DATASET first 5 lines
 dfTraingood.head()
 
-
 # %%
 
 # count number of TRAIN_DATASET_GOOD logs
 dfTraingood.groupby('event.outcome')['event.outcome'].count()
-
 
 # %%
 
 # count number of TRAIN_DATASET_BAD logs
 dfTrainbad.groupby('event.outcome')['event.outcome'].count()
 
-
 # %%
 
 # count number of TEST_DATASET_BAD logs
 dfTestgood.groupby('event.outcome')['event.outcome'].count()
 
-
 # %%
 
 # count number of TEST_DATASET_BAD logs
 dfTestbad.groupby('event.outcome')['event.outcome'].count()
-
 
 # %%
 
@@ -91,26 +83,22 @@ dfTestbad.groupby('event.outcome')['event.outcome'].count()
 dfTraingood['predict'] = 0
 dfTrainbad['predict'] = 1
 
-
 # %%
 
 # Combine dfTraingood and dfTrainbad into dfTraincombined
 dfTraincombined = dfTraingood.append(dfTrainbad)
 print(dfTraincombined)
 
-
 # %%
 
 # count number of dfTraincombined logs
 dfTraincombined.groupby('event.outcome')['event.outcome'].count()
-
 
 # %%
 
 # Re-naming column names of dfTraincombined
 dfTraincombined.rename({'@timestamp': 'time', 'user.name': 'user', 'source.geo.country_iso_code': 'geo',
                         'event.outcome': 'event'}, axis='columns', inplace=True)
-
 
 # %%
 
@@ -125,25 +113,24 @@ dfTraincombined['event'] = pd.Categorical(dfTraincombined['event'])
 dfTraincombined['event'] = dfTraincombined.event.cat.codes
 print(dfTraincombined)
 
-
 # %%
 
 # List data types of data
 dfTraincombined.dtypes
-
 
 # %%
 
 # target whole dataset dfTraincombined with value predict
 target = dfTraincombined.pop('predict')
 
-
 # %%
 
 # Creating input pipeline from dataset for Tensorflow
 dataset = tf.data.Dataset.from_tensor_slices((dfTraincombined.values, target.values))
 
+# %%
 
+dfTraincombined.head()
 
 # %%
 
@@ -157,7 +144,7 @@ train_dataset = dataset.shuffle(len(dfTraincombined)).batch(1)
 def training_model():
     model = tf.keras.Sequential([
         tf.keras.layers.Dense(10, activation='relu'),
-        tf.keras.layers.Dense(1, activation='relu'),
+        tf.keras.layers.Dense(3, activation='relu'),
         tf.keras.layers.Dense(10, activation='relu'),
         tf.keras.layers.Dense(1, activation='sigmoid')
     ])
@@ -173,13 +160,11 @@ def training_model():
 model = training_model()
 model.fit(train_dataset, epochs=2, verbose=1)
 
-
 # %%
 
 # Add new column predict with values 0 as normal or 1 as not normal "labeling data"
 dfTestgood['predict'] = 0
 dfTestbad['predict'] = 1
-
 
 # %%
 
@@ -187,19 +172,16 @@ dfTestbad['predict'] = 1
 dfTestcombined = dfTestgood.append(dfTestbad)
 print(dfTestcombined)
 
-
 # %%
 
 # Re-naming column names dfTestcombined
 dfTestcombined.rename({'@timestamp': 'time', 'user.name': 'user', 'source.geo.country_iso_code': 'geo',
                        'event.outcome': 'event'}, axis='columns', inplace=True)
 
-
 # %%
 
 # Data types of dfTestcombined
 dfTestcombined.dtypes
-
 
 # %%
 
@@ -214,12 +196,10 @@ dfTestcombined['event'] = pd.Categorical(dfTestcombined['event'])
 dfTestcombined['event'] = dfTestcombined.event.cat.codes
 print(dfTestcombined)
 
-
 # %%
 
 # Data types of dfTestcombined
 dfTestcombined.dtypes
-
 
 # %%
 
@@ -231,21 +211,48 @@ target = dfTestcombined.pop('predict')
 # Creating input pipeline from dataset for Tensorflow
 datasetTest = tf.data.Dataset.from_tensor_slices((dfTestcombined.values, target.values))
 
-
 # %%
 
 # shuffle dfTestcombined dataset with new object test_dataset
 test_dataset = datasetTest.shuffle(len(dfTestcombined)).batch(1)
 
-
 # %%
 
+# Evaluate model
 results = model.evaluate(test_dataset)
 print(results)
 
+# %%
+
+# Predictions from test dataset
+prediction = model.predict(dfTestcombined)
+print(prediction)
 
 # %%
 
+# First position result
+np.argmax(prediction[0])
+
+
+# %%
+
+# Loop results
+for i in range(277):
+    fullRange = np.argmax(prediction[i])
+    print(fullRange)
+
+
+# %%
+
+# Loop answers
+for i in range(277):
+    fullRanged = np.argmax(dfTestcombined)
+    print(fullRanged)
+
+
+# %%
+
+# Predictions from test dataset
 prediction = model.predict(dfTestcombined)
 print(prediction)
 
