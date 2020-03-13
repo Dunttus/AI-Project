@@ -1,19 +1,24 @@
+# Simple regression neural network
 # Example code modified from Jeff Heaton's lecture series
 # https://github.com/jeffheaton/t81_558_deep_learning
 
-# Simple regression
+# Reduce tensorflow logging level
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Activation
 import pandas as pd
 
+# Pandas options to display everything
 pd.set_option('display.max_rows', None)
 pd.set_option('display.max_columns', None)
 pd.set_option('display.width', None)
-pd.set_option('display.max_colwidth', -1)
+pd.set_option('display.max_colwidth', None)
+
 # Download example data into a pandas dataframe
 df = pd.read_csv("https://data.heatonresearch.com/data/t81-558/auto-mpg.csv",
     na_values=['NA', '?'])
-print(df.columns)
 cars = df['name']
 # Missing value handling
 df['horsepower'] = df['horsepower'].fillna(df['horsepower'].median())
