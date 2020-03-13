@@ -5,13 +5,10 @@ import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 import pandas as pd
-import io
-import requests
 import numpy as np
-from sklearn import metrics
+from sklearn.metrics import accuracy_score
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Activation
-from tensorflow.keras.callbacks import EarlyStopping
+from tensorflow.keras.layers import Dense
 
 # The data contains iris flower metrics that is used to distinguish between
 # 3 subspecies of irises (kurjenmiekka in finnish). 4 metrics and a class.
@@ -48,3 +45,15 @@ pred = model.predict(flower_data)
 # Turns off scientific notation (3.51e-04 to 0.000351)
 np.set_printoptions(suppress=True)
 print(pred)
+# Numpy argmax function picks the highest value
+predictions = np.argmax(pred,axis=1)
+correct_classes = np.argmax(classes,axis=1)
+print(f"Predicted: {predictions}")
+print(f"Correct: {correct_classes}")
+# Turn these into class names:
+print(species[predictions])
+
+# Test scoring: Accuracy metrics from scikit-library
+# Gives just a percentage of how many went right.
+# Confidence level could be taken into account too!
+print(f"Accuracy score: {accuracy_score(correct_classes,predictions)}")
