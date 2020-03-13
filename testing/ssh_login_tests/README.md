@@ -1,3 +1,5 @@
+# Console output
+
 ```
 003eb4e3263d:python /opt/.pycharm_helpers/pydev/pydevconsole.py --mode=server --port=38789
 import sys; print('Python %s on %s' % (sys.version, sys.platform))
