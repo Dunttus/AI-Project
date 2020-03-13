@@ -2,7 +2,7 @@
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
-import numpy as np
+import numpy
 from sklearn.metrics import accuracy_score
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
@@ -31,13 +31,22 @@ classes = to_categorical(df['PRIORITY'])
 
 model = Sequential()
 # Hidden layer 1
-model.add(Dense(8, input_dim=log_text_data.shape[1], activation='relu'))
+model.add(Dense(16, input_dim=log_text_data.shape[1], activation='relu'))
 # Hidden layer 2
-model.add(Dense(4, activation='relu'))
+model.add(Dense(8, activation='relu'))
 # Output layer
 model.add(Dense(classes.shape[1], activation='softmax'))
 
 model.compile(loss='categorical_crossentropy', optimizer='adam')
-model.fit(log_text_data,classes,verbose=2,epochs=100)
+model.fit(log_text_data,classes,verbose=2,epochs=50)
+
+# Predictions
+pred = model.predict(log_text_data)
+numpy.set_printoptions(suppress=True)
+predictions = numpy.argmax(pred,axis=1)
+correct_classes = numpy.argmax(classes,axis=1)
+print(f"Predicted: {predictions}")
+print(f"Correct: {correct_classes}")
+print(f"Accuracy score: {accuracy_score(correct_classes,predictions)}")
 
 
