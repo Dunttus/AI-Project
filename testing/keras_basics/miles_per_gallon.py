@@ -26,7 +26,10 @@ df['horsepower'] = df['horsepower'].fillna(df['horsepower'].median())
 x = df[['cylinders', 'displacement', 'horsepower', 'weight',
        'acceleration', 'year', 'origin']].values
 y = df['mpg'].values # regression
-
+# This tells something about the data format that is fed to the NN.
+print("Data formatted and ready to be fed into the NN (second item of the set):")
+print(x[1])
+print(y[1])
 # Build the neural network
 model = Sequential()
 # Input Layer and Hidden layer 1
@@ -42,3 +45,17 @@ model.compile(loss='mean_squared_error', optimizer='adam')
 # y is the miles per gallon
 model.fit(x,y,verbose=2,epochs=100)
 
+# Prediction using the model:
+# We feed the model a new feature vector, and get a prediction!
+# The first car has 18 mileage with the following stats:
+chevy = df.head(n=1)
+print("The first car in the dataset")
+print(chevy)
+chevy_stats = chevy[['cylinders', 'displacement', 'horsepower', 'weight',
+       'acceleration', 'year', 'origin']].values
+print("Prediction data fed into the model:")
+print(chevy_stats)
+print("Predicted mileage - actual mileage")
+print(model.predict(chevy_stats), " - ", chevy[['mpg']].values)
+
+# We can run the whole dataset into the model to measure prediction accuracy
