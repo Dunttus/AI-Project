@@ -33,16 +33,23 @@ def training_model():
 
 def evaluate_model():
     pred = model.predict(log_text_data)
-    numpy.set_printoptions(suppress=True)
     predictions = numpy.argmax(pred, axis=1)
     correct_classes = numpy.argmax(classes, axis=1)
     print(f"Accuracy score: {accuracy_score(correct_classes, predictions)}")
+
+def print_confidence_levels():
+    pred = model.predict(log_text_data)
+    numpy.set_printoptions(suppress=True)
+    numpy.set_printoptions(threshold=numpy.inf)
+    numpy.set_printoptions(linewidth=numpy.inf)
+    print(pred)
 
 log_text_data = log_message_tokenizer()
 # One-hot-encode the classes
 classes = to_categorical(df['PRIORITY'])
 model = training_model()
 model.fit(log_text_data,classes,verbose=2,epochs=100)
+print_confidence_levels()
 evaluate_model()
 
 
