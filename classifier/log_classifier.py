@@ -1,10 +1,9 @@
 # Linux log classifier
-import os
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
-
+from os import environ as env
 import numpy
-import pandas as pd
+import pandas
 import datetime as dt
+import json
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split as ttsplit
 from tensorflow.keras.models import Sequential
@@ -13,24 +12,26 @@ from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences as pad
 from tensorflow.keras.utils import to_categorical
 
-# Data
-#DATASET = "ubuntu_logs_tail.json"
+env['TF_CPP_MIN_LOG_LEVEL'] = '2'
+TIMESTAMP = dt.datetime.now().isoformat(timespec='seconds')
+
+# The dataset is read into pandas-dataframe
 DATASET = "../datasets/loglevels/training_logs.json"
-df = pd.read_json(DATASET, lines=True)
-#df = df[['PRIORITY', 'MESSAGE']] # ubuntu_logs_tail needs this
+df = pandas.read_json(DATASET, lines=True)
 
-# Save the model and parameters used with a timestamp
-VERSION = "v0.1-"
-TIMESTAMP = dt.datetime.now().isoformat(timespec='minutes')
-FILE = "model_files/lokari-" + VERSION + TIMESTAMP
+MODEL = { "VERSION" : "v0.1",
+          "timestamp" : TIMESTAMP }
 
-MODEL_FILE = FILE + ".h5"
-MODEL_METADATA_FILE = FILE + ".param"
-MODEL_EVALUATION_DATA_FILE = FILE + ".score"
+# Model path/filename and file for saving the model and stats
+FILE = "model_files/lokari"
+MODEL_FILE = FILE + "-" + MODEL['VERSION'] + "-" + TIMESTAMP + ".h5"
+MODEL_METRICS_FILE = FILE + "-" + MODEL['VERSION'] + ".json"
 
 # Model parameters
-TEST_SET_SIZE = 0.2
-EPOCHS = 50
+PARAM = {
+"test_set_size" : 0.2,
+"epochs" : 100
+}
 
 def log_message_tokenizer():
     # default: filters='!"#$%&()*+,-./:;<=>?@[\\]^_`{|}~\t\n'
@@ -46,12 +47,13 @@ def training_model():
     model.compile(loss='categorical_crossentropy', optimizer='adam')
     return model
 
-def evaluate_model():
+def evaluate_accuracy():
+    # This function should probably be made into separate file as a class
     pred = model.predict(log_text_data_test)
     predictions = numpy.argmax(pred, axis=1)
     correct_classes = numpy.argmax(classes_test, axis=1)
     acc = accuracy_score(correct_classes, predictions)
-    return acc
+    return {"accuracy" : round(acc, 3)}
 
 def print_confidence_levels():
     pred = model.predict(log_text_data_train)
@@ -60,31 +62,31 @@ def print_confidence_levels():
     numpy.set_printoptions(linewidth=numpy.inf)
     print(pred)
 
-def save_parameters(file):
-    with open(file,"w") as f:
-        f.write(f"TEST_SET_SIZE = {TEST_SET_SIZE}\n")
-        f.write(f"EPOCHS = {EPOCHS}\n")
-
-def save_evaluation_date(file):
-    with open(file, "w") as f:
-        f.write(f"Accuracy: {str(round(evaluate_model(),4))}\n")
-
-
-# The dataset
+# Make text data into numerical format
 log_text_data_full = log_message_tokenizer()
+
 # One-hot-encode the classes_train
 classes_full = to_categorical(df['PRIORITY'])
 
 # Split the set to train and test
 log_text_data_train, log_text_data_test, classes_train, classes_test = ttsplit(
-    log_text_data_full, classes_full, test_size=TEST_SET_SIZE)
+    log_text_data_full, classes_full, test_size=PARAM['test_set_size'])
 
+# Generate and train the model
 model = training_model()
-model.fit(log_text_data_train, classes_train, verbose=2, epochs=EPOCHS)
-print_confidence_levels()
+model.fit(log_text_data_train, classes_train, verbose=2, epochs=PARAM['epochs'])
 
-# Save the model and stats
+# Save the model
 model.save(MODEL_FILE)
-# TODO: Put the stats and parameters in json format in one file!
-save_parameters(MODEL_METADATA_FILE)
-save_evaluation_date(MODEL_EVALUATION_DATA_FILE)
+
+# Get statistics
+SCORE = evaluate_accuracy()
+print(SCORE)
+# Attach acquired data into MODEL version
+MODEL['parameters'] = PARAM
+MODEL['score'] = SCORE
+# Write stats into the file
+with open(MODEL_METRICS_FILE, "a") as f:
+    json.dump(MODEL, f)
+    f.write('\n')
+

@@ -1,0 +1,4 @@
+{"VERSION": "v0.1", "timestamp": "2020-03-15T15:35:38", "parameters": {"test_set_size": 0.2, "epochs": 10}, "score": {"accuracy": 0.914}}
+{"VERSION": "v0.1", "timestamp": "2020-03-15T15:36:34", "parameters": {"test_set_size": 0.2, "epochs": 20}, "score": {"accuracy": 0.927}}
+{"VERSION": "v0.1", "timestamp": "2020-03-15T15:37:12", "parameters": {"test_set_size": 0.2, "epochs": 50}, "score": {"accuracy": 0.949}}
+{"VERSION": "v0.1", "timestamp": "2020-03-15T15:38:31", "parameters": {"test_set_size": 0.2, "epochs": 100}, "score": {"accuracy": 0.968}}
