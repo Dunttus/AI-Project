@@ -17,7 +17,7 @@ import pandas as pd
 DATASET = "../datasets/loglevels/training_logs.json"
 df = pd.read_json(DATASET, lines=True)
 #df = df[['PRIORITY', 'MESSAGE']] # ubuntu_logs_tail needs this
-MODEL_SAVEFILE = "lokari_v0.1.h5"
+MODEL_SAVEFILE = "model_files/lokari_v0.1.h5"
 
 
 def log_message_tokenizer():
