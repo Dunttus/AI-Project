@@ -20,15 +20,17 @@ df = pd.read_json(DATASET, lines=True)
 #df = df[['PRIORITY', 'MESSAGE']] # ubuntu_logs_tail needs this
 
 # Save the model and parameters used with a timestamp
+VERSION = "v0.1-"
 TIMESTAMP = dt.datetime.now().isoformat(timespec='minutes')
-MODEL_SAVEFILE = "model_files/lokari_v0.1-" + TIMESTAMP + ".h5"
-MODEL_METADATA_FILE = "model_files/lokari_v0.1-" + TIMESTAMP + ".param"
-MODEL_EVALUATION_DATA_FILE = "model_files/lokari_v0.1-" + TIMESTAMP + ".score"
+FILE = "model_files/lokari-" + VERSION + TIMESTAMP
+
+MODEL_SAVEFILE = FILE + ".h5"
+MODEL_METADATA_FILE = FILE + ".param"
+MODEL_EVALUATION_DATA_FILE = FILE + ".score"
 
 # Model parameters
 TEST_SET_SIZE = 0.2
 EPOCHS = 50
-
 
 def log_message_tokenizer():
     # default: filters='!"#$%&()*+,-./:;<=>?@[\\]^_`{|}~\t\n'
