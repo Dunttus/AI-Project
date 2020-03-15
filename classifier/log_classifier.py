@@ -3,6 +3,8 @@ import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 import numpy
+import pandas as pd
+import datetime as dt
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split as ttsplit
 from tensorflow.keras.models import Sequential
@@ -10,14 +12,22 @@ from tensorflow.keras.layers import Dense
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences as pad
 from tensorflow.keras.utils import to_categorical
-import pandas as pd
 
 # Data
 #DATASET = "ubuntu_logs_tail.json"
 DATASET = "../datasets/loglevels/training_logs.json"
 df = pd.read_json(DATASET, lines=True)
 #df = df[['PRIORITY', 'MESSAGE']] # ubuntu_logs_tail needs this
-MODEL_SAVEFILE = "model_files/lokari_v0.1.h5"
+
+# Save the model and parameters used with a timestamp
+TIMESTAMP = dt.datetime.now().isoformat(timespec='minutes')
+MODEL_SAVEFILE = "model_files/lokari_v0.1-" + TIMESTAMP + ".h5"
+MODEL_METADATA_FILE = "model_files/lokari_v0.1-" + TIMESTAMP + ".param"
+MODEL_EVALUATION_DATA_FILE = "model_files/lokari_v0.1-" + TIMESTAMP + ".score"
+
+# Model parameters
+TEST_SET_SIZE = 0.2
+EPOCHS = 50
 
 
 def log_message_tokenizer():
@@ -38,7 +48,8 @@ def evaluate_model():
     pred = model.predict(log_text_data_test)
     predictions = numpy.argmax(pred, axis=1)
     correct_classes = numpy.argmax(classes_test, axis=1)
-    print(f"Accuracy score: {accuracy_score(correct_classes, predictions)}")
+    acc = accuracy_score(correct_classes, predictions)
+    return acc
 
 def print_confidence_levels():
     pred = model.predict(log_text_data_train)
@@ -47,6 +58,16 @@ def print_confidence_levels():
     numpy.set_printoptions(linewidth=numpy.inf)
     print(pred)
 
+def save_parameters(file):
+    with open(file,"w") as f:
+        f.write(f"TEST_SET_SIZE = {TEST_SET_SIZE}\n")
+        f.write(f"EPOCHS = {EPOCHS}\n")
+
+def save_evaluation_date(file):
+    with open(file, "w") as f:
+        f.write(f"Accuracy: {str(round(evaluate_model(),4))}\n")
+
+
 # The dataset
 log_text_data_full = log_message_tokenizer()
 # One-hot-encode the classes_train
@@ -54,11 +75,13 @@ classes_full = to_categorical(df['PRIORITY'])
 
 # Split the set to train and test
 log_text_data_train, log_text_data_test, classes_train, classes_test = ttsplit(
-    log_text_data_full, classes_full, test_size=0.2)
+    log_text_data_full, classes_full, test_size=TEST_SET_SIZE)
 
 model = training_model()
-model.fit(log_text_data_train, classes_train, verbose=2, epochs=100)
+model.fit(log_text_data_train, classes_train, verbose=2, epochs=EPOCHS)
 print_confidence_levels()
-evaluate_model()
-model.save(MODEL_SAVEFILE)
 
+# Save the model and stats
+model.save(MODEL_SAVEFILE)
+save_parameters(MODEL_METADATA_FILE)
+save_evaluation_date(MODEL_EVALUATION_DATA_FILE)
