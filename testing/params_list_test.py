@@ -1,10 +1,16 @@
+# JSON format example for model data saving
 import datetime as dt
-PARAM = {
-    "VERSION" : "v0.1",
-    "TIMESTAMP" : dt.datetime.now().isoformat(timespec='minutes'),
-    "TEST_SET_SIZE" : 0.2,
-    "EPOCHS" : 50
+DATA = {
+"version" : "v0.1",
+"timestamp" : dt.datetime.now().isoformat(timespec='minutes'),
+"parameters": [
+    {   "test_set_size" : 0.2,
+        "epohcs" : 50
+    }],
+"scores": [
+    {   "accuracy" : 90.0
+    }],
 }
 
-print(PARAM)
-print(PARAM['TEST_SET_SIZE'])
+print(DATA)
+print(DATA['parameters'])
