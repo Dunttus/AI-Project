@@ -24,7 +24,7 @@ VERSION = "v0.1-"
 TIMESTAMP = dt.datetime.now().isoformat(timespec='minutes')
 FILE = "model_files/lokari-" + VERSION + TIMESTAMP
 
-MODEL_SAVEFILE = FILE + ".h5"
+MODEL_FILE = FILE + ".h5"
 MODEL_METADATA_FILE = FILE + ".param"
 MODEL_EVALUATION_DATA_FILE = FILE + ".score"
 
@@ -84,7 +84,7 @@ model.fit(log_text_data_train, classes_train, verbose=2, epochs=EPOCHS)
 print_confidence_levels()
 
 # Save the model and stats
-model.save(MODEL_SAVEFILE)
+model.save(MODEL_FILE)
 # TODO: Put the stats and parameters in json format in one file!
 save_parameters(MODEL_METADATA_FILE)
 save_evaluation_date(MODEL_EVALUATION_DATA_FILE)
