@@ -85,5 +85,6 @@ print_confidence_levels()
 
 # Save the model and stats
 model.save(MODEL_SAVEFILE)
+# TODO: Put the stats and parameters in json format in one file!
 save_parameters(MODEL_METADATA_FILE)
 save_evaluation_date(MODEL_EVALUATION_DATA_FILE)
