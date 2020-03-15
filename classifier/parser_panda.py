@@ -3,7 +3,6 @@ import pandas as pd
 
 DS_LOC = "../datasets/loglevels/"
 FILES = ["ubuntu_logs.json", "archelk_logs.json", "upcloudarch3_logs.json"]
-TESTFILE = "ubuntu_logs_tail.json"
 
 LOG_COUNT = 2000
 LOG_DATA = ['PRIORITY', 'MESSAGE']
