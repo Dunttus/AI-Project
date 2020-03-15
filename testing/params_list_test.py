@@ -3,14 +3,16 @@ import datetime as dt
 DATA = {
 "version" : "v0.1",
 "timestamp" : dt.datetime.now().isoformat(timespec='minutes'),
-"parameters": [
-    {   "test_set_size" : 0.2,
-        "epohcs" : 50
-    }],
-"scores": [
-    {   "accuracy" : 90.0
-    }],
+"parameters": {
+    "test_set_size" : 0.2,
+    "epochs" : 50
+    },
+"scores": {
+    "accuracy" : 90.0
+    },
 }
 
 print(DATA)
 print(DATA['parameters'])
+print(DATA['version'])
+print(DATA['parameters']['epochs'])
