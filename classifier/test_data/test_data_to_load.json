@@ -1,0 +1,5 @@
+{"PRIORITY":1.0,"MESSAGE":"#PF: supervisor write access in kernel mode"}
+{"PRIORITY":1.0,"MESSAGE":"#PF: error_code(0x0002) - not-present page"}
+{"PRIORITY":2.0,"MESSAGE":"mce: CPU4: Core temperature above threshold, cpu clock throttled (total events = 1)"}
+{"PRIORITY":2.0,"MESSAGE":"mce: CPU1: Package temperature above threshold, cpu clock throttled (total events = 1)"}
+{"PRIORITY":2.0,"MESSAGE":"mce: CPU10: Core temperature above threshold, cpu clock throttled (total events = 1)"}
