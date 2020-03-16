@@ -1,7 +1,7 @@
 # Lokari log classifier
 from os import environ as env
 from datetime import datetime as dt
-from Lokari_classifier.testmodule import test
+from Lokari.testmodule import test
 
 # Reduce Tensorflow output to console
 env['TF_CPP_MIN_LOG_LEVEL'] = '2'
