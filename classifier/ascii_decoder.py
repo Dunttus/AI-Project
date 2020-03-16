@@ -1,10 +1,5 @@
 import pandas as pd
 
-DS_LOC = "../datasets/loglevels/"
-FILE = "decode_this.json"
-
-LOG_DATA = ['PRIORITY', 'MESSAGE']
-
 def datatype_check(data):
 
     # We want all lines to be of type string
@@ -21,8 +16,3 @@ def datatype_check(data):
             print("ERROR: Format could not be converted: ", type(data))
             exit(1)
 
-df = pd.read_json(DS_LOC + FILE, lines=True)
-df = (df[LOG_DATA])
-df.MESSAGE = df.MESSAGE.apply(datatype_check)
-
-print(df)
