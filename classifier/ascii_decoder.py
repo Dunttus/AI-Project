@@ -7,10 +7,15 @@ LOG_DATA = ['PRIORITY', 'MESSAGE']
 
 def test_function(x):
 
-    if isinstance(x, list):
-        print("list detected, do conversion!")
+    if isinstance(x, str):
+        print(type(x))
+        print("Everything is fine!")
+        return x
 
-    return x
+    else:
+        print(type(x))
+        print("Conversion needed")
+        return x
 
 df = pd.read_json(DS_LOC + FILE, lines=True)
 df = (df[LOG_DATA])
