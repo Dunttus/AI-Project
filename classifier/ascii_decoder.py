@@ -1,5 +1,3 @@
-import pandas as pd
-
 def datatype_check(data):
 
     # We want all lines to be of type string
