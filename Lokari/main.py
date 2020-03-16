@@ -8,31 +8,44 @@ from datetime import datetime as dt
 import pandas as pd
 import numpy
 from Lokari.nlp import basic_tokenizer
+from Lokari.models import training_model
+from Lokari.evaluate import accuracy
 from tensorflow.keras.utils import to_categorical as onehotencode
+from sklearn.model_selection import train_test_split as ttsplit
 
 TIMESTAMP = dt.now().isoformat(timespec='seconds')
-DATASET_PATH = "../datasets/loglevels/"
-DATASET_FILE = "testing_logs.json"
+DATASET_PATH = '../datasets/loglevels/'
+DATASET_FILE = 'training_logs.json'
 MODEL = { "VERSION" : "v0.1",
           "timestamp" : TIMESTAMP }
+
+PARAM = { "epochs" : 50 }
 
 def main():
     print(f"Lokari-{MODEL['VERSION']}")
     data = pd.read_json(DATASET_PATH + DATASET_FILE, lines=True)
 
-    message = basic_tokenizer(data.MESSAGE)
-    loglevel = onehotencode(data.PRIORITY)
-    print(message)
-    print(loglevel)
+    messages_all = basic_tokenizer(data.MESSAGE)
+    loglevels_all = onehotencode(data.PRIORITY)
 
     # Split the data to train/test sets
+    messages_train, messages_test, loglevels_train, loglevels_test = ttsplit(
+        messages_all, loglevels_all, test_size=0.2)
 
-    # Generate and train the model
+    # Compile the model, count input and output nodes from datasets
+    input_nodes = messages_all.shape[1]
+    output_nodes = loglevels_all.shape[1]
+    model = training_model(input_nodes, output_nodes)
+
+    # Train the model
+    model.fit(messages_train, loglevels_train, verbose=2, epochs=PARAM['epochs'])
 
     # Save the model
 
     # Get evaluation data
-
+    prediction = model.predict(messages_test)
+    acc = accuracy(prediction, loglevels_test)
+    print(acc)
     # Save evaluation data
 
 # Output modifying functions for debugging purposes
