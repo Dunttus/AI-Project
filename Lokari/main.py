@@ -23,8 +23,10 @@ PARAM = { "epochs" : 50 }
 
 def main():
     print(f"Lokari-{MODEL['VERSION']}")
+    # Load data into pandas dataframe object
     data = pd.read_json(DATASET_PATH + DATASET_FILE, lines=True)
 
+    # Prepare data
     messages_all = basic_tokenizer(data.MESSAGE)
     loglevels_all = onehotencode(data.PRIORITY)
 
@@ -42,10 +44,9 @@ def main():
 
     # Save the model
 
-    # Get evaluation data
-    prediction = model.predict(messages_test)
-    acc = accuracy(prediction, loglevels_test)
-    print(acc)
+    # Evaluate model
+    accuracy(model.predict(messages_test), loglevels_test)
+
     # Save evaluation data
 
 # Output modifying functions for debugging purposes
