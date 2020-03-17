@@ -14,6 +14,19 @@ def training_model(i_nodes, o_nodes):
 
     return model
 
+def new_training_model(i_nodes, o_nodes):
+
+    model = Sequential()
+    model.add(Dense(256, input_dim=i_nodes, activation='relu'))
+    model.add(Dense(128, activation='relu'))
+    model.add(Dense(64, activation='relu'))
+    model.add(Dense(o_nodes, activation='softmax'))
+    model.compile(loss='categorical_crossentropy',
+                  optimizer='adam',
+                  metrics=['accuracy'])
+
+    return model
+
 
 def model_monitor():
     # This monitor stops when no new learning is occurring
