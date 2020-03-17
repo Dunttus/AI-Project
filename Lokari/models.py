@@ -17,6 +17,7 @@ def training_model(i_nodes, o_nodes):
 
 def model_monitor():
     # This monitor stops when no new learning is occurring
+    # check: val_loss, min_delta, mode
     # patience = how many epochs can pass without improvement
     mon = EarlyStopping(
         monitor='val_loss',

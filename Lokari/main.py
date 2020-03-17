@@ -19,7 +19,7 @@ DATASET_FILE = 'training_logs.json'
 MODEL = { "VERSION" : "v0.1",
           "timestamp" : TIMESTAMP }
 
-PARAM = { "epochs" : 5 }
+PARAM = { "epochs" : 50 }
 
 def main():
     print(f"Lokari-{MODEL['VERSION']}")
