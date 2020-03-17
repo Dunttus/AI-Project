@@ -8,7 +8,7 @@ from datetime import datetime as dt
 import pandas as pd
 import numpy
 from Lokari.nlp import basic_tokenizer
-from Lokari.models import training_model
+from Lokari.models import training_model, model_monitor
 from Lokari.evaluate import accuracy
 from tensorflow.keras.utils import to_categorical as onehotencode
 from sklearn.model_selection import train_test_split as ttsplit
@@ -39,8 +39,13 @@ def main():
     output_nodes = loglevels_all.shape[1]
     model = training_model(input_nodes, output_nodes)
 
+    # Set up model monitors
+    monitor = model_monitor()
+
     # Train the model
-    model.fit(messages_train, loglevels_train, verbose=2, epochs=PARAM['epochs'])
+    model.fit(messages_train, loglevels_train,
+              validation_data=(messages_test, loglevels_test),
+              callbacks=[monitor], verbose=2, epochs=PARAM['epochs'])
 
     # Save the model
 

@@ -1,5 +1,6 @@
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
+from tensorflow.keras.callbacks import EarlyStopping
 
 def training_model(i_nodes, o_nodes):
 
@@ -7,6 +8,20 @@ def training_model(i_nodes, o_nodes):
     model.add(Dense(64, input_dim=i_nodes, activation='relu'))
     model.add(Dense(64, activation='relu'))
     model.add(Dense(o_nodes, activation='softmax'))
-    model.compile(loss='categorical_crossentropy', optimizer='adam')
+    model.compile(loss='categorical_crossentropy',
+                  optimizer='adam',
+                  metrics=['accuracy'])
 
     return model
+
+
+def model_monitor():
+    mon = EarlyStopping(
+        monitor='val_loss',
+        min_delta=1e-3,
+        patience=5,
+        verbose=1,
+        mode='auto',
+        restore_best_weights=True
+    )
+    return mon
