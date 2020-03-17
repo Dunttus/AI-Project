@@ -16,10 +16,10 @@ def training_model(i_nodes, o_nodes):
 
 def new_training_model(i_nodes, o_nodes):
 
+    print(i_nodes, " ", o_nodes)
     model = Sequential()
-    model.add(Dense(256, input_dim=i_nodes, activation='relu'))
-    model.add(Dense(128, activation='relu'))
-    model.add(Dense(64, activation='relu'))
+    model.add(Dense(1024, input_dim=i_nodes, activation='relu'))
+    model.add(Dense(512, activation='relu'))
     model.add(Dense(o_nodes, activation='softmax'))
     model.compile(loss='categorical_crossentropy',
                   optimizer='adam',
@@ -35,7 +35,7 @@ def model_monitor():
     mon = EarlyStopping(
         monitor='val_loss',
         min_delta=1e-3,
-        patience=10,
+        patience=5,
         verbose=1,
         mode='auto',
         restore_best_weights=True

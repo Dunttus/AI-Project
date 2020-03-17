@@ -13,10 +13,10 @@ def basic_tokenizer(data):
     return seq
 
 def char_tokenizer(data):
-    tok = Tokenizer(num_words=1000,
+    tok = Tokenizer(num_words=256,
                     filters='',
-                    lower=True,
-                    split=' ',
+                    lower=False,
+                    split='',
                     char_level=True,
                     oov_token=None,
                     document_count=0)
@@ -28,6 +28,15 @@ def char_tokenizer(data):
 
     return seq
 
+def tfidf_matrix_tokenizer(data):
+    # Best logarithmic loss value with this
+    tok = Tokenizer(num_words=6144)
+    tok.fit_on_texts(data)
+    mtrx = tok.texts_to_matrix(data, mode='tfidf')
 
+    return mtrx
 
-
+# Do these options really have effect on tfidf?
+#char_level=True,
+#filters='',
+#lower=False)

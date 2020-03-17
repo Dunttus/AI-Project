@@ -7,7 +7,7 @@ env['TF_CPP_MIN_LOG_LEVEL'] = '2'
 from datetime import datetime as dt
 import pandas as pd
 import numpy
-from Lokari.nlp import char_tokenizer
+import Lokari.nlp as nlp
 from Lokari.models import new_training_model, model_monitor
 from Lokari.evaluate import accuracy, logarithmic_loss
 from tensorflow.keras.utils import to_categorical as onehotencode
@@ -28,7 +28,7 @@ def main():
     print(f"Lokari-{MODEL['VERSION']}")
 
     # Prepare data
-    messages_all = char_tokenizer(data.MESSAGE)
+    messages_all = nlp.tfidf_matrix_tokenizer(data.MESSAGE)
     loglevels_all = onehotencode(data.PRIORITY)
 
     # Split the data to train/test sets
