@@ -9,7 +9,7 @@ import pandas as pd
 import numpy
 from Lokari.nlp import basic_tokenizer
 from Lokari.models import training_model, model_monitor
-from Lokari.evaluate import accuracy
+from Lokari.evaluate import accuracy, logarithmic_loss
 from tensorflow.keras.utils import to_categorical as onehotencode
 from sklearn.model_selection import train_test_split as ttsplit
 
@@ -19,7 +19,7 @@ DATASET_FILE = 'training_logs.json'
 MODEL = { "VERSION" : "v0.1",
           "timestamp" : TIMESTAMP }
 
-PARAM = { "epochs" : 50 }
+PARAM = { "epochs" : 5 }
 
 def main():
     print(f"Lokari-{MODEL['VERSION']}")
@@ -51,6 +51,7 @@ def main():
 
     # Evaluate model
     accuracy(model.predict(messages_test), loglevels_test)
+    logarithmic_loss(model.predict(messages_test), loglevels_test)
 
     # Save evaluation data
 
@@ -68,6 +69,7 @@ def numpy_output_options():
     # Show everything please
     numpy.set_printoptions(threshold=numpy.inf)
     numpy.set_printoptions(linewidth=numpy.inf)
+    numpy.set_printoptions(precision=4)
 
 if __name__ == '__main__':
     pandas_output_options()

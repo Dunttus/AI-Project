@@ -16,10 +16,12 @@ def training_model(i_nodes, o_nodes):
 
 
 def model_monitor():
+    # This monitor stops when no new learning is occurring
+    # patience = how many epochs can pass without improvement
     mon = EarlyStopping(
         monitor='val_loss',
         min_delta=1e-3,
-        patience=5,
+        patience=10,
         verbose=1,
         mode='auto',
         restore_best_weights=True
