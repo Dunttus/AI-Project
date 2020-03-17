@@ -23,12 +23,9 @@ def char_tokenizer(data):
 
     tok.fit_on_texts(data)
     seq = pad(tok.texts_to_sequences(data),
-             maxlen=256,
-             padding='post'
-            )
-    #print(f"Word index: {tok.word_index}")
-    #print(f"Word count: {tok.word_counts}")
-    #print(seq)
+             maxlen=512,
+             padding='post')
+
     return seq
 
 
