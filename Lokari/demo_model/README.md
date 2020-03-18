@@ -7,10 +7,9 @@
 ```$ sudo pip3 install pandas``` \
 
 ### Commands for the model
-Folder: /AI-Project/Lokari/demo_model \
 Fetch log files from journalctl into text file testdata.json \
 ```$ journalctl -o json -b > testdata.json``` \
 Removing all logs with no PRIORITETY value \
 ```$ grep '"PRIORITY"' testdata.json > testdata2.json``` \
 Run demo.py with testdata2.json log files \
-```$ ./demo.py testdata2.json``` \
+```$ ./demo.py testdata2.json```
