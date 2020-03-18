@@ -40,7 +40,7 @@ def tfidf_matrix_tokenizer(data):
 
 def save_tokenizer(tokenizer):
 
-    with open('tfidf_tokenizer.pickle', 'wb') as file:
+    with open('demo_model/tfidf_tokenizer.pickle', 'wb') as file:
         pickle.dump(tokenizer, file, protocol=pickle.HIGHEST_PROTOCOL)
 
     return

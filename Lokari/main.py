@@ -14,13 +14,14 @@ from Lokari.evaluate import accuracy, logarithmic_loss
 from tensorflow.keras.utils import to_categorical as onehotencode
 from sklearn.model_selection import train_test_split as ttsplit
 
-from Lokari import demo
-
 TIMESTAMP = dt.now().isoformat(timespec='seconds')
 DATASET_PATH = '../datasets/loglevels/'
 DATASET_FILE = 'training_logs.json'
+
 MODEL = { "VERSION" : "v0.2",
           "timestamp" : TIMESTAMP }
+
+MODEL_FILE = "demo_model/Lokari-" + MODEL['VERSION'] + ".h5"
 
 PARAM = { "epochs" : 50 }
 
@@ -56,6 +57,7 @@ def main():
               callbacks=[monitor], verbose=2, epochs=PARAM['epochs'])
 
     # Save the model
+    model.save(MODEL_FILE)
 
     # Evaluate model
     accuracy(model.predict(messages_test), loglevels_test)
@@ -64,7 +66,7 @@ def main():
     # Save evaluation data
 
     # Run demonstration
-    demo.run(model)
+    #demo.run(model)
 
 
 # Output modifying functions for debugging purposes
@@ -87,13 +89,3 @@ if __name__ == '__main__':
     pandas_output_options()
     numpy_output_options()
     main()
-
-
-    # Sample code to use saved tokenizer (to be implemented)
-    # Saving and loading functions are ready in nlp.py
-
-    #messages = nlp.tfidf_matrix_tokenizer(data.MESSAGE)
-    #print(messages)
-    #tok = nlp.load_tokenizer()
-    #messages_loaded_tokenizer = tok.texts_to_matrix(data.MESSAGE, mode='tfidf')
-    #print(messages_loaded_tokenizer)
