@@ -33,7 +33,7 @@ def tfidf_matrix_tokenizer(data):
     # Best logarithmic loss value with this
     tok = Tokenizer(num_words=6144)
     tok.fit_on_texts(data)
-    #save_tokenizer(tok)
+    save_tokenizer(tok)
     mtrx = tok.texts_to_matrix(data, mode='tfidf')
 
     return mtrx
