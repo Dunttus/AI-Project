@@ -64,7 +64,7 @@ def main():
     # Save evaluation data
 
     # Run demonstration
-    demo.run()
+    demo.run(model)
 
 
 # Output modifying functions for debugging purposes
