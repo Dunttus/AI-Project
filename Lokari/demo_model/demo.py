@@ -5,8 +5,11 @@
 # level.
 
 # Usage (current boot user logs as an example):
+# NOTE: you have to grep the output, as the demo to_categorical/onehotencode
+# fails if the dataset has entries without PRIORITY value
 # journalctl -o json -b > filename.json
-# ./demo.py filename.json
+# grep '"PRIORITY"' filename.json > grepped_file.json
+# ./demo.py grepped_file.json
 
 from sys import argv
 from os import environ as env
