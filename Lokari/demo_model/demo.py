@@ -1,3 +1,10 @@
+# Lokari Linux Log classifier version 0.2
+# Reads journalctl generated json file and tries to determine the printk
+# level.
+# Input file generation with journalctl:
+# journalctl -o json > filename.json
+
+
 from os import environ as env
 # Reduce Tensorflow output to console
 env['TF_CPP_MIN_LOG_LEVEL'] = '2'
@@ -9,18 +16,18 @@ import pandas
 import numpy as np
 import pickle
 
-def run(model):
+def run(model, data):
 
-    # Load test data and tokenizer
-    data = pandas.read_json('demologs.json', lines=True)
-    with open('tfidf_tokenizer.pickle', 'rb') as file:
-        tokenizer = pickle.load(file)
+    # Check that messages are valid strings
+    data.MESSAGE = data.MESSAGE.apply(datatype_check)
 
     # Separate loglevels from messages
     messages = data.MESSAGE
     real_loglevel = data.PRIORITY
 
-    # Convert data to tfidf tokens
+    # Load tokenizer and convert message data to tfidf tokens
+    with open('tfidf_tokenizer.pickle', 'rb') as file:
+        tokenizer = pickle.load(file)
     tokenized_msgs = tokenizer.texts_to_matrix(messages, mode='tfidf')
 
     # Convert the correct answers into one-hot-encoded arrays
@@ -43,5 +50,25 @@ def run(model):
     print("Demoset accuracy: ", round(acc, 4) * 100, "%")
     return
 
+def datatype_check(data):
+
+    # We want all lines to be of type string
+    if isinstance(data, str):
+        return data
+    else:
+        # UTF-8 fails here, invalid continuation byte
+        if isinstance(data, list):
+            data = bytes(data).decode("latin-1")
+            return data
+        if data is None:
+            data = ""
+            return data
+        else:
+            print("ERROR: Format could not be converted: ", type(data))
+            print(data)
+            exit(1)
+
+
+data = pandas.read_json('demologs.json', lines=True)
 model = load_model('Lokari-v0.2.h5')
-run(model)
+run(model, data)
