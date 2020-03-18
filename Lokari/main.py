@@ -14,6 +14,8 @@ from Lokari.evaluate import accuracy, logarithmic_loss
 from tensorflow.keras.utils import to_categorical as onehotencode
 from sklearn.model_selection import train_test_split as ttsplit
 
+from Lokari import demo
+
 TIMESTAMP = dt.now().isoformat(timespec='seconds')
 DATASET_PATH = '../datasets/loglevels/'
 DATASET_FILE = 'training_logs.json'
@@ -60,6 +62,10 @@ def main():
     logarithmic_loss(model.predict(messages_test), loglevels_test)
 
     # Save evaluation data
+
+    # Run demonstration
+    demo.run()
+
 
 # Output modifying functions for debugging purposes
 def pandas_output_options():
