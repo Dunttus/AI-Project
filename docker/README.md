@@ -11,5 +11,5 @@ $ docker build -t lokari:test .
 Start the container in interactive mode:  
 $ docker run --name lokaritest -it lokari:test
 
-## Enviroment
-![Enviroment picture](./img/Enviroment.PNG)
+## Environment
+![Environment picture](./img/environment.PNG)
