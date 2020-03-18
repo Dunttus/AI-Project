@@ -1,12 +1,13 @@
 # Lokari log classifier
 
 A machine learning program to distinguish different log levels from Linux logs.
+Demo is available in /demo_model directory.
 
-Code refactoring and modularizing in progress...
 ```
-main.py     main program  
-evaluate.py evaluation code
-models.py   keras machine learning model
-nlp.py      natural language processing functions
+/demo_model     Lokari-v0.2 Demo
+evaluate.py     Model evaluation code
+main.py         Main program from model creation and saving
+models.py       Keras machine learning models, model monitoring code
+nlp.py          Natural language processing functions
 
 ```
