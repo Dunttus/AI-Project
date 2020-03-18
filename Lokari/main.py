@@ -1,4 +1,5 @@
 # Lokari log classifier
+# Model construction and saving
 
 from os import environ as env
 # Reduce Tensorflow output to console
@@ -23,6 +24,10 @@ PARAM = { "epochs" : 50 }
 
 # Load data into pandas dataframe object
 data = pd.read_json(DATASET_PATH + DATASET_FILE, lines=True)
+
+# Smaller file for testing purposes
+#data = pd.read_json("../datasets/loglevels/ubuntu_tail_logs.json", lines=True)
+#data = data[['PRIORITY','MESSAGE']]
 
 def main():
     print(f"Lokari-{MODEL['VERSION']}")
@@ -77,3 +82,12 @@ if __name__ == '__main__':
     numpy_output_options()
     main()
 
+
+    # Sample code to use saved tokenizer (to be implemented)
+    # Saving and loading functions are ready in nlp.py
+
+    #messages = nlp.tfidf_matrix_tokenizer(data.MESSAGE)
+    #print(messages)
+    #tok = nlp.load_tokenizer()
+    #messages_loaded_tokenizer = tok.texts_to_matrix(data.MESSAGE, mode='tfidf')
+    #print(messages_loaded_tokenizer)
