@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 # Lokari Linux Log classifier version 0.2
 # Reads journalctl generated json file and tries to determine the printk
@@ -59,11 +59,13 @@ def datatype_check(data):
     # We want all lines to be of type string
     if isinstance(data, str):
         return data
+
     else:
         # UTF-8 fails here, invalid continuation byte
         if isinstance(data, list):
             data = bytes(data).decode("latin-1")
             return data
+
         if data is None:
             data = ""
             return data
