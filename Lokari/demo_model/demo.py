@@ -1,10 +1,14 @@
+#!/usr/bin/python
+
 # Lokari Linux Log classifier version 0.2
 # Reads journalctl generated json file and tries to determine the printk
 # level.
-# Input file generation with journalctl:
-# journalctl -o json > filename.json
 
+# Usage (current boot user logs as an example):
+# journalctl -o json -b > filename.json
+# ./demo.py filename.json
 
+from sys import argv
 from os import environ as env
 # Reduce Tensorflow output to console
 env['TF_CPP_MIN_LOG_LEVEL'] = '2'
@@ -68,7 +72,6 @@ def datatype_check(data):
             print(data)
             exit(1)
 
-
-data = pandas.read_json('demologs.json', lines=True)
+data = pandas.read_json(argv[1], lines=True)
 model = load_model('Lokari-v0.2.h5')
 run(model, data)
