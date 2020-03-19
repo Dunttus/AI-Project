@@ -26,3 +26,6 @@ First command line demo is available in /Lokari/demo_model
 * Docker 19.03  
 * nvidia-container-toolkit 
 * nvidia-container-runtime
+
+## Sources
+[Tero Karvinen](http://terokarvinen.com) & Harto Holmström 2020, Haaga-Helia University of Applied Sciences course monialaprojekti (ICT-infrastruktuurit) PRO4TN004-3005. 
