@@ -1,5 +1,9 @@
 # AI-Project: Anomaly detection with Tensorflow.
 
+School project by Tuomo Kuure (tqre) and Joni Hakala (Dunttus).  
+Supervising teacher: Tero Karvinen - http://terokarvinen.com  
+Course: Monialaprojekti (ICT-infrastruktuurit) PRO4TN004-3005. 
+
 This repository is designed be cloned with PyCharm Pro. The runtime environment is containerized with Docker.  
 First command line demo is available in /Lokari/demo_model
 
@@ -27,5 +31,3 @@ First command line demo is available in /Lokari/demo_model
 * nvidia-container-toolkit 
 * nvidia-container-runtime
 
-## Sources
-[Tero Karvinen](http://terokarvinen.com) & Harto Holmström 2020, Haaga-Helia University of Applied Sciences course monialaprojekti (ICT-infrastruktuurit) PRO4TN004-3005. 
