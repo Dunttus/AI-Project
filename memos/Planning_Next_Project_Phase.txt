@@ -1,0 +1,48 @@
+________________________________________________________________________________________________________________________________
+
+Anomaly detection planning: What Linux logs to use
+________________________________________________________________________________________________________________________________
+** Commands to examine Linux **
+lsof, netstat, dstat, iostat & ps.
+
+lsof | grep www-data
+netstat -la
+netstat | grep ESTABLISHED
+ps -axu
+________________________________________________________________________________________________________________________________
+** Interesting log files **
+/var/log/access.log
+/var/log/ufw
+journalctl -r
+journalctl -f
+journalctl -u apache --> journal does not contain apache2 folder log by default
+Journalctl settings --> $ cd /etc/systemd $ nano journald.conf
+________________________________________________________________________________________________________________________________
+** Interesting software's **
+sysstat -->  GPL-2.0
+nethogs -->  GPL-2.0
+________________________________________________________________________________________________________________________________
+** Why apache2 logs could be a good target **
+Easy to interpret, websites are common target for attacks, apache is world's most used webserver software & the closest part 
+of the operating system to the public network.
+
+/var/log/apache2/access.log
+http code 4xx and exploit url, so it didn't work = NO MATTER
+http code 2xx and working exploit url, so attack got through = VERY BAD
+http code 3xx and working exploit url, so the attacker is routing traffic elsewhere through you = VERY BAD
+http code 2xx and working .inc tag, so attacker successfully includes something usually has access to data in server  = VERY BAD
+http code 2xx and working .install tag, so attacker has access to installing to your server = VERY BAD
+http code 2xx and POST, If the server does not have file storage function and attacker uses post successfully. = GENERALLY BAD
+
+HTTP status codes simplified
+2xx - OK WORKING
+3xx - REDIRECT
+4xx - NOT FOUND
+5xx - SERVER ERRORS
+
+Google cloud server has log rotation of 12 by default = logs deletes after 12 duplicates, 1day = new logfile.
+________________________________________________________________________________________________________________________________
+** Web searching log files **
+Google can search for files with functions inurl and filetype:
+https://www.google.com/search?q=inurl:access.log+filetype:log
+https://raw.githubusercontent.com/linuxacademy/content-elastic-log-samples/master/access.log
