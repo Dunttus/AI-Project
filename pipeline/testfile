@@ -1,6 +1,1 @@
-Run the realtime reader
-Just add lines to this file to see the reader work
-Command line is probably the best:
-echo "New entry" >> testfile
-testline
-testline
+This file simulates a log file filling up.
