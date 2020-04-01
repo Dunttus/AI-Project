@@ -53,3 +53,34 @@ ________________________________________________________________________________
 Google can search for files with functions inurl and filetype:
 https://www.google.com/search?q=inurl:access.log+filetype:log
 https://raw.githubusercontent.com/linuxacademy/content-elastic-log-samples/master/access.log
+________________________________________________________________________________________________________________________________
+** Apache access.logs format **
+Apache access log format can be changed from /etc/apache2/apache2.conf file by chancing default NCSA extended/combined 
+log format. Access.log format is at line 213 in apache2.conf file.
+
+Old format:
+LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\""
+New format:
+LogFormat "%{%d/%b/%Y/%T}t %h %>s %O %D %r" combined
+
+%{%d/%b/%Y/%T}t	= Time stamp.
+%h		= IP address.
+%>s		= Status code.
+%O		= Bytes sent.
+%D		= Request time taken.
+%r		= Method, first line of request and protocol.
+
+Example of old log of requesting favicon icon:
+::1 - - [29/Mar/2020:14:12:41 +0300] "GET /favicon.ico HTTP/1.1" 404 487 "http://localhost/" "Mozilla/5.0 (X11; Linux x86_64) 
+AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/80.0.3987.87 Chrome/80.0.3987.87 Safari/537.36"
+
+Example of new log of requesting favicon icon:
+01/Apr/2020/17:49:39 ::1 404 487 123 GET /favicon.ico HTTP/1.1
+
+Should be easier to work with these log files since, spaces split different columns.
+
+________________________________________________________________________________________________________________________________
+
+SOURCES:
+Apache access.log format. Apache Module mod_log_config URL: http://httpd.apache.org/docs/current/mod/mod_log_config.html
+________________________________________________________________________________________________________________________________
