@@ -12,8 +12,8 @@ pd.set_option('display.max_colwidth', None)
 df = pd.read_csv('../../datasets/apache_access_log/access_log_testing.csv')
 # We have column heads on the csv file already:
 # 2 are missing! client identity, if determined, and userid, if authenticated
-print(df.columns)
-print(df)
+#print(df.columns)
+#print(df)
 # Identify the datatypes and attributes in each column for encoding them:
 
 # clientip = IP address initiating the connection
@@ -37,10 +37,10 @@ print(df)
 # - these are known, categorize
 # GET,HEAD,POST,PUT,DELETE,CONNECT,OPTIONS,TRACE,PATCH
 
+# NaN becomes -1
 df.verb = pd.Categorical(df.verb)
+df.verb = df.verb.cat.codes
 print(df.verb)
-
-
 # request = the request itself, text and variables
 # - typical requests done to page
 # - this depends on the page alot!
