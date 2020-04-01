@@ -1,5 +1,8 @@
-# Testing autoencoder
+# Testing autoencoder ML model
+from os import environ as env
+env['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
+from sklearn.preprocessing import LabelEncoder, OneHotEncoder
 import pandas as pd
 pd.set_option('display.max_rows', None)
 pd.set_option('display.max_columns', None)
@@ -31,14 +34,20 @@ print(df)
 # - temporal data analysis (look into LSTM later)
 
 # verb = HTTP request type
-# - these are known, categorize (eg. one-hot-encode)
+# - these are known, categorize
+# GET,HEAD,POST,PUT,DELETE,CONNECT,OPTIONS,TRACE,PATCH
+
+df.verb = pd.Categorical(df.verb)
+print(df.verb)
+
 
 # request = the request itself, text and variables
 # - typical requests done to page
 # - this depends on the page alot!
 
 # response = HTTP status code
-#  - these are known, categorize
+#  - these are known, is integer already
+# 418 - I'm a teapot
 
 # bytes = size of the object requested
 # - explain this more

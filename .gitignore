@@ -1,3 +1,4 @@
 log_parsing/testdataset
 log_parsing/*.json
 datasets/loglevels/*_logs.json
+datasets/apache_access_log/access.log
