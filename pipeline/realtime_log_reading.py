@@ -1,4 +1,5 @@
 # Using python generators to read a new line in a file
+from time import sleep
 
 
 def follow(file):
@@ -8,9 +9,8 @@ def follow(file):
     while True:
         line = file.readline()
         if not line:
-            # sleep a bit? this is quite resource intensive atm
+            sleep(1)
             continue
-
         yield line
 
 
