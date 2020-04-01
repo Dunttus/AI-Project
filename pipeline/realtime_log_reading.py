@@ -16,6 +16,9 @@ def follow(file):
 
 with open('testfile', 'r') as file:
 
+    # In case of an anomaly, we have to be able to give user a heads up,
+    # along with the log line that caused it! Maybe related lines too?
+
     for new_line in follow(file):
         print(new_line, end='')
 

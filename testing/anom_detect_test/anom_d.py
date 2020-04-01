@@ -32,6 +32,7 @@ df = pd.read_csv('../../datasets/apache_access_log/access_log_testing.csv')
 # timestamp = time connection was made
 # - time of the day only?
 # - temporal data analysis (look into LSTM later)
+# - leave this out for now
 
 # verb = HTTP request type
 # - these are known, categorize
@@ -50,4 +51,3 @@ print(df.verb)
 # 418 - I'm a teapot
 
 # bytes = size of the object requested
-# - explain this more
