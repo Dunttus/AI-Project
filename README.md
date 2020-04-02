@@ -11,8 +11,9 @@ First command line demo is available in /Lokari/demo_model
 [https://ailogs.design.blog/](https://ailogs.design.blog/)  
 
 ### Directories:  
+**/Lokari-anomaly-detector** - Anomaly detection for Apache2 access.logs \
+**/Lokari-classifier** - Lokari log classifier machine learning model construction code \
 **/.idea** - PyCharm configuration files \
-**/Lokari** - Lokari log classifier machine learning model construction code \
 **/classifier** - First log classifier code snippets \
 **/datasets** - datasets live here (big sets are .gitignored) \
 **/docker** - Project runtime container \
