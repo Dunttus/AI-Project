@@ -1,0 +1,7 @@
+01/Apr/2020/22:47:49 10.10.10.10 200 238 460 GET / HTTP/1.1
+02/Apr/2020/05:23:56 10.10.10.10 404 451 1071 POST /cgi-bin/mainfunction.cgi HTTP/1.1
+01/Apr/2020/17:06:48 10.10.10.10 404 492 165 GET /favicon.ico HTTP/1.1
+01/Apr/2020/17:10:32 10.10.10.10 200 294 216 GET /?a=fetch&content=%3Cphp%3Edie(@md5(HelloThinkCMF))%3C/php%3E HTTP/1.1
+01/Apr/2020/17:48:53 10.10.10.10 404 451 162 POST /cgi-bin/mainfunction.cgi HTTP/1.1
+01/Apr/2020/17:09:45 10.10.10.10 200 294 392 GET /?XDEBUG_SESSION_START=phpstorms HTTP/1.1
+02/Apr/2020/09:03:55 10.10.10.10 400 0 327 GET /setup.cgi?next_file=netgear.cfg&todo=syscmd&cmd=busybox&curpath=/&currentsetting.htm=1 HTTP/1.1
