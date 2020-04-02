@@ -2,7 +2,8 @@
 from os import environ as env
 env['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
-from sklearn.preprocessing import LabelEncoder, OneHotEncoder
+from tensorflow.keras.preprocessing.text import Tokenizer
+from tensorflow.keras.preprocessing.sequence import pad_sequences as pad
 import pandas as pd
 pd.set_option('display.max_rows', None)
 pd.set_option('display.max_columns', None)
@@ -10,6 +11,10 @@ pd.set_option('display.width', None)
 pd.set_option('display.max_colwidth', None)
 
 df = pd.read_csv('../../datasets/apache_access_log/access_log_testing.csv')
+# This prints the datatypes, we might have to do some conversion later
+# strings go as objects often etc.
+print(df.dtypes)
+
 # We have column heads on the csv file already:
 # 2 are missing! client identity, if determined, and userid, if authenticated
 #print(df.columns)
@@ -37,17 +42,27 @@ df = pd.read_csv('../../datasets/apache_access_log/access_log_testing.csv')
 # verb = HTTP request type
 # - these are known, categorize
 # GET,HEAD,POST,PUT,DELETE,CONNECT,OPTIONS,TRACE,PATCH
-
 # NaN becomes -1
 df.verb = pd.Categorical(df.verb)
 df.verb = df.verb.cat.codes
-print(df.verb)
+
 # request = the request itself, text and variables
 # - typical requests done to page
 # - this depends on the page alot!
+# - char based tokenizer best here
+tok = Tokenizer(num_words=256, filters='',
+                lower=False, split='',char_level=True)
+df.request = df['request'].astype(str)
+tok.fit_on_texts(df.request)
+seq = pad(tok.texts_to_sequences(df.request), maxlen=64, padding='post')
+print(seq)
+# Now we have a list of 64 numbers, we could just stuff all of them into the
+# new model as independent vectors, but better to combine them into a
+# smaller one. Question is: how to do it?
 
 # response = HTTP status code
 #  - these are known, is integer already
 # 418 - I'm a teapot
 
 # bytes = size of the object requested
+# - use normalization here?
