@@ -3,6 +3,7 @@ env['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences as pad
+from tensorflow.keras.layers import Input
 import pandas as pd
 pd.set_option('display.max_rows', None)
 pd.set_option('display.max_columns', None)
@@ -35,14 +36,21 @@ numdata['rtime'] = df['rtime']
 numdata['method'] = pd.Categorical(df['method'])
 numdata.method = numdata.method.cat.codes
 # url = first line of request
-tok = Tokenizer(num_words=256, filters='',
+# This is a char-based tokenizer, maxlen is the number of characters used
+# num_words=64 -is this enough for all characters in logs? test sample
+# has 53 characters...
+tok = Tokenizer(num_words=64, filters='',
                 lower=False, split='',char_level=True)
 df['url'] = df['url'].astype(str)
 tok.fit_on_texts(df['url'])
-textdata = pad(tok.texts_to_sequences(df['url']), maxlen=64, padding='post')
+textdata = pad(tok.texts_to_sequences(df['url']), maxlen=80, padding='post')
 #protocol OMITTED FOR NOW
 
 print(numdata.dtypes)
 print(numdata)
 print(textdata)
 print(df)
+
+# Next we are going to put the model together
+num_input = Input()
+text_input = Input()
