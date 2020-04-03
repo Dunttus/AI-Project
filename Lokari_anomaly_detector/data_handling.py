@@ -51,6 +51,8 @@ print(numdata)
 print(textdata)
 print(df)
 
-# Next we are going to put the model together
-num_input = Input()
-text_input = Input()
+# Define 2 different imputs and their sizes
+print(f"Numerical feature vector inputs: {numdata.shape[1]}")
+print(f"Text tokenizer vector inputs: {textdata.shape[1]}")
+num_input = Input(shape=numdata.shape[1], name='num_input')
+text_input = Input(shape=textdata.shape[1], name='text_input')
