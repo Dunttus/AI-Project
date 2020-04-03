@@ -2,14 +2,15 @@
 
 School project by Tuomo Kuure (tqre) and Joni Hakala (Dunttus).  
 Supervising teacher: Tero Karvinen - http://terokarvinen.com  
-Course: Monialaprojekti (ICT-infrastruktuurit) PRO4TN004-3005. 
+[Haaga-Helia University of Applied Sciences](http://www.haaga-helia.fi/en/frontpage)  
+Course: Monialaprojekti - Multisectoral project (ICT-infrastructures) PRO4TN004-3005.
 
-This repository is designed to be cloned with PyCharm Pro. The runtime environment is containerized with Docker.  
+This repository is designed to be cloned with PyCharm Pro.  
+Runtime environment is containerized with Docker.  
 First command line demo is available in /Lokari_classifier/demo_model
 
-**Follow the project blog: [https://ailogs.design.blog/](https://ailogs.design.blog/)**
-
-### Directories:  
+#### Follow the project blog: [https://ailogs.design.blog/](https://ailogs.design.blog/)
+### Directories:
 **/Lokari_anomaly_detector** - Anomaly detection for Apache2 access.logs \
 **/Lokari_classifier** - Lokari log classifier machine learning model construction code \
 **/.idea** - PyCharm configuration files \
