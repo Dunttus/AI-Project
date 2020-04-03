@@ -55,7 +55,7 @@ https://www.google.com/search?q=inurl:access.log+filetype:log
 https://raw.githubusercontent.com/linuxacademy/content-elastic-log-samples/master/access.log
 ________________________________________________________________________________________________________________________________
 ** Apache access.logs format **
-Apache access log format can be changed from /etc/apache2/apache2.conf file by chancing default NCSA extended/combined 
+Apache access log format can be changed from /etc/apache2/apache2.conf file by changing default NCSA extended/combined 
 log format. Access.log format is at line 213 in apache2.conf file.
 
 Old format:
@@ -78,6 +78,21 @@ Example of new log of requesting favicon icon:
 01/Apr/2020/17:49:39 ::1 404 487 123 GET /favicon.ico HTTP/1.1
 
 Should be easier to work with these log files since, spaces split different columns.
+________________________________________________________________________________________________________________________________
+** Problems **
+I manually looked through the new logs from http://35.228.191.122/ access.log and noticed that the ssh tries logs do not fill 
+all the columns -> this would be a problem when we put columns in python code with pandas.
+
+Sample of bad log format:
+03/Apr/2020/11:46:42 10.10.10.10 400 493 57 SSH-2.0-Go
+
+I changed the format of the logs by separating the column from apache2.conf parser %r --> %m %U %H. I also changed bit format 
+for better one %O --> %B
+New log format: **LogFormat "%{%d/%b/%Y/%T}t %h %>s %B %D %m %U %H"  combined**
+
+Sample of new log:
+03/Apr/2020/12:38:40 10.10.10.10 400 350 56 SSH-2.0-OpenSSH_7.6p1 Ubuntu-4 HTTP/1.0
+03/Apr/2020/13:20:50 10.10.10.10 200 12 397 GET /index.html HTTP/1.1
 
 ________________________________________________________________________________________________________________________________
 
