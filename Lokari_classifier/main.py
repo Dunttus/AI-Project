@@ -8,9 +8,9 @@ env['TF_CPP_MIN_LOG_LEVEL'] = '2'
 from datetime import datetime as dt
 import pandas as pd
 import numpy
-import Lokari.nlp as nlp
-from Lokari.models import new_training_model, model_monitor
-from Lokari.evaluate import accuracy, logarithmic_loss
+import Lokari_classifier.nlp as nlp
+from Lokari_classifier.models import new_training_model, model_monitor
+from Lokari_classifier.evaluate import accuracy, logarithmic_loss
 from tensorflow.keras.utils import to_categorical as onehotencode
 from sklearn.model_selection import train_test_split as ttsplit
 
