@@ -11,9 +11,38 @@ pd.set_option('display.max_colwidth', None)
 
 df = pd.read_csv('../datasets/apache_access_log/access_log_testing',
                  sep=" ", header=None)
-
 df.columns = ["time", "ip", "status", "byte", "rtime",
               "method", "url", "protocol"]
 
 print(df.dtypes)
+print(df)
+
+# Transform the data into ML-model readable format, and making new dataframes.
+# These are fed into a dual model, one which processes text, and the other
+# deals with numbers and categorical data.
+numdata = pd.DataFrame(columns=['status','byte','rtime','method'])
+textdata = pd.DataFrame()
+
+# time = timestamp OMITTED FOR NOW
+# ip = requesting ip address OMITTED FOR NOW
+# status = HTTP status code
+numdata['status'] = pd.Categorical(df['status'])
+# byte = size of the requested object
+numdata['byte'] = df['byte']
+# rtime = time taken to serve the request
+numdata['rtime'] = df['rtime']
+# method
+numdata['method'] = pd.Categorical(df['method'])
+numdata.method = numdata.method.cat.codes
+# url = first line of request
+tok = Tokenizer(num_words=256, filters='',
+                lower=False, split='',char_level=True)
+df['url'] = df['url'].astype(str)
+tok.fit_on_texts(df['url'])
+textdata = pad(tok.texts_to_sequences(df['url']), maxlen=64, padding='post')
+#protocol OMITTED FOR NOW
+
+print(numdata.dtypes)
+print(numdata)
+print(textdata)
 print(df)
