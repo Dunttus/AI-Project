@@ -15,7 +15,7 @@ Change log format line to match --> **LogFormat "%{%d/%b/%Y/%T}t %h %>s %B %D %m
 %U		= First line of request
 %H		= Protocol.
 ```
-03/Apr/2020/13:20:50 10.10.10.10 200 12 397 GET /index.html HTTP/1.1
+Example log: 03/Apr/2020/13:20:50 10.10.10.10 200 12 397 GET /index.html HTTP/1.1
 
 ## Follow the project blog:
 [https://ailogs.design.blog/](https://ailogs.design.blog/)  
