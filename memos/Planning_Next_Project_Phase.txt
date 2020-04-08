@@ -79,7 +79,7 @@ Example of new log of requesting favicon icon:
 
 Should be easier to work with these log files since, spaces split different columns.
 ________________________________________________________________________________________________________________________________
-** Problems **
+** Problems 1 **
 I manually looked through the new logs from http://35.228.191.122/ access.log and noticed that the ssh tries logs do not fill 
 all the columns -> this would be a problem when we put columns in python code with pandas.
 
@@ -93,6 +93,27 @@ New log format: **LogFormat "%{%d/%b/%Y/%T}t %h %>s %B %D %m %U %H"  combined**
 Sample of new log:
 03/Apr/2020/12:38:40 10.10.10.10 400 350 56 SSH-2.0-OpenSSH_7.6p1 Ubuntu-4 HTTP/1.0
 03/Apr/2020/13:20:50 10.10.10.10 200 12 397 GET /index.html HTTP/1.1
+
+________________________________________________________________________________________________________________________________
+** Problems 2 **
+
+%r uses \xhh sequences to turn some user inputs to hexadecimals from apache.org: "For security reasons, starting with version 
+2.0.46, non-printable and other special characters in %r, %i and %o are escaped using \xhh sequences, where hh stands for the 
+hexadecimal representation of the raw byte"
+%U = path or %F = File, does not have that feature so its leaving spaces in logs which is problem while parsing data. Not sure 
+why Apache has left this feature off from these and cannot find how to turn if it even can be turned on, so maybe it’s time to 
+change log format again...
+
+Log format: %{%d/%b/%Y/%T}t %h %>s %B %D %m %U %H
+Log sample: 08/Apr/2020/19:00:30 192.168.10.61 404 196 261 GET /asdasd asd HTTP/1.1
+Log format: %{%d/%b/%Y/%T}t %h %>s %O %D %r
+Log sample: 08/Apr/2020/19:00:30 192.168.10.61 404 196 261 GET /asdasd%20asd HTTP/1.1
+
+Potential new log format?
+08/Apr/2020/20:25:05, 192.168.10.61, 200, 12, 305, "GET /asdasd%20asd HTTP/1.1"
+Or
+Blocking usage of spaces in URL with Apache2 mod_rewrite --> keeps old log and adds new redirect log does not fix problem
+
 
 ________________________________________________________________________________________________________________________________
 
