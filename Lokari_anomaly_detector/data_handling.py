@@ -7,6 +7,7 @@ from tensorflow.keras.utils import to_categorical as onehotencode
 from tensorflow.keras.layers import Input, Dense, concatenate
 from tensorflow.keras.models import Model
 import pandas as pd
+import numpy
 pd.set_option('display.max_rows', None)
 pd.set_option('display.max_columns', None)
 pd.set_option('display.width', None)
@@ -20,12 +21,10 @@ df.columns = ["time", "ip", "status", "byte", "rtime",
 print(df.dtypes)
 print(df)
 
-# Transform the data into ML-model readable format, and making new dataframes.
+# Transform the data into ML-model readable format, of numpy.ndarray type.
 # These are fed into a dual model, one which processes text, and the other
 # deals with numbers and categorical data.
 numdata = pd.DataFrame(columns=['status','byte','rtime','method'])
-numdata_processed = pd.DataFrame()
-textdata = pd.DataFrame()
 
 # time = timestamp OMITTED FOR NOW
 # ip = requesting ip address OMITTED FOR NOW
@@ -36,16 +35,12 @@ numdata['status'] = pd.Categorical(numdata['status'])
 numdata.status = numdata.status.cat.codes
 status_ohe = onehotencode(numdata.status)
 print(status_ohe)
-
-# TODO: onehotencode creates a numpy array, so combining with pandas dataframe
-# TODO: doesn't work out of the box.
-
-
-
-#print(testdf.shape)
+print(type(status_ohe))
 # byte = size of the requested object
 # int64 type not good for model.fit function
 numdata['byte'] = df['byte']
+byte_np = numdata.byte.to_numpy()
+print(type(byte_np))
 # rtime = time taken to serve the request
 # int64 not good for model.fit
 numdata['rtime'] = df['rtime']
@@ -55,6 +50,8 @@ numdata['method'] = pd.Categorical(df['method'])
 numdata.method = numdata.method.cat.codes
 # url = first line of request
 
+numdata_processed = numpy.concatenate(status_ohe, byte_np)
+print(numdata_processed)
 # This is a char-based tokenizer, maxlen is the number of characters used
 # num_words=64 -is this enough for all characters in logs? test sample
 # has 53 characters...
@@ -66,19 +63,18 @@ tok.fit_on_texts(df['url'])
 textdata = pad(tok.texts_to_sequences(df['url']), maxlen=64, padding='post')
 #protocol OMITTED FOR NOW
 
-print(numdata.dtypes)
-print(numdata)
-print("Final numeric data processed:")
+#print(numdata.dtypes)
+#print(numdata)
+#print("Final numeric data processed:")
 print(numdata_processed)
-print(textdata)
 
 # https://keras.io/getting-started/functional-api-guide/
 # https://keras.io/getting-started/sequential-model-guide/
 # https://keras.io/models/model/
 
 # Define 2 different inputs and their sizes
-print(f"Numerical feature vector inputs: {numdata.shape[1]}")
-print(f"Text tokenizer vector inputs: {textdata.shape[1]}")
+#print(f"Numerical feature vector inputs: {numdata.shape[1]}")
+#print(f"Text tokenizer vector inputs: {textdata.shape[1]}")
 num_input = Input(shape=numdata.shape[1], name='num_input')
 text_input = Input(shape=textdata.shape[1], name='text_input')
 
