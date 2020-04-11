@@ -20,9 +20,9 @@ def read_file():
                   "method", "url", "protocol"]
     return df
 
-def process_html_status_codes(data):
-    #data = data.astype(str)
-
+def process_http_status_codes(data):
+    # Convert dataframe into categorical and ordinal encoded form
+    data = pd.Categorical(data.astype(str)).codes
     return data
 
 def process_text(data):
@@ -39,8 +39,8 @@ df = read_file()
 # Initialize empty dataframe with column names
 numdata = pd.DataFrame(columns=['status','byte','rtime','method'])
 
-# Add status code data
-numdata['status'] = process_html_status_codes(df['status'])
+# Process and add status code data to final numdata vector
+numdata['status'] = process_http_status_codes(df['status'])
 
 
 

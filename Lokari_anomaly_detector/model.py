@@ -5,7 +5,7 @@ from tensorflow.keras.layers import Input, Dense, concatenate
 from tensorflow.keras.models import Model
 
 
-def anom_model(numdata, textdata):
+def create(numdata, textdata):
 
     num_input = Input(shape=numdata.shape[1], name='num_input')
     text_input = Input(shape=textdata.shape[1], name='text_input')
