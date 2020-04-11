@@ -13,7 +13,7 @@ pd.set_option('display.max_columns', None)
 pd.set_option('display.width', None)
 pd.set_option('display.max_colwidth', None)
 
-df = pd.read_csv('../datasets/apache_access_log/access_log_testing',
+df = pd.read_csv('../../datasets/apache_access_log/access_log_testing',
                  sep=" ", header=None)
 df.columns = ["time", "ip", "status", "byte", "rtime",
               "method", "url", "protocol"]
@@ -39,8 +39,12 @@ print(type(status_ohe))
 # byte = size of the requested object
 # int64 type not good for model.fit function
 numdata['byte'] = df['byte']
-byte_np = numdata.byte.to_numpy()
-print(type(byte_np))
+print(df.byte.values)
+#byte_np = numdata.byte.to_numpy()
+#print(byte_np)
+#print(type(byte_np))
+
+
 # rtime = time taken to serve the request
 # int64 not good for model.fit
 numdata['rtime'] = df['rtime']
@@ -50,8 +54,7 @@ numdata['method'] = pd.Categorical(df['method'])
 numdata.method = numdata.method.cat.codes
 # url = first line of request
 
-numdata_processed = numpy.concatenate(status_ohe, byte_np)
-print(numdata_processed)
+#print(numdata_processed)
 # This is a char-based tokenizer, maxlen is the number of characters used
 # num_words=64 -is this enough for all characters in logs? test sample
 # has 53 characters...
@@ -66,7 +69,6 @@ textdata = pad(tok.texts_to_sequences(df['url']), maxlen=64, padding='post')
 #print(numdata.dtypes)
 #print(numdata)
 #print("Final numeric data processed:")
-print(numdata_processed)
 
 # https://keras.io/getting-started/functional-api-guide/
 # https://keras.io/getting-started/sequential-model-guide/
