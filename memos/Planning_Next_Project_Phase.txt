@@ -114,7 +114,10 @@ Potential new log format?
 Or
 Blocking usage of spaces in URL with Apache2 mod_rewrite --> keeps old log and adds new redirect log does not fix problem
 
-
+Came up with idea to fix log with pandas csv read functions. Using sep=' ', quotechar='"', escapechar=' '. Also added 
+query string tag %q aftret url tag.
+Working Log format: "\"%{%d/%b/%Y/%T}t\" \"%h\" \"%>s\" \"%B\" \"%D\" \"%m\" \"%U/%q\" \"%H\""
+Log sample: "11/Apr/2020/10:13:18" "192.168.10.61" "200" "12" "157" "GET" "/index.html/?asd asd" "HTTP/1.1"
 ________________________________________________________________________________________________________________________________
 
 SOURCES:
