@@ -13,7 +13,7 @@ pd.set_option('display.max_columns', None)
 pd.set_option('display.width', None)
 pd.set_option('display.max_colwidth', None)
 
-df = pd.read_csv('../../datasets/apache_access_log/access_log_testing',
+df = pd.read_csv('../datasets/apache_access_log/access_log_testing',
                  sep=" ", header=None)
 df.columns = ["time", "ip", "status", "byte", "rtime",
               "method", "url", "protocol"]

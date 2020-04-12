@@ -1,7 +1,7 @@
 from os import environ as env
 env['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
-from tensorflow.keras.layers import Embedding, Input, Dense
+from tensorflow.keras.layers import Embedding, Input, Dense, Flatten
 from tensorflow.keras.models import Model
 
 import pandas as pd
@@ -38,10 +38,13 @@ numdata['status'] = process_http_status_codes(df['status'])
 # input_dim: int > 0. Size of the vocabulary, i.e. maximum integer index + 1.
 status_input = Input(shape=numdata.shape[1], name='status_input')
 status_emb = Embedding(output_dim=10, input_dim=5, input_length=1)(status_input)
-status_output = Dense(5, activation='softmax')(status_emb)
+status_flat = Flatten()(status_emb)
+status_output = Dense(5, activation='relu')(status_flat)
 model = Model(inputs=status_input, outputs=status_output)
-model.compile('rmsprop', 'mse')
+model.compile(optimizer='adam', loss='categorical_crossentropy')
 output_array = model.predict(numdata)
+print(model.summary())
+print(numdata)
 print(output_array)
-
+# TODO: decide output array size
 
