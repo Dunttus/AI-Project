@@ -14,6 +14,7 @@ pd.set_option('display.width', None)
 pd.set_option('display.max_colwidth', None)
 
 def read_file():
+    # This function reads the training data into a pandas dataframe
     df = pd.read_csv('../datasets/apache_access_log/access_log_testing',
                      sep=' ', quotechar='"', escapechar=' ', header=None)
     df.columns = ["time", "ip", "status", "byte", "rtime",
@@ -21,8 +22,13 @@ def read_file():
     return df
 
 def process_http_status_codes(data):
-    # Convert dataframe into categorical and ordinal encoded form
-    data = pd.Categorical(data.astype(str)).codes
+    # Does this data even need conversion?
+    # We have a limited number of integers that we should be able to
+    # feed to an embedding layer.
+
+    # Convert dataframe into strings
+    data = pd.Categorical(data.astype(str))
+    data = data.codes
     return data
 
 def process_text(data):
