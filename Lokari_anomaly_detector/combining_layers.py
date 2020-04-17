@@ -54,13 +54,13 @@ def method_layer(data):
 df = read_file()
 
 # Process and add status data
-status = pd.DataFrame() #(columns=['status'])
+status = pd.DataFrame()
 status['status'] = process_http_status_codes(df['status'])
 print(status.status)
 st_in, st_out = http_status_layer(status)
 
 # Process and add method data
-method = pd.DataFrame() #(columns=['status'])
+method = pd.DataFrame()
 method['method'] = process_http_status_codes(df['method'])
 print(method.method)
 met_in, met_out = method_layer(method)
@@ -77,8 +77,9 @@ output = Dense(20, activation='relu')(output)
 output = Dense(10, activation='relu')(output)
 output = Dense(10, activation='relu')(output)
 
-# The final output corresponds to the concatenated input layer.
+# The final output corresponds to the input layers?
 output = Dense(14, activation='relu')(output)
+
 
 model = Model(inputs=[st_in, met_in], outputs=[st_out, met_out])
 model.compile(optimizer='adam', loss='mse')
