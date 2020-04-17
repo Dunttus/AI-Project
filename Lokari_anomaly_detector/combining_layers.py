@@ -65,7 +65,6 @@ method['method'] = process_http_status_codes(df['method'])
 print(method.method)
 met_in, met_out = method_layer(method)
 
-
 # Combine the outputs to a single output
 output = concatenate([st_out, met_out])
 
@@ -85,10 +84,9 @@ model = Model(inputs=[st_in, met_in], outputs=[st_out, met_out])
 model.compile(optimizer='adam', loss='mse')
 print(model.summary())
 # Train the autoencoder!
-
 model.fit([status, method],[status,method],epochs=500)
 
-# This output is untrained model, unclear how to interpret this...
+# Mean square error for each input.
 output_array = model.predict([status, method])
 print(output_array)
 
