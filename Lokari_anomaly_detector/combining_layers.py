@@ -2,7 +2,7 @@ from os import environ as env
 env['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 from tensorflow.keras.layers \
-    import Embedding, Input, Dense, Flatten, concatenate
+    import Embedding, Input, Dense, Flatten, Concatenate, Reshape
 from tensorflow.keras.models import Model
 
 import numpy
@@ -39,7 +39,7 @@ def http_status_layer(data):
     inp = Input(shape=data.shape[1], name='status_input')
     emb = Embedding(output_dim=10, input_dim=5, input_length=1)(inp)
     flat = Flatten()(emb)
-    outp = Dense(1, activation='relu')(flat)
+    outp = Dense(10, activation='relu')(flat)
     return inp, outp
 
 
@@ -47,7 +47,7 @@ def method_layer(data):
     inp = Input(shape=data.shape[1], name='method_input')
     emb = Embedding(output_dim=10, input_dim=5, input_length=1)(inp)
     flat = Flatten()(emb)
-    outp = Dense(1, activation='relu')(flat)
+    outp = Dense(10, activation='relu')(flat)
     return inp, outp
 
 # Create dataframe from a file
@@ -55,37 +55,37 @@ df = read_file()
 
 # Process and add status data
 status = pd.DataFrame()
-status['status'] = process_http_status_codes(df['status'])
-print(status.status)
+status['tokens'] = process_http_status_codes(df['status'])
+print(status.tokens)
 st_in, st_out = http_status_layer(status)
 
 # Process and add method data
 method = pd.DataFrame()
-method['method'] = process_http_status_codes(df['method'])
-print(method.method)
+method['tokens'] = process_http_status_codes(df['method'])
+print(method.tokens)
 met_in, met_out = method_layer(method)
 
-# Combine the outputs to a single output
-output = concatenate([st_out, met_out])
+# Merge the layers, could use the Dot layer here too to combine them already
+outputmerge = Concatenate(name='o_cat', axis=1)([st_out, met_out])
 
 # Symmetric autoencoder
+output = Dense(20, activation='relu')(outputmerge)
+output = Dense(40, activation='relu')(output)
 output = Dense(10, activation='relu')(output)
-output = Dense(10, activation='relu')(output)
+output = Dense(40, activation='relu')(output)
 output = Dense(20, activation='relu')(output)
-output = Dense(5, activation='relu')(output)
-output = Dense(20, activation='relu')(output)
-output = Dense(10, activation='relu')(output)
-output = Dense(10, activation='relu')(output)
+# The outputs have to match the last layer of the model
+final1 = Dense(1, activation='relu')(output)
+final2 = Dense(1, activation='relu')(output)
+#final1 = Reshape((1,))(final1)
+#final2 = Reshape((1,))(final2)
 
-# The final output corresponds to the input layers?
-output = Dense(14, activation='relu')(output)
-
-
-model = Model(inputs=[st_in, met_in], outputs=[st_out, met_out])
+model = Model(inputs=[st_in, met_in], outputs=[final1, final2])
 model.compile(optimizer='adam', loss='mse')
 print(model.summary())
-# Train the autoencoder!
-model.fit([status, method],[status,method],epochs=500)
+
+# Train the autoencoder
+model.fit([status, method],[status,method],epochs=2)
 
 # Mean square error for each input.
 output_array = model.predict([status, method])
