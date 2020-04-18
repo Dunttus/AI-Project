@@ -148,6 +148,9 @@ def test(model):
     # edited. Small differences are hard to spot. Some way to weight the
     # values?
 
+    # Concate layer could be changed with a tuned Dot layer to make
+    # combinations...
+
     return
 
 test(construct_model())
