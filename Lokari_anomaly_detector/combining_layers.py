@@ -4,6 +4,8 @@ env['TF_CPP_MIN_LOG_LEVEL'] = '2'
 from tensorflow.keras.layers \
     import Embedding, Input, Dense, Flatten, Concatenate, Reshape
 from tensorflow.keras.models import Model
+from tensorflow.keras.preprocessing.text import Tokenizer
+from tensorflow.keras.preprocessing.sequence import pad_sequences as pad
 
 import numpy
 # Disable scientific notation in decimal values
@@ -38,6 +40,14 @@ def process_http_status_codes(data):
     return data
 
 
+def process_url(data):
+    # Tokenizer is global for now
+    #data = data.astype(str)
+    tok.fit_on_texts(data)
+    seq = pad(tok.texts_to_sequences(data), maxlen=16)
+    return seq
+
+
 def http_status_layer(data):
     inp = Input(shape=data.shape[1], name='status_input')
     emb = Embedding(output_dim=10, input_dim=5, input_length=1)(inp)
@@ -53,62 +63,79 @@ def method_layer(data):
     outp = Dense(10, activation='relu')(flat)
     return inp, outp
 
+
+def url_layer(data):
+
+    return
+
 # Create dataframe from a file
 df = read_file(train_data)
+# Need a global tokenizer for now
+tok = Tokenizer(num_words=128, filters='',
+                    lower=False, split='', char_level=True)
+# Process url data
+url = process_url(df['url'])
+print(url)
 
-# Process and add status data
-status = pd.DataFrame()
-status['tokens'] = process_http_status_codes(df['status'])
-print(status.tokens)
-st_in, st_out = http_status_layer(status)
 
-# Process and add method data
-method = pd.DataFrame()
-method['tokens'] = process_http_status_codes(df['method'])
-print(method.tokens)
-met_in, met_out = method_layer(method)
+def construct_model():
 
-# Merge the layers, could use the Dot layer here too to combine them already
-outputmerge = Concatenate(name='o_cat', axis=1)([st_out, met_out])
+    # Process and add status data
+    status = pd.DataFrame()
+    status['tokens'] = process_http_status_codes(df['status'])
+    print(status.tokens)
+    st_in, st_out = http_status_layer(status)
 
-# Symmetric autoencoder
-output = Dense(20, activation='relu')(outputmerge)
-output = Dense(40, activation='relu')(output)
-output = Dense(10, activation='relu')(output)
-output = Dense(40, activation='relu')(output)
-output = Dense(20, activation='relu')(output)
-# The outputs have to match the last layer of the model
-final1 = Dense(1, activation='relu')(output)
-final2 = Dense(1, activation='relu')(output)
-#final1 = Reshape((1,))(final1)
-#final2 = Reshape((1,))(final2)
+    # Process and add method data
+    method = pd.DataFrame()
+    method['tokens'] = process_http_status_codes(df['method'])
+    print(method.tokens)
+    met_in, met_out = method_layer(method)
 
-model = Model(inputs=[st_in, met_in], outputs=[final1, final2])
-model.compile(optimizer='adam', loss='mse')
-print(model.summary())
+    # Merge the layers, could use the Dot layer here too to combine them already
+    outputmerge = Concatenate(name='o_cat', axis=1)([st_out, met_out])
 
-# Train the autoencoder
-model.fit([status, method],[status,method],epochs=10)
+    # Symmetric autoencoder
+    output = Dense(20, activation='relu')(outputmerge)
+    output = Dense(40, activation='relu')(output)
+    output = Dense(10, activation='relu')(output)
+    output = Dense(40, activation='relu')(output)
+    output = Dense(20, activation='relu')(output)
+    # The outputs have to match the last layer of the model
+    final1 = Dense(1, activation='relu')(output)
+    final2 = Dense(1, activation='relu')(output)
+    #final1 = Reshape((1,))(final1)
+    #final2 = Reshape((1,))(final2)
 
-# Mean square error for each input.
-# These approach zero when model can reshape it's own input?
-output_array = model.predict([status, method])
-print(output_array)
+    model = Model(inputs=[st_in, met_in], outputs=[final1, final2])
+    model.compile(optimizer='adam', loss='mse')
+    print(model.summary())
 
-# Use the model: test what happens on another kind of input
-# At this point, need a consistent way of categorizing the inputs.
-# The last log line of the access_log_compare
-# has been edited to contain unseen combination.
+    # Train the autoencoder
+    model.fit([status, method],[status,method],epochs=10)
 
-df2 = read_file(test_data)
-status2 = pd.DataFrame()
-status2['tokens'] = process_http_status_codes(df2['status'])
-method2 = pd.DataFrame()
-method2['tokens'] = process_http_status_codes(df2['method'])
+    # Mean square error for each input.
+    # These approach zero when model can reshape it's own input?
+    output_array = model.predict([status, method])
+    print(output_array)
 
-output_array2 = model.predict([status2, method2])
-print(output_array2)
+    # Use the model: test what happens on another kind of input
+    # At this point, need a consistent way of categorizing the inputs.
+    # The last log line of the access_log_compare
+    # has been edited to contain unseen combination.
 
-# NOTES: There is a difference that can bee seen. Sometimes the values
-# zero out.
-# TODO: include url to data
+    df2 = read_file(test_data)
+    status2 = pd.DataFrame()
+    status2['tokens'] = process_http_status_codes(df2['status'])
+    method2 = pd.DataFrame()
+    method2['tokens'] = process_http_status_codes(df2['method'])
+
+    output_array2 = model.predict([status2, method2])
+    print(output_array2)
+
+    # NOTES: There is a difference that can bee seen. Sometimes the values
+    # zero out.
+    # TODO: include url to data
+    return
+
+#construct_model()
