@@ -20,9 +20,12 @@ pd.set_option('display.max_columns', None)
 pd.set_option('display.width', None)
 pd.set_option('display.max_colwidth', None)
 
-def read_file():
+train_data = '../datasets/apache_access_log/access_log_testing'
+test_data = '../datasets/apache_access_log/access_log_compare'
+
+def read_file(FILE):
     # This function reads the training data into a pandas dataframe
-    df = pd.read_csv('../datasets/apache_access_log/access_log_testing',
+    df = pd.read_csv(FILE,
                      sep=' ', quotechar='"', escapechar=' ', header=None)
     df.columns = ["time", "ip", "status", "byte", "rtime",
                   "method", "url", "protocol"]
@@ -51,7 +54,7 @@ def method_layer(data):
     return inp, outp
 
 # Create dataframe from a file
-df = read_file()
+df = read_file(train_data)
 
 # Process and add status data
 status = pd.DataFrame()
@@ -85,10 +88,27 @@ model.compile(optimizer='adam', loss='mse')
 print(model.summary())
 
 # Train the autoencoder
-model.fit([status, method],[status,method],epochs=2)
+model.fit([status, method],[status,method],epochs=10)
 
 # Mean square error for each input.
+# These approach zero when model can reshape it's own input?
 output_array = model.predict([status, method])
 print(output_array)
 
+# Use the model: test what happens on another kind of input
+# At this point, need a consistent way of categorizing the inputs.
+# The last log line of the access_log_compare
+# has been edited to contain unseen combination.
 
+df2 = read_file(test_data)
+status2 = pd.DataFrame()
+status2['tokens'] = process_http_status_codes(df2['status'])
+method2 = pd.DataFrame()
+method2['tokens'] = process_http_status_codes(df2['method'])
+
+output_array2 = model.predict([status2, method2])
+print(output_array2)
+
+# NOTES: There is a difference that can bee seen. Sometimes the values
+# zero out.
+# TODO: include url to data
