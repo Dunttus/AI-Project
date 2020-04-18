@@ -65,17 +65,15 @@ def method_layer(data):
 
 
 def url_layer(data):
-
-    return
+    inp = Input(shape=data.shape[1], name='url_input')
+    outp = Dense(10, activation='relu')(inp)
+    return inp, outp
 
 # Create dataframe from a file
 df = read_file(train_data)
 # Need a global tokenizer for now
 tok = Tokenizer(num_words=128, filters='',
                     lower=False, split='', char_level=True)
-# Process url data
-url = process_url(df['url'])
-print(url)
 
 
 def construct_model():
@@ -92,31 +90,38 @@ def construct_model():
     print(method.tokens)
     met_in, met_out = method_layer(method)
 
+    # Process and add url data
+    url = pd.DataFrame()
+    url = process_url(df['url'])
+    print(url)
+    url_in, url_out = url_layer(url)
+
     # Merge the layers, could use the Dot layer here too to combine them already
-    outputmerge = Concatenate(name='o_cat', axis=1)([st_out, met_out])
+    outputmerge = Concatenate(name='o_cat', axis=1)([st_out, met_out, url_out])
 
     # Symmetric autoencoder
-    output = Dense(20, activation='relu')(outputmerge)
-    output = Dense(40, activation='relu')(output)
+    output = Dense(30, activation='relu')(outputmerge)
+    output = Dense(60, activation='relu')(output)
     output = Dense(10, activation='relu')(output)
-    output = Dense(40, activation='relu')(output)
-    output = Dense(20, activation='relu')(output)
+    output = Dense(60, activation='relu')(output)
+    output = Dense(30, activation='relu')(output)
     # The outputs have to match the last layer of the model
     final1 = Dense(1, activation='relu')(output)
     final2 = Dense(1, activation='relu')(output)
+    final3 = Dense(16, activation='relu')(output)
     #final1 = Reshape((1,))(final1)
     #final2 = Reshape((1,))(final2)
 
-    model = Model(inputs=[st_in, met_in], outputs=[final1, final2])
+    model = Model(inputs=[st_in, met_in, url_in], outputs=[final1, final2, final3])
     model.compile(optimizer='adam', loss='mse')
     print(model.summary())
 
     # Train the autoencoder
-    model.fit([status, method],[status,method],epochs=10)
+    model.fit([status, method, url],[status, method, url],epochs=100)
 
     # Mean square error for each input.
     # These approach zero when model can reshape it's own input?
-    output_array = model.predict([status, method])
+    output_array = model.predict([status, method, url])
     print(output_array)
 
     # Use the model: test what happens on another kind of input
@@ -124,18 +129,25 @@ def construct_model():
     # The last log line of the access_log_compare
     # has been edited to contain unseen combination.
 
+    return model
+
+def test(model):
+
     df2 = read_file(test_data)
     status2 = pd.DataFrame()
     status2['tokens'] = process_http_status_codes(df2['status'])
     method2 = pd.DataFrame()
     method2['tokens'] = process_http_status_codes(df2['method'])
+    url2 = pd.DataFrame()
+    url2 = process_url(df2['url'])
 
-    output_array2 = model.predict([status2, method2])
+    output_array2 = model.predict([status2, method2, url2])
     print(output_array2)
 
-    # NOTES: There is a difference that can bee seen. Sometimes the values
-    # zero out.
-    # TODO: include url to data
+    # NOTES: There is a difference that can bee seen when values are
+    # edited. Small differences are hard to spot. Some way to weight the
+    # values?
+
     return
 
-#construct_model()
+test(construct_model())
