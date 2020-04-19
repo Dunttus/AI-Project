@@ -14,7 +14,7 @@
 "13/Apr/2020/04:32:54" "10.10.10.10" "404" "196" "144" "POST" "/cmd.php/" "HTTP/1.1"
 "13/Apr/2020/04:32:06" "10.15.15.15" "404" "196" "17572" "POST" "/db.init.php/" "HTTP/1.1"
 "13/Apr/2020/04:31:53" "10.50.150.50" "404" "196" "126" "GET" "/manager/text/list/" "HTTP/1.1"
-"13/Apr/2020/04:31:47" "10.32.78.45" "404" "196" "141" "POST" "/whoami.php.php/" "HTTP/1.1
+"13/Apr/2020/04:31:47" "10.32.78.45" "404" "196" "141" "POST" "/whoami.php.php/" "HTTP/1.1"
 "13/Apr/2020/04:31:36" "10.95.78.54" "404" "196" "121" "GET" "/images/stories/filemga.php/?ssp=RfVbHu" "HTTP/1.1"
 "13/Apr/2020/04:31:32" "10.98.45.23" "200" "12" "141" "GET" "/index.html/?a=echo%20-n%20HelloNginx%7Cmd5sum" "HTTP/1.1"
 "13/Apr/2020/04:31:30" "10.56.34.98" "404" "196" "121" "GET" "/App//?content=die(md5(HelloThinkPHP))" "HTTP/1.1"
