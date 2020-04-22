@@ -7,8 +7,30 @@ import numpy as np
 import pandas as pd
 from tensorflow import keras
 from tensorflow.keras.preprocessing.text import Tokenizer
+from tensorflow.keras.preprocessing.sequence import pad_sequences as pad
 import pickle
+# %%
+import pandas, numpy
 
+
+def pandas_output_options():
+    # Run the function to display all rows & columns in pandas dataframes
+    pandas.set_option('display.max_rows', None)
+    pandas.set_option('display.max_columns', None)
+    pandas.set_option('display.width', None)
+    pandas.set_option('display.max_colwidth', None)
+
+
+def numpy_output_options():
+    # Disable scientific notation in decimal values
+    numpy.set_printoptions(suppress=True)
+    # Show everything please
+    numpy.set_printoptions(threshold=numpy.inf)
+    numpy.set_printoptions(linewidth=numpy.inf)
+    numpy.set_printoptions(precision=5)
+
+pandas_output_options()
+numpy_output_options()
 # %%
 
 TEST_DATASET = \
@@ -39,16 +61,24 @@ print(df2)
 
 # %%
 
-tokenizer = Tokenizer(num_words=1000)
-num_classes = max(df2['url']) + 1
+tokenizer = Tokenizer(num_words=128, char_level=True)
+#num_classes = max(df2['url']) + 1
+tokenizer.fit_on_texts(df.url)
+print(type(df.url))
+#df['url'] = tokenizer.texts_to_sequences(df['url'])
+textdata = pad(tokenizer.texts_to_sequences(df['url']), maxlen=64, padding='post')
+textdata2 = tokenizer.texts_to_matrix(df['url'], mode='tfidf')
+#textdata3 = tokenizer.sequences_to_matrix(textdata, mode='')
 
-df['url'] = tokenizer.texts_to_matrix(df2['url'], mode='binary')
-df['url'] = keras.utils.to_categorical(df2.url, num_classes)
-print(df2['url'])
+# %%
+print(textdata)
+print(textdata2)
+#print(len(textdata))
+#print(textdata3)
 
 # %%
 
-tokenizer = Tokenizer(num_words=1000)
+tokenizer = Tokenizer(num_words=1000, char_level=True)
 tokenizer.fit_on_texts(df2['method'])
 df2['method'] = tokenizer.sequences_to_matrix(df2['method'], mode=tfidf2)
 print(df['method'])
