@@ -22,8 +22,8 @@ pd.set_option('display.max_columns', None)
 pd.set_option('display.width', None)
 pd.set_option('display.max_colwidth', None)
 
-train_data = '../datasets/apache_access_log/access_log_testing'
-test_data = '../datasets/apache_access_log/access_log_compare'
+train_data = '../datasets/apache_access_log/good_access.log'
+test_data = '../datasets/apache_access_log/bad_access.log'
 
 def read_file(FILE):
     # This function reads the training data into a pandas dataframe
@@ -44,29 +44,31 @@ def process_url(data):
     # Tokenizer is global for now
     #data = data.astype(str)
     tok.fit_on_texts(data)
-    seq = pad(tok.texts_to_sequences(data), maxlen=16)
+    seq = pad(tok.texts_to_sequences(data), maxlen=32)
     return seq
 
 
 def http_status_layer(data):
     inp = Input(shape=data.shape[1], name='status_input')
-    emb = Embedding(output_dim=10, input_dim=5, input_length=1)(inp)
+    # input_dim: how many categories altogether?
+    # output_dim: how many embeddings to create?
+    emb = Embedding(output_dim=32, input_dim=7, input_length=1)(inp)
     flat = Flatten()(emb)
-    outp = Dense(10, activation='relu')(flat)
+    outp = Dense(32, activation='relu')(flat)
     return inp, outp
 
 
 def method_layer(data):
     inp = Input(shape=data.shape[1], name='method_input')
-    emb = Embedding(output_dim=10, input_dim=5, input_length=1)(inp)
+    emb = Embedding(output_dim=32, input_dim=5, input_length=1)(inp)
     flat = Flatten()(emb)
-    outp = Dense(10, activation='relu')(flat)
+    outp = Dense(32, activation='relu')(flat)
     return inp, outp
 
 
 def url_layer(data):
     inp = Input(shape=data.shape[1], name='url_input')
-    outp = Dense(10, activation='relu')(inp)
+    outp = Dense(64, activation='relu')(inp)
     return inp, outp
 
 # Create dataframe from a file
@@ -100,15 +102,15 @@ def construct_model():
     outputmerge = Concatenate(name='o_cat', axis=1)([st_out, met_out, url_out])
 
     # Symmetric autoencoder
-    output = Dense(30, activation='relu')(outputmerge)
-    output = Dense(60, activation='relu')(output)
-    output = Dense(10, activation='relu')(output)
-    output = Dense(60, activation='relu')(output)
-    output = Dense(30, activation='relu')(output)
+    output = Dense(128, activation='relu')(outputmerge)
+    output = Dense(256, activation='relu')(output)
+    output = Dense(16, activation='relu')(output)
+    output = Dense(256, activation='relu')(output)
+    output = Dense(128, activation='relu')(output)
     # The outputs have to match the last layer of the model
     final1 = Dense(1, activation='relu')(output)
     final2 = Dense(1, activation='relu')(output)
-    final3 = Dense(16, activation='relu')(output)
+    final3 = Dense(32, activation='relu')(output)
     #final1 = Reshape((1,))(final1)
     #final2 = Reshape((1,))(final2)
 
@@ -117,19 +119,19 @@ def construct_model():
     print(model.summary())
 
     # Train the autoencoder
-    model.fit([status, method, url],[status, method, url],epochs=100)
+    model.fit([status, method, url],[status, method, url],epochs=500)
 
     # Mean square error for each input.
     # These approach zero when model can reshape it's own input?
-    output_array = model.predict([status, method, url])
-    print(output_array)
+    training_output = model.predict([status, method, url])
+
 
     # Use the model: test what happens on another kind of input
     # At this point, need a consistent way of categorizing the inputs.
     # The last log line of the access_log_compare
     # has been edited to contain unseen combination.
 
-    return model
+    return model, training_output
 
 def test(model):
 
@@ -141,8 +143,7 @@ def test(model):
     url2 = pd.DataFrame()
     url2 = process_url(df2['url'])
 
-    output_array2 = model.predict([status2, method2, url2])
-    print(output_array2)
+    test_output = model.predict([status2, method2, url2])
 
     # NOTES: There is a difference that can bee seen when values are
     # edited. Small differences are hard to spot. Some way to weight the
@@ -151,6 +152,11 @@ def test(model):
     # Concate layer could be changed with a tuned Dot layer to make
     # combinations...
 
-    return
+    return test_output
 
-test(construct_model())
+
+model, train_output = construct_model()
+test_output = test(model)
+
+print(train_output)
+#print(test_output)
