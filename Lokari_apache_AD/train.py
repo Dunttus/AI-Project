@@ -2,6 +2,7 @@
 # Train the baseline model
 from Lokari_apache_AD.read_data import read
 from Lokari_apache_AD.output_opts import set_output
+from Lokari_apache_AD.process import process_apache_log
 import numpy, pandas
 
 # Set output options for pandas and numpy
@@ -14,8 +15,8 @@ data = read('training_dataset/good_access.log')
 
 # Process training data
 # the dataframe is sliced and processed into numbers
-print(data)
-
+# return data format?
+data = process_apache_log(data)
 
 # Train the model
 # neural network is trained to learn an average presentation of usual data
