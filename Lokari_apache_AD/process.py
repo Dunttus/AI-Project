@@ -37,6 +37,12 @@ def normalize_response_time(milliseconds):
 
 def tokenize_http_methods():
 
+    # This is the way to categorize methods
+    # Check otuput format
+    tokenizer = Tokenizer(num_words=4, filters='')
+    tokenizer.fit_on_texts(df['method'])
+    catdata = tokenizer.texts_to_sequences(df.method)
+    print(catdata)
     # load tokenizer
     # process
 

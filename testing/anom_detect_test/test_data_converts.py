@@ -77,11 +77,13 @@ print(textdata2)
 #print(textdata3)
 
 # %%
-
-tokenizer = Tokenizer(num_words=1000, char_level=True)
-tokenizer.fit_on_texts(df2['method'])
-df2['method'] = tokenizer.sequences_to_matrix(df2['method'], mode=tfidf2)
-print(df['method'])
+print(df.method)
+tokenizer = Tokenizer(num_words=4, filters='')
+tokenizer.fit_on_texts(df['method'])
+catdata = tokenizer.texts_to_sequences(df.method)
+print(catdata)
+#df2['method'] = tokenizer.sequences_to_matrix(df2['method'], mode=tfidf2)
+#print(df['method'])
 
 # %%
 
