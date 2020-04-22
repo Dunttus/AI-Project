@@ -1,3 +1,5 @@
+# These functions are for training at the moment
+
 def process_apache_log(data):
 
     # ["time", "ip", "status", "byte", "rtime", "method", "url", "protocol"]
@@ -6,6 +8,45 @@ def process_apache_log(data):
     print(processed.columns)
     # ['status', 'byte', 'rtime', 'method', 'url']
 
+    # Tokenizers have to be created before processing
+
     return processed
 
 
+def tokenize_http_status():
+
+    # load tokenizer
+    # process
+
+    return
+
+
+def normalize_response_size(bytes):
+
+    # calculate average size and normalize? zscore?
+
+    return
+
+
+def normalize_response_time(milliseconds):
+
+    # calculate average size and normalize? zscore?
+
+    return
+
+
+def tokenize_http_methods():
+
+    # load tokenizer
+    # process
+
+    return
+
+
+def tokenize_url():
+
+    # Separate path and query?
+    # load tokenizer
+    # process
+
+    return
