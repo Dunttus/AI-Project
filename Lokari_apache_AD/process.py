@@ -11,18 +11,21 @@ def process_apache_log(data):
     print(processed.columns)
     # ['status', 'byte', 'rtime', 'method', 'url']
 
+    processed.status = tokenize_http_status(data.status)
     processed.method = tokenize_http_methods(data.method)
+
     print(processed)
 
     return processed
 
 
-def tokenize_http_status():
+def tokenize_http_status(data):
 
-    # load tokenizer
-    # process
-
-    return
+    tokenizer = Tokenizer(num_words=20, filters='')
+    tokenizer.fit_on_texts(data.astype(str))
+    # save tokenizer here??
+    data = tokenizer.texts_to_sequences(data.astype(str))
+    return data
 
 
 def normalize_response_size(bytes):
@@ -41,13 +44,11 @@ def normalize_response_time(milliseconds):
 
 def tokenize_http_methods(data):
 
-    #print(data)
-    http_status_tokenizer = Tokenizer(num_words=6, filters='')
-    http_status_tokenizer.fit_on_texts(data)
+    tokenizer = Tokenizer(num_words=6, filters='')
+    tokenizer.fit_on_texts(data)
     # save tokenizer here??
-
-    catdata = http_status_tokenizer.texts_to_sequences(data)
-    return catdata
+    data = tokenizer.texts_to_sequences(data)
+    return data
 
 
 def tokenize_url():
