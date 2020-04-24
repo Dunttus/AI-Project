@@ -33,11 +33,11 @@ def tokenize_http_status(data):
     return data
 
 
-def normalize_response_size(bytes):
+def normalize_response_size(size):
 
     # calculate average size and normalize?
 
-    return bytes
+    return size
 
 
 def normalize_response_time(time):
