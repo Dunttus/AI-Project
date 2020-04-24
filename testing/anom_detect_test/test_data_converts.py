@@ -88,8 +88,8 @@ print(catdata)
 # %%
 
 num_classes = max(df2.status) + 1
-df2['url' = pd.Categorical(df2['url'])
-print(df2['url')
+df2['url'] = pd.Categorical(df2['url'])
+print(df2['url'])
 
 
 # %%
