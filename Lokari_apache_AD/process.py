@@ -1,4 +1,7 @@
-# These functions are for training at the moment
+# Convert the log data into fully numerical presentation.
+# If the model is being trained, save all tokenizers used.
+from keras_preprocessing.text import Tokenizer
+
 
 def process_apache_log(data):
 
@@ -8,7 +11,8 @@ def process_apache_log(data):
     print(processed.columns)
     # ['status', 'byte', 'rtime', 'method', 'url']
 
-    # Tokenizers have to be created before processing
+    processed.method = tokenize_http_methods(data.method)
+    print(processed)
 
     return processed
 
@@ -35,18 +39,15 @@ def normalize_response_time(milliseconds):
     return
 
 
-def tokenize_http_methods():
+def tokenize_http_methods(data):
 
-    # This is the way to categorize methods
-    # Check otuput format
-    tokenizer = Tokenizer(num_words=4, filters='')
-    tokenizer.fit_on_texts(df['method'])
-    catdata = tokenizer.texts_to_sequences(df.method)
-    print(catdata)
-    # load tokenizer
-    # process
+    #print(data)
+    http_status_tokenizer = Tokenizer(num_words=6, filters='')
+    http_status_tokenizer.fit_on_texts(data)
+    # save tokenizer here??
 
-    return
+    catdata = http_status_tokenizer.texts_to_sequences(data)
+    return catdata
 
 
 def tokenize_url():
