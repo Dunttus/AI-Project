@@ -1,8 +1,7 @@
 # Convert the log data into fully numerical presentation.
 # If the model is being trained, save all tokenizers used.
-import pandas
+import numpy
 from keras_preprocessing.text import Tokenizer
-from tensorflow.keras.preprocessing.sequence import pad_sequences as pad
 
 
 def process_apache_log(data):
@@ -14,6 +13,8 @@ def process_apache_log(data):
     # ['status', 'byte', 'rtime', 'method', 'url']
 
     processed.status = tokenize_http_status(data.status)
+    print(type(processed.status))
+
     processed.byte = normalize_response_size(data.byte)
     processed.rtime = normalize_response_time(data.rtime)
     processed.method = tokenize_http_methods(data.method)
@@ -30,6 +31,7 @@ def tokenize_http_status(data):
     tokenizer.fit_on_texts(data.astype(str))
     # save tokenizer here??
     data = tokenizer.texts_to_sequences(data.astype(str))
+    data = numpy.array(data)
     return data
 
 
@@ -53,6 +55,7 @@ def tokenize_http_methods(data):
     tokenizer.fit_on_texts(data)
     # save tokenizer here??
     data = tokenizer.texts_to_sequences(data)
+    data = numpy.array(data)
     return data
 
 
@@ -61,6 +64,7 @@ def tokenize_url(data):
     tokenizer = Tokenizer(num_words=128, char_level=True)
     tokenizer.fit_on_texts(data)
     data = tokenizer.texts_to_sequences(data)
+    data = numpy.array(data)
     # Pad the data later to be of equal length?
     # Keras pad_sequences changes the datatype to numpy.ndarray, which doesn't
     # fit into a pandas column easy.

@@ -1,25 +1,49 @@
 # Lokari Apache log anomaly detector:
 # Train the baseline model
+from os import environ as env
 from Lokari_apache_AD.read_data import read
 from Lokari_apache_AD.output_opts import set_output
 from Lokari_apache_AD.process import process_apache_log
-import numpy, pandas
+from tensorflow.keras.layers import Input, Embedding, Flatten, Dense
+from tensorflow.keras.models import Model
+from tensorflow.keras.preprocessing.sequence import pad_sequences as pad
 
-# Set output options for pandas and numpy
+# Set output options for pandas and numpy, minimize TensorFlow output
 set_output()
+env['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 # Read training data
-# read_data.py is given the file
-# read_data.py returns pandas dataframe
 data = read('training_dataset/good_access.log')
 
 # Process training data
-# the dataframe is sliced and processed into numbers
-# return data format?
+# Returns: ['status', 'byte', 'rtime', 'method', 'url']
 data = process_apache_log(data)
+#print(data)
+
+# Have to have numpy arrays!
+# Testing with model.predict fails with
+# ValueError: Failed to convert a NumPy array to a Tensor
+# (Unsupported object type list).
+
 
 # Train the model
 # neural network is trained to learn an average presentation of usual data
+
+# Testing embedding layer with status data:
+def test_status_input():
+    inp = Input(shape=1, name='status')
+    emb = Embedding(input_dim=10, output_dim=10, input_length=1)(inp)
+    flat = Flatten()(emb)
+    out = Dense(10, activation='relu')(flat)
+
+    model = Model(inputs=[inp], outputs=[out])
+    model.compile(optimizer='adam', loss='categorical_crossentropy')
+    print(model.summary())
+    output_array = model.predict(data.status)
+    print(output_array)
+    return
+
+test_status_input()
 
 
 # Save the model
