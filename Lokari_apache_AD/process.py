@@ -1,6 +1,7 @@
 # Convert the log data into fully numerical presentation.
 # If the model is being trained, save all tokenizers used.
 from keras_preprocessing.text import Tokenizer
+from keras_preprocessing.sequence import pad_sequences as pad
 
 
 def process_apache_log(data):
@@ -12,8 +13,10 @@ def process_apache_log(data):
     # ['status', 'byte', 'rtime', 'method', 'url']
 
     processed.status = tokenize_http_status(data.status)
+    processed.byte = normalize_response_size(data.byte)
+    processed.rtime = normalize_response_time(data.rtime)
     processed.method = tokenize_http_methods(data.method)
-
+    processed.url = tokenize_url(data.url)
     print(processed)
 
     return processed
@@ -32,14 +35,14 @@ def normalize_response_size(bytes):
 
     # calculate average size and normalize? zscore?
 
-    return
+    return bytes
 
 
-def normalize_response_time(milliseconds):
+def normalize_response_time(time):
 
     # calculate average size and normalize? zscore?
 
-    return
+    return time
 
 
 def tokenize_http_methods(data):
@@ -51,10 +54,16 @@ def tokenize_http_methods(data):
     return data
 
 
-def tokenize_url():
+def tokenize_url(data):
 
-    # Separate path and query?
-    # load tokenizer
-    # process
+    tokenizer = Tokenizer(num_words=128, char_level=True)
+    tokenizer.fit_on_texts(data)
 
-    return
+    print(type(data))
+    # This doesn't work correctly yet. Have to put the whole sequence
+    # in to the url column.
+    data = pad(tokenizer.texts_to_sequences(data), maxlen=64,
+                   padding='post')
+    #textdata2 = tokenizer.texts_to_matrix(data, mode='tfidf')
+
+    return data
