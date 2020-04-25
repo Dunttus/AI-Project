@@ -63,6 +63,8 @@ def tokenize_http_methods(data):
 
 def tokenize_url(data):
 
+    # TODO: Check word-level tokenizing
+    # TODO: Check tokenizer settings, is it eg. lowercasing on default?
     tokenizer = Tokenizer(num_words=128, char_level=True)
     tokenizer.fit_on_texts(data)
     data = tokenizer.texts_to_sequences(data)
