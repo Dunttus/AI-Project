@@ -6,7 +6,9 @@ from Lokari_apache_AD.output_opts import set_output
 from Lokari_apache_AD.process import process_apache_log
 from tensorflow.keras.layers import Input, Embedding, Flatten, Dense
 from tensorflow.keras.models import Model
+from Lokari_apache_AD.autoencoder.model import construct_model
 from tensorflow.keras.preprocessing.sequence import pad_sequences as pad
+
 
 # Set output options for pandas and numpy, minimize TensorFlow output
 set_output()
@@ -25,6 +27,8 @@ data = process_apache_log(data)
 # ValueError: Failed to convert a NumPy array to a Tensor
 # (Unsupported object type list).
 
+# Construct the model
+model = construct_model()
 
 # Train the model
 # neural network is trained to learn an average presentation of usual data
