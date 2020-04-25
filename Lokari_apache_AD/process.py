@@ -4,6 +4,8 @@ import numpy
 from keras_preprocessing.text import Tokenizer
 
 
+# TODO: Minimize cardinality (amount of categories) in functions
+
 def process_apache_log(data):
 
     # ["time", "ip", "status", "byte", "rtime", "method", "url", "protocol"]

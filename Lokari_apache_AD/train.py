@@ -28,7 +28,7 @@ data = process_apache_log(data)
 # (Unsupported object type list).
 
 # Construct the model
-model = construct_model()
+model = construct_model(data)
 
 # Train the model
 # neural network is trained to learn an average presentation of usual data
@@ -47,7 +47,7 @@ def test_status_input():
     print(output_array)
     return
 
-test_status_input()
+#test_status_input()
 
 
 # Save the model
