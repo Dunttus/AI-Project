@@ -2,15 +2,15 @@
 # viewable with print((model.summary())
 
 from tensorflow.keras.models import Model
-from tensorflow.keras.layers import Input, Embedding, Flatten, Dense
+from tensorflow.keras.layers import \
+    Input, Embedding, Flatten, Dense, Concatenate
 from tensorflow.keras.preprocessing.sequence import pad_sequences as pad
 
 # These processing functions need to be linked to these!
 # Data shapes have to match
 
-
 def http_status_layer(data):
-    inp = Input(name='status_input',shape=data.shape)
+    inp = Input(name='status_input',shape=1)
     # input_dim: how many categories altogether?
     # output_dim: how many embeddings to create?
     # With http status codes, how many are of significance?
@@ -21,30 +21,33 @@ def http_status_layer(data):
 
 
 def bytes_layer(data):
-    inp = Input(name='bytes_input', shape=data.shape)
+    inp = Input(name='bytes_input', shape=1)
     outp = Dense(1, activation='relu')(inp)
     return inp, outp
 
 
 def rtime_layer(data):
-    inp = Input(name='rtime_input', shape=data.shape)
+    inp = Input(name='rtime_input', shape=1)
     outp = Dense(1, activation='relu')(inp)
     return inp, outp
 
 
 def method_layer(data):
-    inp = Input(name='method_input', shape=data.shape)
+    inp = Input(name='method_input', shape=1)
     emb = Embedding(input_dim=7, output_dim=4, input_length=1)(inp)
     outp = Flatten()(emb)
     return inp, outp
 
 
+# TODO: Data shape is critical here, pandas & numpy...
 def url_layer(data):
     # Pad the data here! This really should be done in the process.py, this
     # is a workaround because the datatypes don't fit well together. Done
     # here, the padding function works out of the box.
+
     data = pad(data)
-    inp = Input(name='url_input', shape=data.shape)
+    print(data)
+    inp = Input(name='url_input', shape=1)
     # TODO: Check word level tokenizing options, ref process.py tokenize_url
     # TODO: Check input_length relation to data.shape
     emb = Embedding(input_dim=128, output_dim=32, input_length=128)(inp)
@@ -52,15 +55,10 @@ def url_layer(data):
     return inp, outp
 
 
-def autoencoding_layers():
-
-    return
-
-
 def fill_io_lists(data):
 
-    input_list = []
-    output_list = []
+    input_list, output_list = [], []
+
     io_status = http_status_layer(data.status)
     input_list.append(io_status[0])
     output_list.append(io_status[1])
@@ -84,16 +82,51 @@ def fill_io_lists(data):
     return input_list, output_list
 
 
+def add_autoencoding_layers(merged_input):
+
+    output = Dense(128, activation='relu')(merged_input)
+    output = Dense(256, activation='relu')(output)
+    output = Dense(16, activation='relu')(output)
+    output = Dense(256, activation='relu')(output)
+    output = Dense(128, activation='relu')(output)
+
+    # Final outputs, need to have 5 of them. Might be a better solution
+    # somewhere, but outputs have to correspond the inputs to train
+    # the autoencoder properly.
+
+    final_output_list = []
+
+    # TODO: get output sizes from the data itself rather than manually
+
+    final_output_list.append(Dense(1)(output))
+    final_output_list.append(Dense(1)(output))
+    final_output_list.append(Dense(1)(output))
+    final_output_list.append(Dense(1)(output))
+    final_output_list.append(Dense(1)(output))
+
+    return final_output_list
+
+
 def construct_model(data):
 
     #print(data)
     input_list, output_list = fill_io_lists(data)
 
-    print(input_list)
-    print(output_list)
+    # Merge the output layers from input
+    merged_input = Concatenate(name='concat', axis=1)(output_list)
 
+    # Add the autoencoder proper
+    final_output_list = add_autoencoding_layers(merged_input)
 
-    model = Model(inputs=input_list, outputs=output_list)
-    # Check the loss function, binary?
-    model.compile(optimizer='adam', loss='categorical_crossentropy')
-    print(model.summary())
+    model = Model(inputs=input_list, outputs=final_output_list)
+
+    #model.compile(optimizer='adam', loss='mse')
+    #print(model.summary())
+
+    # TODO: Padding problem! Pandas doesn't like numpy
+    print(data.dtypes)
+    print(data.url)
+    # Train the autoencoder
+    #model.fit([data.status, data.byte, data.rtime, data.method, data.url],
+    #          [data.status, data.byte, data.rtime, data.method, data.url],
+    #          epochs=10)

@@ -19,7 +19,7 @@ data = read('training_dataset/good_access.log')
 
 # Process training data
 # Returns: ['status', 'byte', 'rtime', 'method', 'url']
-data = process_apache_log(data)
+#data = process_apache_log(data)
 #print(data)
 
 # Have to have numpy arrays!
@@ -28,12 +28,13 @@ data = process_apache_log(data)
 # (Unsupported object type list).
 
 # Construct the model
-model = construct_model(data)
+#model = construct_model(data)
 
 # Train the model
 # neural network is trained to learn an average presentation of usual data
 
-# Testing embedding layer with status data:
+
+# Testing
 def test_status_input():
     inp = Input(shape=1, name='status')
     emb = Embedding(input_dim=10, output_dim=10, input_length=1)(inp)
@@ -47,8 +48,23 @@ def test_status_input():
     print(output_array)
     return
 
-#test_status_input()
+def test_url_input():
+    inp = Input(shape=1, name='url')
+    emb = Embedding(input_dim=10, output_dim=10, input_length=1)(inp)
+    flat = Flatten()(emb)
+    out = Dense(10, activation='relu')(flat)
 
+    model = Model(inputs=[inp], outputs=[out])
+    model.compile(optimizer='adam', loss='categorical_crossentropy')
+    print(model.summary())
+    output_array = model.predict(data.url)
+    print(output_array)
+    return
+
+#test_status_input()
+data.url = pad(data.url)
+print(data.url)
+#test_url_input()
 
 # Save the model
 # the model is saved to a file to use with the monitor.py
