@@ -19,7 +19,7 @@ data = read('training_dataset/good_access.log')
 
 # Process training data
 # Returns: ['status', 'byte', 'rtime', 'method', 'url']
-#data = process_apache_log(data)
+data = process_apache_log(data)
 #print(data)
 
 # Have to have numpy arrays!
@@ -62,8 +62,8 @@ def test_url_input():
     return
 
 #test_status_input()
-data.url = pad(data.url)
-print(data.url)
+#data.url = pad(data.url)
+#print(data.url)
 #test_url_input()
 
 # Save the model

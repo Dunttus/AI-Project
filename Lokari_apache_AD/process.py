@@ -2,6 +2,7 @@
 # If the model is being trained, save all tokenizers used.
 import pandas, numpy
 from keras_preprocessing.text import Tokenizer
+from tensorflow.keras.preprocessing.sequence import pad_sequences as pad
 
 
 # TODO: Minimize cardinality (amount of categories) in functions
@@ -19,19 +20,22 @@ def process_apache_log(data):
     processed.rtime = normalize_response_time(data.rtime)
     processed.method = tokenize_http_methods(data.method)
 
-    # TODO: separate this to it's own dataframe!
-    processed.url = tokenize_url(data.url)
+    # Separate url data because it has more than one columns after
+    # processing.
+    urldata = data.drop(columns=['time', 'ip', 'status', 'byte','rtime',
+                             'method', 'protocol'])
+    urldata.url = tokenize_url(urldata.url)
 
     #print(processed)
     #print(processed.dtypes)
-    return processed
+    return processed, urldata
 
 
 def tokenize_http_status(data):
 
     tokenizer = Tokenizer(num_words=20, filters='')
     tokenizer.fit_on_texts(data.astype(str))
-    # save tokenizer here??
+    # save tokenizer
     data = tokenizer.texts_to_sequences(data.astype(str))
     data = numpy.array(data)
     return data
@@ -55,7 +59,7 @@ def tokenize_http_methods(data):
 
     tokenizer = Tokenizer(num_words=6, filters='')
     tokenizer.fit_on_texts(data)
-    # save tokenizer here??
+    # save tokenizer
     data = tokenizer.texts_to_sequences(data)
     data = numpy.array(data)
     return data
@@ -63,21 +67,14 @@ def tokenize_http_methods(data):
 
 def tokenize_url(data):
 
-    data = pandas.DataFrame()
-
     # TODO: Check word-level tokenizing, tf-idf is probably better
-    # TODO: Check tokenizer settings, is it eg. lowercasing on default?
-    tokenizer = Tokenizer(num_words=128, char_level=True)
+    tokenizer = Tokenizer(num_words=128, filters='', char_level=True,
+                          lower=False)
     tokenizer.fit_on_texts(data)
-    data = tokenizer.texts_to_sequences(data)
-    data = numpy.array(data)
-
-    # TODO: make a new dataframe!
-    # Pad the data later to be of equal length?
-    # Keras pad_sequences changes the datatype to numpy.ndarray, which doesn't
-    # fit into a pandas column easy.
+    # save tokenizer
+    data = pad(tokenizer.texts_to_sequences(data))
 
     # tfidf tokenizer code
     #data = tokenizer.texts_to_matrix(data, mode='tfidf')
-
+    #print(padded)
     return data
