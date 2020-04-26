@@ -48,7 +48,7 @@ def normalize_response_size(data):
     mean = data.mean()
     # Standard deviation in response size values
     std = data.std()
-    # Zscore = Normalized deviation, values <-2 and 2> present 5% confidence
+    # Zscore = Normalized deviation, values <-2 and 2< present 5% confidence
     data = (data - mean) / std
 
     return data
@@ -56,11 +56,11 @@ def normalize_response_size(data):
 
 def normalize_response_time(data):
 
-    # Average tome of a response
+    # Average time of a response
     mean = data.mean()
     # Standard deviation in response time values
     std = data.std()
-    # Zscore = Normalized deviation, values <-2 and 2> present 5% confidence
+    # Zscore = Normalized deviation, values <-2 and 2< present 5% confidence
     data = (data - mean) / std
     print(data)
     return data

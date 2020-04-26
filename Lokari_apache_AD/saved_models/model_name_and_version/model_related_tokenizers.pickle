@@ -1,0 +1,2 @@
+All the tokenizer related to the model should be saved to same directory
+as the model itself.

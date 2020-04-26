@@ -123,13 +123,20 @@ def construct_model(data, urldata):
     print(model.summary())
 
     # Train the autoencoder
+    # TODO: Set a monitor here to optimize training time
     model.fit([data.status, data.byte, data.rtime, data.method, urldata],
               [data.status, data.byte, data.rtime, data.method, urldata],
               epochs=1000)
 
 
-# TODO: save function, save to dir: saved_tokenizers/
+# TODO: When the model is saved, create a directory to include it all
+# TODO: save tokenizers for future use:
 def save_tokenizer():
 
     return
 
+
+# TODO: save the trained model for future use
+def save_model():
+
+    return
