@@ -18,17 +18,14 @@ env['TF_CPP_MIN_LOG_LEVEL'] = '2'
 data = read('training_dataset/good_access.log')
 
 # Process training data
-# Returns: ['status', 'byte', 'rtime', 'method', 'url']
-data = process_apache_log(data)
-#print(data)
-
-# Have to have numpy arrays!
-# Testing with model.predict fails with
-# ValueError: Failed to convert a NumPy array to a Tensor
-# (Unsupported object type list).
+# Returns: ['status', 'byte', 'rtime', 'method'] and tokenized url text as
+# numpy array.
+data, urldata = process_apache_log(data)
+#print(urldata)
 
 # Construct the model
-#model = construct_model(data)
+model = construct_model(data, urldata)
+
 
 # Train the model
 # neural network is trained to learn an average presentation of usual data
@@ -49,21 +46,19 @@ def test_status_input():
     return
 
 def test_url_input():
-    inp = Input(shape=1, name='url')
-    emb = Embedding(input_dim=10, output_dim=10, input_length=1)(inp)
+    inp = Input(shape=urldata.shape[1], name='url')
+    emb = Embedding(input_dim=128, output_dim=32, input_length=52)(inp)
     flat = Flatten()(emb)
-    out = Dense(10, activation='relu')(flat)
+    out = Dense(32, activation='relu')(flat)
 
     model = Model(inputs=[inp], outputs=[out])
     model.compile(optimizer='adam', loss='categorical_crossentropy')
     print(model.summary())
-    output_array = model.predict(data.url)
+    output_array = model.predict(urldata)
     print(output_array)
     return
 
-#test_status_input()
-#data.url = pad(data.url)
-#print(data.url)
+
 #test_url_input()
 
 # Save the model

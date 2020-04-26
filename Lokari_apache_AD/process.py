@@ -11,7 +11,7 @@ def process_apache_log(data):
 
     # ["time", "ip", "status", "byte", "rtime", "method", "url", "protocol"]
     # We are dropping some for now
-    processed = data.drop(columns=['time','ip','protocol'])
+    processed = data.drop(columns=['time','ip','protocol','url'],)
     #print(processed.columns)
     # ['status', 'byte', 'rtime', 'method', 'url']
 
@@ -24,8 +24,9 @@ def process_apache_log(data):
     # processing.
     urldata = data.drop(columns=['time', 'ip', 'status', 'byte','rtime',
                              'method', 'protocol'])
-    urldata.url = tokenize_url(urldata.url)
+    urldata = tokenize_url(urldata.url)
 
+    #print(urldata)
     #print(processed)
     #print(processed.dtypes)
     return processed, urldata
@@ -72,6 +73,7 @@ def tokenize_url(data):
                           lower=False)
     tokenizer.fit_on_texts(data)
     # save tokenizer
+    # TODO: Set padding length to a constant
     data = pad(tokenizer.texts_to_sequences(data))
 
     # tfidf tokenizer code

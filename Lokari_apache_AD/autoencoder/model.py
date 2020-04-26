@@ -4,13 +4,15 @@
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import \
     Input, Embedding, Flatten, Dense, Concatenate
-from tensorflow.keras.preprocessing.sequence import pad_sequences as pad
 
 # These processing functions need to be linked to these!
 # Data shapes have to match
 
+
 def http_status_layer(data):
     inp = Input(name='status_input',shape=1)
+
+    # Embedding layer
     # input_dim: how many categories altogether?
     # output_dim: how many embeddings to create?
     # With http status codes, how many are of significance?
@@ -39,23 +41,16 @@ def method_layer(data):
     return inp, outp
 
 
-# TODO: Data shape is critical here, pandas & numpy...
 def url_layer(data):
-    # Pad the data here! This really should be done in the process.py, this
-    # is a workaround because the datatypes don't fit well together. Done
-    # here, the padding function works out of the box.
-
-    data = pad(data)
-    print(data)
-    inp = Input(name='url_input', shape=1)
+    inp = Input(name='url_input', shape=data.shape[1])
     # TODO: Check word level tokenizing options, ref process.py tokenize_url
     # TODO: Check input_length relation to data.shape
-    emb = Embedding(input_dim=128, output_dim=32, input_length=128)(inp)
+    emb = Embedding(input_dim=128, output_dim=32, input_length=52)(inp)
     outp = Flatten()(emb)
     return inp, outp
 
 
-def fill_io_lists(data):
+def fill_io_lists(data, urldata):
 
     input_list, output_list = [], []
 
@@ -75,7 +70,7 @@ def fill_io_lists(data):
     input_list.append(io_method[0])
     output_list.append(io_method[1])
 
-    io_url = url_layer(data.url)
+    io_url = url_layer(urldata)
     input_list.append(io_url[0])
     output_list.append(io_url[1])
 
@@ -102,15 +97,15 @@ def add_autoencoding_layers(merged_input):
     final_output_list.append(Dense(1)(output))
     final_output_list.append(Dense(1)(output))
     final_output_list.append(Dense(1)(output))
-    final_output_list.append(Dense(1)(output))
+    final_output_list.append(Dense(52)(output))
 
     return final_output_list
 
 
-def construct_model(data):
+def construct_model(data, urldata):
 
     #print(data)
-    input_list, output_list = fill_io_lists(data)
+    input_list, output_list = fill_io_lists(data, urldata)
 
     # Merge the output layers from input
     merged_input = Concatenate(name='concat', axis=1)(output_list)
@@ -120,13 +115,10 @@ def construct_model(data):
 
     model = Model(inputs=input_list, outputs=final_output_list)
 
-    #model.compile(optimizer='adam', loss='mse')
-    #print(model.summary())
+    model.compile(optimizer='adam', loss='mse')
+    print(model.summary())
 
-    # TODO: Padding problem! Pandas doesn't like numpy
-    print(data.dtypes)
-    print(data.url)
     # Train the autoencoder
-    #model.fit([data.status, data.byte, data.rtime, data.method, data.url],
-    #          [data.status, data.byte, data.rtime, data.method, data.url],
-    #          epochs=10)
+    model.fit([data.status, data.byte, data.rtime, data.method, urldata],
+              [data.status, data.byte, data.rtime, data.method, urldata],
+              epochs=10)
