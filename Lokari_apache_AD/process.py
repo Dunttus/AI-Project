@@ -42,19 +42,28 @@ def tokenize_http_status(data):
     return data
 
 
-def normalize_response_size(size):
+def normalize_response_size(data):
+
+    # Average size of a response
+    mean = data.mean()
+    # Standard deviation in response size values
+    std = data.std()
+    # Zscore = Normalized deviation, values <-2 and 2> present 5% confidence
+    data = (data - mean) / std
+
+    return data
 
 
-    # calculate average size and normalize?
+def normalize_response_time(data):
 
-    return size
-
-
-def normalize_response_time(time):
-
-    # calculate average size and normalize?
-
-    return time
+    # Average tome of a response
+    mean = data.mean()
+    # Standard deviation in response time values
+    std = data.std()
+    # Zscore = Normalized deviation, values <-2 and 2> present 5% confidence
+    data = (data - mean) / std
+    print(data)
+    return data
 
 
 def tokenize_http_methods(data):

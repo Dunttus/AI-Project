@@ -20,13 +20,14 @@ data = read('training_dataset/good_access.log')
 # Process training data
 # Returns: ['status', 'byte', 'rtime', 'method'] and tokenized url text as
 # numpy array.
+
 data, urldata = process_apache_log(data)
-print(data)
+
 #print(urldata)
 
 
 # Construct the model
-#model = construct_model(data, urldata)
+model = construct_model(data, urldata)
 
 
 # Train the model
