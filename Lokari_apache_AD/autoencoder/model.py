@@ -79,11 +79,13 @@ def fill_io_lists(data, urldata):
 
 def add_autoencoding_layers(merged_input):
 
-    output = Dense(128, activation='relu')(merged_input)
+    output = Dense(1024, activation='relu')(merged_input)
+    output = Dense(512, activation='relu')(output)
     output = Dense(256, activation='relu')(output)
-    output = Dense(16, activation='relu')(output)
+    output = Dense(32, activation='relu')(output)
     output = Dense(256, activation='relu')(output)
-    output = Dense(128, activation='relu')(output)
+    output = Dense(512, activation='relu')(output)
+    output = Dense(1024, activation='relu')(output)
 
     # Final outputs, need to have 5 of them. Might be a better solution
     # somewhere, but outputs have to correspond the inputs to train
@@ -93,11 +95,11 @@ def add_autoencoding_layers(merged_input):
 
     # TODO: get output sizes from the data itself rather than manually
 
-    final_output_list.append(Dense(1)(output))
-    final_output_list.append(Dense(1)(output))
-    final_output_list.append(Dense(1)(output))
-    final_output_list.append(Dense(1)(output))
-    final_output_list.append(Dense(52)(output))
+    final_output_list.append(Dense(1, name='status')(output))
+    final_output_list.append(Dense(1, name='byte')(output))
+    final_output_list.append(Dense(1, name='rtime')(output))
+    final_output_list.append(Dense(1, name='method')(output))
+    final_output_list.append(Dense(52, name='url')(output))
 
     return final_output_list
 
@@ -121,4 +123,11 @@ def construct_model(data, urldata):
     # Train the autoencoder
     model.fit([data.status, data.byte, data.rtime, data.method, urldata],
               [data.status, data.byte, data.rtime, data.method, urldata],
-              epochs=10)
+              epochs=1000)
+
+
+# TODO: save function, save to dir: saved_tokenizers/
+def save_tokenizer():
+
+    return
+
