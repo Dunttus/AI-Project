@@ -21,45 +21,17 @@ data = read('training_dataset/good_access.log')
 # Returns: ['status', 'byte', 'rtime', 'method'] and tokenized url text as
 # numpy array.
 data, urldata = process_apache_log(data)
+print(data)
 #print(urldata)
 
+
 # Construct the model
-model = construct_model(data, urldata)
+#model = construct_model(data, urldata)
 
 
 # Train the model
 # neural network is trained to learn an average presentation of usual data
 
-
-# Testing
-def test_status_input():
-    inp = Input(shape=1, name='status')
-    emb = Embedding(input_dim=10, output_dim=10, input_length=1)(inp)
-    flat = Flatten()(emb)
-    out = Dense(10, activation='relu')(flat)
-
-    model = Model(inputs=[inp], outputs=[out])
-    model.compile(optimizer='adam', loss='categorical_crossentropy')
-    print(model.summary())
-    output_array = model.predict(data.status)
-    print(output_array)
-    return
-
-def test_url_input():
-    inp = Input(shape=urldata.shape[1], name='url')
-    emb = Embedding(input_dim=128, output_dim=32, input_length=52)(inp)
-    flat = Flatten()(emb)
-    out = Dense(32, activation='relu')(flat)
-
-    model = Model(inputs=[inp], outputs=[out])
-    model.compile(optimizer='adam', loss='categorical_crossentropy')
-    print(model.summary())
-    output_array = model.predict(urldata)
-    print(output_array)
-    return
-
-
-#test_url_input()
 
 # Save the model
 # the model is saved to a file to use with the monitor.py

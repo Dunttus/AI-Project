@@ -44,6 +44,7 @@ def tokenize_http_status(data):
 
 def normalize_response_size(size):
 
+
     # calculate average size and normalize?
 
     return size

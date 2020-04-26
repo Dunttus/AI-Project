@@ -45,7 +45,7 @@ def url_layer(data):
     inp = Input(name='url_input', shape=data.shape[1])
     # TODO: Check word level tokenizing options, ref process.py tokenize_url
     # TODO: Check input_length relation to data.shape
-    emb = Embedding(input_dim=128, output_dim=32, input_length=52)(inp)
+    emb = Embedding(input_dim=128, output_dim=16, input_length=52)(inp)
     outp = Flatten()(emb)
     return inp, outp
 
@@ -79,13 +79,13 @@ def fill_io_lists(data, urldata):
 
 def add_autoencoding_layers(merged_input):
 
-    output = Dense(1024, activation='relu')(merged_input)
-    output = Dense(512, activation='relu')(output)
+    output = Dense(512, activation='relu')(merged_input)
     output = Dense(256, activation='relu')(output)
+    output = Dense(128, activation='relu')(output)
     output = Dense(32, activation='relu')(output)
+    output = Dense(128, activation='relu')(output)
     output = Dense(256, activation='relu')(output)
     output = Dense(512, activation='relu')(output)
-    output = Dense(1024, activation='relu')(output)
 
     # Final outputs, need to have 5 of them. Might be a better solution
     # somewhere, but outputs have to correspond the inputs to train
@@ -94,6 +94,8 @@ def add_autoencoding_layers(merged_input):
     final_output_list = []
 
     # TODO: get output sizes from the data itself rather than manually
+    # This is bound to break! Testing dataset has longest url text
+    # of 52 length.
 
     final_output_list.append(Dense(1, name='status')(output))
     final_output_list.append(Dense(1, name='byte')(output))
