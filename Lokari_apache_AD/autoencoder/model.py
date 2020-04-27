@@ -137,7 +137,7 @@ def construct_model(data, urldata):
 
     # Visualization of the training history
     # TODO: make the visualization work ;)
-    #plot_training(history)
+    plot_training(history)
 
 
 def model_monitor():
@@ -161,25 +161,26 @@ def model_monitor():
 
 def plot_training(history):
 
+    print("NICE CHARTS THERE MATE!")
     # Almost straight from https://keras.io/visualization/
     # Plot training & validation accuracy values
     # TODO: add metrics to model.fit function
-    plt.plot(history.history['acc'])
-    plt.plot(history.history['val_acc'])
-    plt.title('Model accuracy')
-    plt.ylabel('Accuracy')
-    plt.xlabel('Epoch')
-    plt.legend(['Train', 'Test'], loc='upper left')
-    plt.show()
+    #plt.plot(history.history['accuracy'])
+    #plt.plot(history.history['val_acc'])
+    #plt.title('Model accuracy')
+    #plt.ylabel('Accuracy')
+    #plt.xlabel('Epoch')
+    #plt.legend(['Train'], loc='upper left')
+    #plt.show()
 
     # Plot training & validation loss values
-    plt.plot(history.history['loss'])
-    plt.plot(history.history['val_loss'])
-    plt.title('Model loss')
-    plt.ylabel('Loss')
-    plt.xlabel('Epoch')
-    plt.legend(['Train', 'Test'], loc='upper left')
-    plt.show()
+    #plt.plot(history.history['loss'])
+    #plt.plot(history.history['val_loss'])
+    #plt.title('Model loss')
+    #plt.ylabel('Loss')
+    #plt.xlabel('Epoch')
+    #plt.legend(['Train'], loc='upper left')
+    #plt.show()
 
     return
 
