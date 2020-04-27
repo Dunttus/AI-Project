@@ -1,4 +1,4 @@
- Main model construction code, returns an instance of Model
+# Main mdel construction code, returns an instance of Model
 # viewable with print((model.summary())
 
 from tensorflow.keras.models import Model
