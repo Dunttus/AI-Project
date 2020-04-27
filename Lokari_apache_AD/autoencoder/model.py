@@ -1,4 +1,4 @@
-# Main model construction code, returns an instance of Model
+ Main model construction code, returns an instance of Model
 # viewable with print((model.summary())
 
 from tensorflow.keras.models import Model
@@ -6,6 +6,7 @@ from tensorflow.keras.callbacks import EarlyStopping
 from tensorflow.keras.layers import \
     Input, Embedding, Flatten, Dense, Concatenate
 import matplotlib.pyplot as plt
+import pickle
 
 # These processing functions need to be linked to these!
 # Data shapes have to match
@@ -186,10 +187,31 @@ def plot_training(history):
 
 # TODO: When the model is saved, create a directory to include it all
 # TODO: save tokenizers for future use:
-def save_tokenizer():
+def save_tokenizer_status(tokenizer):
+
+    with open('./saved_models/model_name_and_version/status.pickle', 'wb') as file:
+        pickle.dump(tokenizer, file, protocol=pickle.HIGHEST_PROTOCOL)
 
     return
 
+def save_tokenizer_method(tokenizer):
+
+    with open('./saved_models/model_name_and_version/method.pickle', 'wb') as file:
+        pickle.dump(tokenizer, file, protocol=pickle.HIGHEST_PROTOCOL)
+
+    return
+
+def save_tokenizer_url(tokenizer):
+
+    with open('./saved_models/model_name_and_version/url.pickle', 'wb') as file:
+        pickle.dump(tokenizer, file, protocol=pickle.HIGHEST_PROTOCOL)
+
+    return
+
+# TODO: save the trained model for future use
+def save_model():
+
+    return
 
 # TODO: save the trained model for future use
 def save_model():

@@ -3,7 +3,10 @@
 import pandas, numpy
 from keras_preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences as pad
-
+from tensorflow.keras.preprocessing.sequence import pad_sequences as pad
+from Lokari_apache_AD.autoencoder.model import save_tokenizer_status
+from Lokari_apache_AD.autoencoder.model import save_tokenizer_method
+from Lokari_apache_AD.autoencoder.model import save_tokenizer_url
 
 # TODO: Minimize cardinality (amount of categories) in functions
 
@@ -36,7 +39,7 @@ def tokenize_http_status(data):
 
     tokenizer = Tokenizer(num_words=20, filters='')
     tokenizer.fit_on_texts(data.astype(str))
-    # save tokenizer
+    save_tokenizer_status(tokenizer)
     data = tokenizer.texts_to_sequences(data.astype(str))
     data = numpy.array(data)
     return data
@@ -70,7 +73,7 @@ def tokenize_http_methods(data):
 
     tokenizer = Tokenizer(num_words=6, filters='')
     tokenizer.fit_on_texts(data)
-    # save tokenizer
+    save_tokenizer_method(tokenizer)
     data = tokenizer.texts_to_sequences(data)
     data = numpy.array(data)
     return data
@@ -82,7 +85,7 @@ def tokenize_url(data):
     tokenizer = Tokenizer(num_words=128, filters='', char_level=True,
                           lower=False)
     tokenizer.fit_on_texts(data)
-    # save tokenizer
+    save_tokenizer_url(tokenizer)
     # TODO: Set padding length to a constant
     data = pad(tokenizer.texts_to_sequences(data))
 
