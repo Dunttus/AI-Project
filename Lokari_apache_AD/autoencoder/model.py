@@ -2,8 +2,10 @@
 # viewable with print((model.summary())
 
 from tensorflow.keras.models import Model
+from tensorflow.keras.callbacks import EarlyStopping
 from tensorflow.keras.layers import \
     Input, Embedding, Flatten, Dense, Concatenate
+import matplotlib.pyplot as plt
 
 # These processing functions need to be linked to these!
 # Data shapes have to match
@@ -116,18 +118,68 @@ def construct_model(data, urldata):
 
     # Add the autoencoder proper
     final_output_list = add_autoencoding_layers(merged_input)
-
     model = Model(inputs=input_list, outputs=final_output_list)
+
+    monitor = model_monitor()
 
     model.compile(optimizer='adam', loss='mse')
     print(model.summary())
 
     # Train the autoencoder
-    # TODO: Set a monitor here to optimize training time
-    model.fit([data.status, data.byte, data.rtime, data.method, urldata],
-              [data.status, data.byte, data.rtime, data.method, urldata],
-              epochs=1000)
+    history = model.fit(
+            [data.status, data.byte, data.rtime, data.method, urldata],
+            [data.status, data.byte, data.rtime, data.method, urldata],
+            epochs=2000,
+            callbacks=[monitor]
+    )
 
+    # Visualization of the training history
+    # TODO: make it work ;)
+    #plot_training(history)
+
+
+def model_monitor():
+    # This monitor stops when no new learning is occurring
+    # check: val_loss, min_delta, mode
+    # patience = how many epochs can pass without improvement
+    # min_delta = minimum improvement 1e-3 = 0,001
+    # NOTE: if all the epochs are through, the monitor will NOT trigger
+    # thus not restoring the best weights!
+    mon = EarlyStopping(
+            monitor='loss',
+            min_delta=1e-3,
+            patience=500,
+            verbose=1,
+            mode='auto',
+            restore_best_weights=True
+            )
+
+    return mon
+
+
+def plot_training(history):
+
+    # Almost straight from https://keras.io/visualization/
+    # Plot training & validation accuracy values
+    # TODO: add metrics to model.fit function
+    plt.plot(history.history['acc'])
+    plt.plot(history.history['val_acc'])
+    plt.title('Model accuracy')
+    plt.ylabel('Accuracy')
+    plt.xlabel('Epoch')
+    plt.legend(['Train', 'Test'], loc='upper left')
+    plt.show()
+
+    # Plot training & validation loss values
+    plt.plot(history.history['loss'])
+    plt.plot(history.history['val_loss'])
+    plt.title('Model loss')
+    plt.ylabel('Loss')
+    plt.xlabel('Epoch')
+    plt.legend(['Train', 'Test'], loc='upper left')
+    plt.show()
+
+    return
 
 # TODO: When the model is saved, create a directory to include it all
 # TODO: save tokenizers for future use:

@@ -62,7 +62,7 @@ def normalize_response_time(data):
     std = data.std()
     # Zscore = Normalized deviation, values <-2 and 2< present 5% confidence
     data = (data - mean) / std
-    print(data)
+
     return data
 
 
