@@ -122,7 +122,9 @@ def construct_model(data, urldata):
 
     monitor = model_monitor()
 
-    model.compile(optimizer='adam', loss='mse')
+    model.compile(optimizer='adam',
+                  loss='mse',
+                  metrics=['accuracy'])
     print(model.summary())
 
     # Train the autoencoder
@@ -134,7 +136,7 @@ def construct_model(data, urldata):
     )
 
     # Visualization of the training history
-    # TODO: make it work ;)
+    # TODO: make the visualization work ;)
     #plot_training(history)
 
 
