@@ -79,13 +79,11 @@ def fill_io_lists(data, urldata):
 
 def add_autoencoding_layers(merged_input):
 
-    output = Dense(512, activation='relu')(merged_input)
-    output = Dense(256, activation='relu')(output)
+    output = Dense(256, activation='relu')(merged_input)
     output = Dense(128, activation='relu')(output)
-    output = Dense(32, activation='relu')(output)
+    output = Dense(16, activation='relu')(output)
     output = Dense(128, activation='relu')(output)
     output = Dense(256, activation='relu')(output)
-    output = Dense(512, activation='relu')(output)
 
     # Final outputs, need to have 5 of them. Might be a better solution
     # somewhere, but outputs have to correspond the inputs to train

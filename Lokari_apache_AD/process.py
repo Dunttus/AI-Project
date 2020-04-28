@@ -44,7 +44,6 @@ def tokenize_http_status(data):
 
 def normalize_response_size(data):
 
-    # TODO: Save the mean and std variables also!
     # Average size of a response
     mean = data.mean()
     # Standard deviation in response size values

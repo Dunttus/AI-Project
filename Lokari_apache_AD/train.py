@@ -22,4 +22,4 @@ data = read('training_dataset/combine_access.log')
 data, urldata = process_apache_log(data)
 
 # Construct, train and save the model
-#model = construct_model(data, urldata)
+model = construct_model(data, urldata)
