@@ -7,3 +7,4 @@ datasets/apache_access_log/access.log
 /Lokari_apache_AD/training_dataset/3_access.log
 /Lokari_apache_AD/training_dataset/bad_access.log
 /Lokari_apache_AD/training_dataset/combine_access.log
+!/Lokari_apache_AD/saved_models/0.1
