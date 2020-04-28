@@ -44,7 +44,7 @@ def tokenize_http_status(data):
 
 def normalize_response_size(data):
 
-    # Save the mean and stdev also!
+    # TODO: Save the mean and std variables also!
     # Average size of a response
     mean = data.mean()
     # Standard deviation in response size values
@@ -57,7 +57,7 @@ def normalize_response_size(data):
 
 def normalize_response_time(data):
 
-    # Save the mean and stdev also!
+    # TODO: Save the mean and std variables also!
     # Average time of a response
     mean = data.mean()
     # Standard deviation in response time values
@@ -102,9 +102,9 @@ def save_tokenizer(tokenizer, name):
     except FileExistsError:
         print('Tokenizer ' + name + ' exists for this version, overwriting...')
 
-    with open('saved_models/'
-              + config.VERSION + '/'
-              + name + '.pickle', 'wb') as file:
+    filename = 'saved_models/' + config.VERSION + '/' + name + '.pickle'
+
+    with open(filename, 'wb') as file:
         pickle.dump(tokenizer, file, protocol=pickle.HIGHEST_PROTOCOL)
 
     return
