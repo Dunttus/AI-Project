@@ -49,6 +49,7 @@ def normalize_response_size(data):
     mean = data.mean()
     # Standard deviation in response size values
     std = data.std()
+    save_numbers(std, mean, "size")
     # Zscore = Normalized deviation, values <-2 and 2< present 5% confidence
     data = (data - mean) / std
 
@@ -57,11 +58,11 @@ def normalize_response_size(data):
 
 def normalize_response_time(data):
 
-    # TODO: Save the mean and std variables also!
     # Average time of a response
     mean = data.mean()
     # Standard deviation in response time values
     std = data.std()
+    save_numbers(std, mean, "rtime")
     # Zscore = Normalized deviation, values <-2 and 2< present 5% confidence
     data = (data - mean) / std
 
@@ -109,4 +110,20 @@ def save_tokenizer(tokenizer, name):
     with open(filename, 'wb') as file:
         pickle.dump(tokenizer, file, protocol=pickle.HIGHEST_PROTOCOL)
 
+    return
+
+
+def save_numbers(mean, std, name):
+
+    filename = filename = 'saved_models/' + config.VERSION + '/' + name + '.txt'
+    # TODO: better readable format...
+    data = "mean: " + str(mean) + "\nstdev: " + str(std)
+
+    with open(filename, 'w') as file:
+        file.write(data)
+
+
+def save_config():
+
+    # TODO: save configuration parameters so nothing gets lost!
     return
