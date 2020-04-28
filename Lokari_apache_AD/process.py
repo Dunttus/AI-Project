@@ -1,12 +1,10 @@
 # Convert the log data into fully numerical presentation.
 # If the model is being trained, save all tokenizers used.
+import pickle
 import pandas, numpy
 from keras_preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences as pad
 from tensorflow.keras.preprocessing.sequence import pad_sequences as pad
-from Lokari_apache_AD.autoencoder.model import save_tokenizer_status
-from Lokari_apache_AD.autoencoder.model import save_tokenizer_method
-from Lokari_apache_AD.autoencoder.model import save_tokenizer_url
 
 # TODO: Minimize cardinality (amount of categories) in functions
 
@@ -93,3 +91,27 @@ def tokenize_url(data):
     #data = tokenizer.texts_to_matrix(data, mode='tfidf')
     #print(padded)
     return data
+
+
+def save_tokenizer_status(tokenizer):
+
+    with open('saved_models/model_name_and_version/status.pickle', 'wb') as file:
+        pickle.dump(tokenizer, file, protocol=pickle.HIGHEST_PROTOCOL)
+
+    return
+
+
+def save_tokenizer_method(tokenizer):
+
+    with open('saved_models/model_name_and_version/method.pickle', 'wb') as file:
+        pickle.dump(tokenizer, file, protocol=pickle.HIGHEST_PROTOCOL)
+
+    return
+
+
+def save_tokenizer_url(tokenizer):
+
+    with open('saved_models/model_name_and_version/url.pickle', 'wb') as file:
+        pickle.dump(tokenizer, file, protocol=pickle.HIGHEST_PROTOCOL)
+
+    return
