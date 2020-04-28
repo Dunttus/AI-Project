@@ -6,8 +6,8 @@ from keras_preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences as pad
 from tensorflow.keras.preprocessing.sequence import pad_sequences as pad
 
-# TODO: Minimize cardinality (amount of categories) in functions
 
+# TODO: Minimize cardinality (amount of categories) in functions
 def process_apache_log(data):
 
     # ["time", "ip", "status", "byte", "rtime", "method", "url", "protocol"]

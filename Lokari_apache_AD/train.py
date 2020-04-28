@@ -4,10 +4,7 @@ from os import environ as env
 from Lokari_apache_AD.read_data import read
 from Lokari_apache_AD.output_opts import set_output
 from Lokari_apache_AD.process import process_apache_log
-from tensorflow.keras.layers import Input, Embedding, Flatten, Dense
-from tensorflow.keras.models import Model
 from Lokari_apache_AD.autoencoder.model import construct_model
-from tensorflow.keras.preprocessing.sequence import pad_sequences as pad
 
 
 # Set output options for pandas and numpy, minimize TensorFlow output
@@ -22,13 +19,10 @@ data = read('training_dataset/good_access.log')
 # numpy array.
 
 data, urldata = process_apache_log(data)
-
-#print(urldata)
-
+print(urldata)
 
 # Construct the model
 model = construct_model(data, urldata)
-
 
 # Train the model
 # neural network is trained to learn an average presentation of usual data

@@ -6,10 +6,6 @@ from tensorflow.keras.callbacks import EarlyStopping
 from tensorflow.keras.layers import \
     Input, Embedding, Flatten, Dense, Concatenate
 import matplotlib.pyplot as plt
-import pickle
-
-# These processing functions need to be linked to these!
-# Data shapes have to match
 
 
 def http_status_layer(data):
