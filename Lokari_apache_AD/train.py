@@ -5,7 +5,9 @@ from Lokari_apache_AD.read_data import read
 from Lokari_apache_AD.output_opts import set_output
 from Lokari_apache_AD.process import process_apache_log
 from Lokari_apache_AD.autoencoder.model import construct_model
+import Lokari_apache_AD.config as config
 
+print(config.VERSION)
 
 # Set output options for pandas and numpy, minimize TensorFlow output
 set_output()
@@ -19,10 +21,10 @@ data = read('training_dataset/good_access.log')
 # numpy array.
 
 data, urldata = process_apache_log(data)
-print(urldata)
+#print(urldata)
 
 # Construct the model
-model = construct_model(data, urldata)
+#model = construct_model(data, urldata)
 
 # Train the model
 # neural network is trained to learn an average presentation of usual data

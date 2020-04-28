@@ -1,10 +1,9 @@
 # Convert the log data into fully numerical presentation.
-# If the model is being trained, save all tokenizers used.
-import pickle
-import pandas, numpy
+import pickle, numpy
+from os import mkdir
 from keras_preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences as pad
-from tensorflow.keras.preprocessing.sequence import pad_sequences as pad
+import Lokari_apache_AD.config as config
 
 
 # TODO: Minimize cardinality (amount of categories) in functions
@@ -24,7 +23,7 @@ def process_apache_log(data):
     # Separate url data because it has more than one columns after
     # processing.
     urldata = data.drop(columns=['time', 'ip', 'status', 'byte','rtime',
-                             'method', 'protocol'])
+                                 'method', 'protocol'])
     urldata = tokenize_url(urldata.url)
 
     #print(urldata)
@@ -37,7 +36,7 @@ def tokenize_http_status(data):
 
     tokenizer = Tokenizer(num_words=20, filters='')
     tokenizer.fit_on_texts(data.astype(str))
-    save_tokenizer_status(tokenizer)
+    save_tokenizer(tokenizer, "status")
     data = tokenizer.texts_to_sequences(data.astype(str))
     data = numpy.array(data)
     return data
@@ -45,6 +44,7 @@ def tokenize_http_status(data):
 
 def normalize_response_size(data):
 
+    # Save the mean and stdev also!
     # Average size of a response
     mean = data.mean()
     # Standard deviation in response size values
@@ -57,6 +57,7 @@ def normalize_response_size(data):
 
 def normalize_response_time(data):
 
+    # Save the mean and stdev also!
     # Average time of a response
     mean = data.mean()
     # Standard deviation in response time values
@@ -71,7 +72,7 @@ def tokenize_http_methods(data):
 
     tokenizer = Tokenizer(num_words=6, filters='')
     tokenizer.fit_on_texts(data)
-    save_tokenizer_method(tokenizer)
+    save_tokenizer(tokenizer, "method")
     data = tokenizer.texts_to_sequences(data)
     data = numpy.array(data)
     return data
@@ -83,7 +84,7 @@ def tokenize_url(data):
     tokenizer = Tokenizer(num_words=128, filters='', char_level=True,
                           lower=False)
     tokenizer.fit_on_texts(data)
-    save_tokenizer_url(tokenizer)
+    save_tokenizer(tokenizer, "url")
     # TODO: Set padding length to a constant
     data = pad(tokenizer.texts_to_sequences(data))
 
@@ -93,25 +94,17 @@ def tokenize_url(data):
     return data
 
 
-def save_tokenizer_status(tokenizer):
+def save_tokenizer(tokenizer, name):
 
-    with open('saved_models/model_name_and_version/status.pickle', 'wb') as file:
-        pickle.dump(tokenizer, file, protocol=pickle.HIGHEST_PROTOCOL)
+    try:
+        mkdir('saved_models/' + config.VERSION)
 
-    return
+    except FileExistsError:
+        print('Tokenizer ' + name + ' exists for this version, overwriting...')
 
-
-def save_tokenizer_method(tokenizer):
-
-    with open('saved_models/model_name_and_version/method.pickle', 'wb') as file:
-        pickle.dump(tokenizer, file, protocol=pickle.HIGHEST_PROTOCOL)
-
-    return
-
-
-def save_tokenizer_url(tokenizer):
-
-    with open('saved_models/model_name_and_version/url.pickle', 'wb') as file:
+    with open('saved_models/'
+              + config.VERSION + '/'
+              + name + '.pickle', 'wb') as file:
         pickle.dump(tokenizer, file, protocol=pickle.HIGHEST_PROTOCOL)
 
     return
