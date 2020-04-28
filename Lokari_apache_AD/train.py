@@ -24,7 +24,7 @@ data, urldata = process_apache_log(data)
 #print(urldata)
 
 # Construct the model
-#model = construct_model(data, urldata)
+model = construct_model(data, urldata)
 
 # Train the model
 # neural network is trained to learn an average presentation of usual data

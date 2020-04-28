@@ -5,6 +5,7 @@ from tensorflow.keras.models import Model
 from tensorflow.keras.callbacks import EarlyStopping
 from tensorflow.keras.layers import \
     Input, Embedding, Flatten, Dense, Concatenate
+import Lokari_apache_AD.config as config
 import matplotlib.pyplot as plt
 
 
@@ -128,9 +129,13 @@ def construct_model(data, urldata):
     history = model.fit(
             [data.status, data.byte, data.rtime, data.method, urldata],
             [data.status, data.byte, data.rtime, data.method, urldata],
-            epochs=2000,
+            epochs=config.EPOCHS,
             callbacks=[monitor]
     )
+
+    model_file = 'saved_models/' + config.VERSION + \
+                 '/Lokari-v' + config.VERSION + '.h5'
+    model.save(model_file)
 
     # Visualization of the training history
     # TODO: make the visualization work ;)
@@ -180,10 +185,3 @@ def plot_training(history):
     #plt.show()
 
     return
-
-
-# TODO: save the trained model for future use
-def save_model():
-
-    return
-
