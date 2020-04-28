@@ -122,7 +122,7 @@ def construct_model(data, urldata):
 
     model.compile(optimizer='adam',
                   loss='mse',
-                  metrics=['accuracy'])
+                 )
     print(model.summary())
 
     # Train the autoencoder
@@ -151,8 +151,8 @@ def model_monitor():
     # thus not restoring the best weights!
     mon = EarlyStopping(
             monitor='loss',
-            min_delta=1e-3,
-            patience=500,
+            min_delta=config.MIN_DELTA,
+            patience=config.PATIENCE,
             verbose=1,
             mode='auto',
             restore_best_weights=True

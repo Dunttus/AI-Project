@@ -70,7 +70,9 @@ def normalize_response_time(data):
 
 def tokenize_http_methods(data):
 
-    tokenizer = Tokenizer(num_words=6, filters='')
+    # num_words has to contain all the categories, otherwise numpy.array
+    # doesn't work.
+    tokenizer = Tokenizer(num_words=10, filters='')
     tokenizer.fit_on_texts(data)
     save_tokenizer(tokenizer, "method")
     data = tokenizer.texts_to_sequences(data)

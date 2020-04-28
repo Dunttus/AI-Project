@@ -14,23 +14,12 @@ set_output()
 env['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 # Read training data
-data = read('training_dataset/good_access.log')
+data = read('training_dataset/combine_access.log')
 
 # Process training data
 # Returns: ['status', 'byte', 'rtime', 'method'] and tokenized url text as
 # numpy array.
-
 data, urldata = process_apache_log(data)
-#print(urldata)
 
-# Construct the model
+# Construct, train and save the model
 model = construct_model(data, urldata)
-
-# Train the model
-# neural network is trained to learn an average presentation of usual data
-
-
-# Save the model
-# the model is saved to a file to use with the monitor.py
-
-
