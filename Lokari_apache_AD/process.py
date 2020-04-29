@@ -35,8 +35,9 @@ def process_apache_log(data):
 
 def tokenize_http_status(data):
 
+    # This tokenizer needs OOV handling!
     if config.SAVE:
-        tokenizer = Tokenizer(num_words=20, filters='')
+        tokenizer = Tokenizer(num_words=20, filters='', oov_token=0)
         tokenizer.fit_on_texts(data.astype(str))
         save_tokenizer(tokenizer, "status")
 
@@ -121,8 +122,10 @@ def tokenize_url(data):
     if not config.SAVE:
         tokenizer = load_tokenizer("url")
 
-    # TODO: Set padding length to a constant
-    data = pad(tokenizer.texts_to_sequences(data))
+    # We have maximum of 64 character long requests.
+    data = pad(tokenizer.texts_to_sequences(data),
+               maxlen=64,
+               padding='post')
 
     # TODO: Test tfidf tokenizing
     # tfidf tokenizer code

@@ -23,7 +23,7 @@ set_output()
 env['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 # Read data
-data = read('training_dataset/bad_access.log')
+data = read('training_dataset/single.log')
 
 # Load model
 model_file = 'saved_models/' + config.VERSION + \
@@ -32,14 +32,11 @@ model = load_model(model_file)
 
 # Process new log lines
 data, urldata = process_apache_log(data)
+input_list = [data.status, data.byte, data.rtime, data.method, urldata]
 
 # Predict!
-print(data, urldata)
-#model.predict(data, urldata)
-# The input numbers have to be like in the training process:
-# Error when checking model input: the list of Numpy arrays that you are passing
-# to your model is not the size the model expected. Expected to see 5 array(s),
-# for inputs ['status_input', 'bytes_input', 'rtime_input', 'method_input',
-# 'url_input'] but instead got the following list of 1 arrays:
-# [array([[list([2]), 5.314763282542259, -23.88064518697932, 1],
-# [list([2]), 2.199473587826113, -22.899680407606645, 2],
+#print(input_list)
+output = model.predict(input_list)
+print(output)
+
+# Now make some sense from that output...
