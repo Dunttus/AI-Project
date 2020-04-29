@@ -162,35 +162,6 @@ def model_monitor():
 
 def plot_training(history):
 
-    # Almost straight from https://keras.io/visualization/
-    # Plot training & validation accuracy values
-    # TODO: add metrics to model.fit function
-    #plt.plot(history.history['accuracy'])
-    #plt.plot(history.history['val_acc'])
-    #plt.title('Model accuracy')
-    #plt.ylabel('Accuracy')
-    #plt.xlabel('Epoch')
-    #plt.legend(['Train'], loc='upper left')
-    #plt.show()
-
-    # Plot training & validation loss values
-    # plt.plot(history.history['loss'])
-    # plt.plot(history.history['val_loss'])
-    # plt.title('Model loss')
-    # plt.ylabel('Loss')
-    # plt.xlabel('Epoch')
-    # plt.legend(['Train'], loc='upper left')
-    # plt.show()
-
-    # TEST PLOT CHART WITH LOSS VALUES
-    plt.plot(history.history['status_loss'], label='Status')
-    plt.plot(history.history['byte_loss'], label='Byte')
-    plt.plot(history.history['rtime_loss'], label='Request time')
-    plt.plot(history.history['method_loss'], label='Method')
-    plt.plot(history.history['url_loss'], label='Url')
-    plt.legend()
-    plt.savefig('./plotimages/loss_values_test.png')
-
     # HORIZONTAL BAR CHART TEST NOT WORKING YET
     # https://matplotlib.org/gallery/lines_bars_and_markers/barh.html#sphx-glr-gallery-lines-bars-and-markers-barh-py
     # valuenames = 'Status', 'Byte', 'Rtime', 'Method', 'Url'
@@ -211,7 +182,13 @@ def plot_training(history):
     # plt.savefig('./plotimages/plottest2.png')
 
     if config.SAVE:
-        plt.plot(history.history['loss'])
+        plt.plot(history.history['loss'], label='loss')
+        plt.plot(history.history['status_loss'], label='Status')
+        plt.plot(history.history['byte_loss'], label='Byte')
+        plt.plot(history.history['rtime_loss'], label='Request time')
+        plt.plot(history.history['method_loss'], label='Method')
+        plt.plot(history.history['url_loss'], label='Url')
+        plt.legend()
         plt.ylabel('Loss')
         plt.xlabel('Epoch')
         plot_file = 'saved_models/' + config.VERSION + \

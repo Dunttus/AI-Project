@@ -8,7 +8,7 @@ SAVE = True
 
 
 # Model settings
-EPOCHS = 10
+EPOCHS = 50
 
 
 # Model monitor settings
