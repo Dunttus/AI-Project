@@ -7,7 +7,7 @@ from Lokari_apache_AD.process import process_apache_log
 from Lokari_apache_AD.autoencoder.model import construct_model
 import Lokari_apache_AD.config as config
 
-print("Lokari anomaly detector version: " + config.VERSION)
+print("Lokari anomaly detector: training version: " + config.VERSION)
 config.SAVE = True
 
 # Set output options for pandas and numpy, minimize TensorFlow output
