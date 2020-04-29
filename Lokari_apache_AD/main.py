@@ -29,6 +29,6 @@ data, urldata = process_apache_log(data)
 # Load the trained model
 # TODO LATER: Load the model first as it takes some seconds
 # This is now done here for debugging the processing part
-model_file = 'saved_models/' + config.VERSION + \
-             '/Lokari-v' + config.VERSION + '.h5'
-load_model(model_file)
+#model_file = 'saved_models/' + config.VERSION + \
+#             '/Lokari-v' + config.VERSION + '.h5'
+#load_model(model_file)

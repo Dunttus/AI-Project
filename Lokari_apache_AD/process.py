@@ -1,5 +1,6 @@
 # Convert the log data into fully numerical presentation.
 import pickle, numpy
+import math
 from os import mkdir
 from keras_preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences as pad
@@ -27,7 +28,7 @@ def process_apache_log(data):
     urldata = tokenize_url(urldata.url)
 
     #print(urldata)
-    print(processed)
+    #print(processed)
     #print(processed.dtypes)
     return processed, urldata
 
@@ -49,19 +50,25 @@ def tokenize_http_status(data):
 
 def normalize_response_size(data):
 
-    # TODO: Loaded data does not work correctly
-    # TODO: Check Zscore calculation on loaded mean and stdev
+    # IDEA: These could be categorized as well? At least static pages give
+    # consistent response sizes. Dataset can be examined with
+    # data.value_counts()
+
     if config.SAVE:
         # Average size of a response
         mean = data.mean()
         # Standard deviation in response size values
         std = data.std()
-        save_numbers(std, mean, "size")
+        save_numbers(mean, std, "size")
+
+        # Zscore = Normalized deviation, values <-2 and 2< present 5% confidence
+        # How many standard deviations from the mean?
 
     if not config.SAVE:
         mean, std = load_numbers("size")
 
     # Zscore = Normalized deviation, values <-2 and 2< present 5% confidence
+    # How many standard deviations from the mean?
     data = (data - mean) / std
 
     return data
@@ -69,19 +76,16 @@ def normalize_response_size(data):
 
 def normalize_response_time(data):
 
-    # TODO: Loaded data does not work correctly
-    # TODO: Check Zscore calculation on loaded mean and stdev
     if config.SAVE:
         # Average time of a response
         mean = data.mean()
         # Standard deviation in response time values
         std = data.std()
-        save_numbers(std, mean, "rtime")
+        save_numbers(mean, std, "rtime")
 
     if not config.SAVE:
         mean, std = load_numbers("rtime")
 
-    # Zscore = Normalized deviation, values <-2 and 2< present 5% confidence
     data = (data - mean) / std
 
     return data
@@ -147,11 +151,12 @@ def save_numbers(mean, std, name):
 
     filename = filename = 'saved_models/' + config.VERSION + '/' + name + '.txt'
     # TODO: better readable format...
-    data = str(mean) + "\n" + str(std)
+    data = str(mean) + "\n" + str(std) + "\n"
 
     with open(filename, 'w') as file:
         file.write(data)
 
+    return
 
 def load_tokenizer(name):
 
