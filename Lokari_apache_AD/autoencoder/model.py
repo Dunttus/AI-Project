@@ -9,6 +9,7 @@ import Lokari_apache_AD.config as config
 import matplotlib.pyplot as plt
 import numpy as np
 
+
 def http_status_layer(data):
     inp = Input(name='status_input',shape=1)
 
@@ -45,7 +46,8 @@ def url_layer(data):
     inp = Input(name='url_input', shape=data.shape[1])
     # TODO: Check word level tokenizing options, ref process.py tokenize_url
     # TODO: Check input_length relation to data.shape
-    emb = Embedding(input_dim=128, output_dim=16, input_length=52)(inp)
+    emb = Embedding(input_dim=128, output_dim=16,
+                    input_length=config.URL_LENGTH)(inp)
     outp = Flatten()(emb)
     return inp, outp
 
@@ -92,14 +94,12 @@ def add_autoencoding_layers(merged_input):
     final_output_list = []
 
     # TODO: get output sizes from the data itself rather than manually
-    # This is bound to break! Testing dataset has longest url text
-    # of 52 length.
 
     final_output_list.append(Dense(1, name='status')(output))
     final_output_list.append(Dense(1, name='byte')(output))
     final_output_list.append(Dense(1, name='rtime')(output))
     final_output_list.append(Dense(1, name='method')(output))
-    final_output_list.append(Dense(52, name='url')(output))
+    final_output_list.append(Dense(config.URL_LENGTH, name='url')(output))
 
     return final_output_list
 
