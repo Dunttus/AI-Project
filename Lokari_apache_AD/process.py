@@ -36,7 +36,10 @@ def tokenize_http_status(data):
 
     tokenizer = Tokenizer(num_words=20, filters='')
     tokenizer.fit_on_texts(data.astype(str))
-    save_tokenizer(tokenizer, "status")
+
+    if config.TRAINING == 1:
+        save_tokenizer(tokenizer, "status")
+
     data = tokenizer.texts_to_sequences(data.astype(str))
     data = numpy.array(data)
     return data
@@ -48,7 +51,10 @@ def normalize_response_size(data):
     mean = data.mean()
     # Standard deviation in response size values
     std = data.std()
-    save_numbers(std, mean, "size")
+
+    if config.TRAINING == 1:
+        save_numbers(std, mean, "size")
+
     # Zscore = Normalized deviation, values <-2 and 2< present 5% confidence
     data = (data - mean) / std
 
@@ -61,7 +67,10 @@ def normalize_response_time(data):
     mean = data.mean()
     # Standard deviation in response time values
     std = data.std()
-    save_numbers(std, mean, "rtime")
+
+    if config.TRAINING == 1:
+        save_numbers(std, mean, "rtime")
+
     # Zscore = Normalized deviation, values <-2 and 2< present 5% confidence
     data = (data - mean) / std
 
@@ -72,9 +81,13 @@ def tokenize_http_methods(data):
 
     # num_words has to contain all the categories, otherwise numpy.array
     # doesn't work.
+    # TODO: test one-hot-encoding
     tokenizer = Tokenizer(num_words=10, filters='')
     tokenizer.fit_on_texts(data)
-    save_tokenizer(tokenizer, "method")
+
+    if config.TRAINING == 1:
+        save_tokenizer(tokenizer, "method")
+
     data = tokenizer.texts_to_sequences(data)
     data = numpy.array(data)
     return data
@@ -86,10 +99,14 @@ def tokenize_url(data):
     tokenizer = Tokenizer(num_words=128, filters='', char_level=True,
                           lower=False)
     tokenizer.fit_on_texts(data)
-    save_tokenizer(tokenizer, "url")
+
+    if config.TRAINING == 1:
+        save_tokenizer(tokenizer, "url")
+
     # TODO: Set padding length to a constant
     data = pad(tokenizer.texts_to_sequences(data))
 
+    # TODO: Test tfidf tokenizing
     # tfidf tokenizer code
     #data = tokenizer.texts_to_matrix(data, mode='tfidf')
     #print(padded)
