@@ -23,7 +23,7 @@ set_output()
 env['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 # Read data
-data = read('training_dataset/bad_access.log')
+data = read('training_dataset/single.log')
 
 # Load model
 model_file = 'saved_models/' + config.VERSION + \
@@ -39,4 +39,5 @@ input_list = [data.status, data.byte, data.rtime, data.method, urldata]
 output = model.predict(input_list)
 print(output)
 
+# TODO: format output
 # Now make some sense from that output...
