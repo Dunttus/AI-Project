@@ -5,6 +5,7 @@
 # Lokari Apache log anomaly detector:
 # Train the baseline model
 from os import environ as env
+from tensorflow.keras.models import load_model
 from Lokari_apache_AD.read_data import read
 from Lokari_apache_AD.output_opts import set_output
 from Lokari_apache_AD.process import process_apache_log
@@ -19,12 +20,14 @@ config.SAVE = False
 set_output()
 env['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
-# Read training data
+# Read logs
 data = read('training_dataset/good_access.log')
 
-# Process training data
-# Returns: ['status', 'byte', 'rtime', 'method'] and tokenized url text as
-# numpy array.
+# Process new log lines
 data, urldata = process_apache_log(data)
 
+# Load the trained model
+model_file = 'saved_models/' + config.VERSION + \
+             '/Lokari-v' + config.VERSION + '.h5'
 
+load_model(model_file)

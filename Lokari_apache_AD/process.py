@@ -44,8 +44,6 @@ def tokenize_http_status(data):
 
     data = tokenizer.texts_to_sequences(data.astype(str))
     data = numpy.array(data)
-    print(data)
-    print(config.SAVE)
     return data
 
 
