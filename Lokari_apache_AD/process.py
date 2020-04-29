@@ -37,7 +37,7 @@ def tokenize_http_status(data):
     tokenizer = Tokenizer(num_words=20, filters='')
     tokenizer.fit_on_texts(data.astype(str))
 
-    if config.TRAINING == 1:
+    if config.SAVE:
         save_tokenizer(tokenizer, "status")
 
     data = tokenizer.texts_to_sequences(data.astype(str))
@@ -52,7 +52,7 @@ def normalize_response_size(data):
     # Standard deviation in response size values
     std = data.std()
 
-    if config.TRAINING == 1:
+    if config.SAVE:
         save_numbers(std, mean, "size")
 
     # Zscore = Normalized deviation, values <-2 and 2< present 5% confidence
@@ -68,7 +68,7 @@ def normalize_response_time(data):
     # Standard deviation in response time values
     std = data.std()
 
-    if config.TRAINING == 1:
+    if config.SAVE:
         save_numbers(std, mean, "rtime")
 
     # Zscore = Normalized deviation, values <-2 and 2< present 5% confidence
@@ -85,7 +85,7 @@ def tokenize_http_methods(data):
     tokenizer = Tokenizer(num_words=10, filters='')
     tokenizer.fit_on_texts(data)
 
-    if config.TRAINING == 1:
+    if config.SAVE:
         save_tokenizer(tokenizer, "method")
 
     data = tokenizer.texts_to_sequences(data)
@@ -100,7 +100,7 @@ def tokenize_url(data):
                           lower=False)
     tokenizer.fit_on_texts(data)
 
-    if config.TRAINING == 1:
+    if config.SAVE:
         save_tokenizer(tokenizer, "url")
 
     # TODO: Set padding length to a constant

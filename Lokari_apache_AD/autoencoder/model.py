@@ -134,7 +134,7 @@ def construct_model(data, urldata):
     model_file = 'saved_models/' + config.VERSION + \
                  '/Lokari-v' + config.VERSION + '.h5'
 
-    if config.TRAINING == 1:
+    if config.SAVE:
         model.save(model_file)
 
     # Visualization of the training history

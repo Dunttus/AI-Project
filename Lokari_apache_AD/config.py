@@ -1,9 +1,6 @@
 # Global parameters
 VERSION = "0.31"
-
-# Are we training or using the model? Set this to 0 to disable tokenizer saving
-# functions in process.py. 1 enables model saving.
-TRAINING = 0
+SAVE = False
 
 # Tokenizer settings
 

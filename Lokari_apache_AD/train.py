@@ -9,6 +9,7 @@ import Lokari_apache_AD.config as config
 
 print(config.VERSION)
 
+
 # Set output options for pandas and numpy, minimize TensorFlow output
 set_output()
 env['TF_CPP_MIN_LOG_LEVEL'] = '2'
