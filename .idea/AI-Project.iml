@@ -5,7 +5,4 @@
     <orderEntry type="jdk" jdkName="Remote Python 3.6.9 Docker (lokari:test)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
-  <component name="PyDocumentationSettings">
-    <option name="renderExternalDocumentation" value="true" />
-  </component>
 </module>

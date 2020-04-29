@@ -34,14 +34,18 @@ def process_apache_log(data):
 
 def tokenize_http_status(data):
 
-    tokenizer = Tokenizer(num_words=20, filters='')
-    tokenizer.fit_on_texts(data.astype(str))
-
     if config.SAVE:
+        tokenizer = Tokenizer(num_words=20, filters='')
+        tokenizer.fit_on_texts(data.astype(str))
         save_tokenizer(tokenizer, "status")
+
+    if not config.SAVE:
+        tokenizer = load_tokenizer("status")
 
     data = tokenizer.texts_to_sequences(data.astype(str))
     data = numpy.array(data)
+    print(data)
+    print(config.SAVE)
     return data
 
 
@@ -139,7 +143,17 @@ def save_numbers(mean, std, name):
         file.write(data)
 
 
+def load_tokenizer(name):
+
+    filename = 'saved_models/' + config.VERSION + '/' + name + '.pickle'
+    with open(filename, 'rb') as file:
+        tokenizer = pickle.load(file)
+
+    return tokenizer
+
+
 def save_config():
 
     # TODO: save configuration parameters so nothing gets lost!
     return
+
