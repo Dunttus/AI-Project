@@ -27,7 +27,7 @@ def process_apache_log(data):
     urldata = tokenize_url(urldata.url)
 
     #print(urldata)
-    #print(processed)
+    print(processed)
     #print(processed.dtypes)
     return processed, urldata
 
@@ -49,13 +49,17 @@ def tokenize_http_status(data):
 
 def normalize_response_size(data):
 
-    # Average size of a response
-    mean = data.mean()
-    # Standard deviation in response size values
-    std = data.std()
-
+    # TODO: Loaded data does not work correctly
+    # TODO: Check Zscore calculation on loaded mean and stdev
     if config.SAVE:
+        # Average size of a response
+        mean = data.mean()
+        # Standard deviation in response size values
+        std = data.std()
         save_numbers(std, mean, "size")
+
+    if not config.SAVE:
+        mean, std = load_numbers("size")
 
     # Zscore = Normalized deviation, values <-2 and 2< present 5% confidence
     data = (data - mean) / std
@@ -65,13 +69,17 @@ def normalize_response_size(data):
 
 def normalize_response_time(data):
 
-    # Average time of a response
-    mean = data.mean()
-    # Standard deviation in response time values
-    std = data.std()
-
+    # TODO: Loaded data does not work correctly
+    # TODO: Check Zscore calculation on loaded mean and stdev
     if config.SAVE:
+        # Average time of a response
+        mean = data.mean()
+        # Standard deviation in response time values
+        std = data.std()
         save_numbers(std, mean, "rtime")
+
+    if not config.SAVE:
+        mean, std = load_numbers("rtime")
 
     # Zscore = Normalized deviation, values <-2 and 2< present 5% confidence
     data = (data - mean) / std
@@ -139,7 +147,7 @@ def save_numbers(mean, std, name):
 
     filename = filename = 'saved_models/' + config.VERSION + '/' + name + '.txt'
     # TODO: better readable format...
-    data = "mean: " + str(mean) + "\nstdev: " + str(std)
+    data = str(mean) + "\n" + str(std)
 
     with open(filename, 'w') as file:
         file.write(data)
@@ -152,6 +160,19 @@ def load_tokenizer(name):
         tokenizer = pickle.load(file)
 
     return tokenizer
+
+
+def load_numbers(name):
+
+    filename = 'saved_models/' + config.VERSION + '/' + name + '.txt'
+    with open(filename, 'r') as file:
+        mean = file.readline()
+        std = file.readline()
+
+    mean = float(mean)
+    std = float(std)
+
+    return mean, std
 
 
 def save_config():
