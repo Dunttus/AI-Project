@@ -34,3 +34,12 @@ model = load_model(model_file)
 data, urldata = process_apache_log(data)
 
 # Predict!
+print(data, urldata)
+#model.predict(data, urldata)
+# The input numbers have to be like in the training process:
+# Error when checking model input: the list of Numpy arrays that you are passing
+# to your model is not the size the model expected. Expected to see 5 array(s),
+# for inputs ['status_input', 'bytes_input', 'rtime_input', 'method_input',
+# 'url_input'] but instead got the following list of 1 arrays:
+# [array([[list([2]), 5.314763282542259, -23.88064518697932, 1],
+# [list([2]), 2.199473587826113, -22.899680407606645, 2],
