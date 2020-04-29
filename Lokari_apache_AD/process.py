@@ -158,6 +158,7 @@ def save_numbers(mean, std, name):
 
     return
 
+
 def load_tokenizer(name):
 
     filename = 'saved_models/' + config.VERSION + '/' + name + '.pickle'
