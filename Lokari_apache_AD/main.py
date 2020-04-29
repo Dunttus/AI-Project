@@ -15,7 +15,7 @@ print("Lokari anomaly detector version: " + config.VERSION)
 
 # This works across the modules: overrides config.py parameters
 # When loading a model, these 2 are the only relevant parameters
-config.VERSION = "0.31"
+config.VERSION = "0.32-1"
 config.SAVE = False
 
 # Set output options for pandas and numpy, minimize TensorFlow output
@@ -23,7 +23,7 @@ set_output()
 env['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 # Read data
-data = read('training_dataset/single.log')
+data = read('training_dataset/bad_access.log')
 
 # Load model
 model_file = 'saved_models/' + config.VERSION + \
