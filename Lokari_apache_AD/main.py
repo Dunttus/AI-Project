@@ -13,7 +13,9 @@ import Lokari_apache_AD.config as config
 
 print("Lokari anomaly detector version: " + config.VERSION)
 
-# This works across the modules
+# This works across the modules: overrides config.py parameters
+# When loading a model, these 2 are the only relevant parameters
+config.VERSION = "0.31"
 config.SAVE = False
 
 # Set output options for pandas and numpy, minimize TensorFlow output
