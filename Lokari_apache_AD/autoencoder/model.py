@@ -131,10 +131,9 @@ def construct_model(data, urldata):
             callbacks=[monitor]
     )
 
-    model_file = 'saved_models/' + config.VERSION + \
-                 '/Lokari-v' + config.VERSION + '.h5'
-
     if config.SAVE:
+        model_file = 'saved_models/' + config.VERSION + \
+                     '/Lokari-v' + config.VERSION + '.h5'
         model.save(model_file)
 
     # Visualization of the training history
