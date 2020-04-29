@@ -162,7 +162,6 @@ def model_monitor():
 
 def plot_training(history):
 
-    print("NICE CHARTS THERE MATE!")
     # Almost straight from https://keras.io/visualization/
     # Plot training & validation accuracy values
     # TODO: add metrics to model.fit function
@@ -182,5 +181,13 @@ def plot_training(history):
     #plt.xlabel('Epoch')
     #plt.legend(['Train'], loc='upper left')
     #plt.show()
+
+    if config.SAVE:
+        plt.plot(history.history['loss'])
+        plt.ylabel('Loss')
+        plt.xlabel('Epoch')
+        plot_file = 'saved_models/' + config.VERSION + \
+                     '/training_plot-' + config.VERSION + '.png'
+        plt.savefig(plot_file)
 
     return
