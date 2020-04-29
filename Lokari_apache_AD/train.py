@@ -15,7 +15,7 @@ set_output()
 env['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 # Read training data
-data = read('training_dataset/good_access.log')
+data = read('training_dataset/1_access.log')
 
 # Process training data
 # Returns: ['status', 'byte', 'rtime', 'method'] and tokenized url text as

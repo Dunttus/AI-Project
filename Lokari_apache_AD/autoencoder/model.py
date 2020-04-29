@@ -188,6 +188,7 @@ def plot_training(history):
         plt.plot(history.history['rtime_loss'], label='Request time')
         plt.plot(history.history['method_loss'], label='Method')
         plt.plot(history.history['url_loss'], label='Url')
+        plt.yscale('log')
         plt.legend()
         plt.ylabel('Loss')
         plt.xlabel('Epoch')
