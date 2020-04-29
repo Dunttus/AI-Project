@@ -84,11 +84,13 @@ def tokenize_http_methods(data):
     # num_words has to contain all the categories, otherwise numpy.array
     # doesn't work.
     # TODO: test one-hot-encoding
-    tokenizer = Tokenizer(num_words=10, filters='')
-    tokenizer.fit_on_texts(data)
-
     if config.SAVE:
+        tokenizer = Tokenizer(num_words=10, filters='')
+        tokenizer.fit_on_texts(data)
         save_tokenizer(tokenizer, "method")
+
+    if not config.SAVE:
+        tokenizer = load_tokenizer("method")
 
     data = tokenizer.texts_to_sequences(data)
     data = numpy.array(data)
@@ -98,12 +100,14 @@ def tokenize_http_methods(data):
 def tokenize_url(data):
 
     # TODO: Check word-level tokenizing, tf-idf is probably better
-    tokenizer = Tokenizer(num_words=128, filters='', char_level=True,
-                          lower=False)
-    tokenizer.fit_on_texts(data)
-
     if config.SAVE:
+        tokenizer = Tokenizer(num_words=128, filters='', char_level=True,
+                              lower=False)
+        tokenizer.fit_on_texts(data)
         save_tokenizer(tokenizer, "url")
+
+    if not config.SAVE:
+        tokenizer = load_tokenizer("url")
 
     # TODO: Set padding length to a constant
     data = pad(tokenizer.texts_to_sequences(data))
