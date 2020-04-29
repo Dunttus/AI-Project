@@ -7,7 +7,7 @@ from tensorflow.keras.layers import \
     Input, Embedding, Flatten, Dense, Concatenate
 import Lokari_apache_AD.config as config
 import matplotlib.pyplot as plt
-
+import numpy as np
 
 def http_status_layer(data):
     inp = Input(name='status_input',shape=1)
@@ -174,13 +174,41 @@ def plot_training(history):
     #plt.show()
 
     # Plot training & validation loss values
-    #plt.plot(history.history['loss'])
-    #plt.plot(history.history['val_loss'])
-    #plt.title('Model loss')
-    #plt.ylabel('Loss')
-    #plt.xlabel('Epoch')
-    #plt.legend(['Train'], loc='upper left')
-    #plt.show()
+    # plt.plot(history.history['loss'])
+    # plt.plot(history.history['val_loss'])
+    # plt.title('Model loss')
+    # plt.ylabel('Loss')
+    # plt.xlabel('Epoch')
+    # plt.legend(['Train'], loc='upper left')
+    # plt.show()
+
+    # TEST PLOT CHART WITH LOSS VALUES
+    plt.plot(history.history['status_loss'], label='Status')
+    plt.plot(history.history['byte_loss'], label='Byte')
+    plt.plot(history.history['rtime_loss'], label='Request time')
+    plt.plot(history.history['method_loss'], label='Method')
+    plt.plot(history.history['url_loss'], label='Url')
+    plt.legend()
+    plt.savefig('./plotimages/loss_values_test.png')
+
+    # HORIZONTAL BAR CHART TEST NOT WORKING YET
+    # https://matplotlib.org/gallery/lines_bars_and_markers/barh.html#sphx-glr-gallery-lines-bars-and-markers-barh-py
+    # valuenames = 'Status', 'Byte', 'Rtime', 'Method', 'Url'
+    # status_value = history.history['status_loss']
+    # byte_value = history.history['byte_loss']
+    # rtime_value = history.history['rtime_loss']
+    # method_value = history.history['method_loss']
+    # url_value = history.history['url_loss']
+    # performance = status_value, byte_value, rtime_value, method_value, url_value
+
+    # y_pos = np.arange(len(performance))
+    # ax.barh(y_pos, performance, xerr=error, align='center')
+    # ax.set_yticks(y_pos)
+    # ax.set_yticklabels(valuenames)
+    # ax.invert_yaxis()
+    # ax.set_xlabel('Performance')
+    # ax.set_title('Loss values')
+    # plt.savefig('./plotimages/plottest2.png')
 
     if config.SAVE:
         plt.plot(history.history['loss'])
