@@ -11,13 +11,12 @@ from Lokari_apache_AD.output_opts import set_output
 from Lokari_apache_AD.process import process_apache_log
 import Lokari_apache_AD.config as config
 
-print("Lokari anomaly detector version: " + config.VERSION)
-
 # This works across the modules: overrides config.py parameters
 # When loading a model, these 2 are the only relevant parameters
 config.VERSION = "0.32-1"
 config.SAVE = False
 
+print("Lokari anomaly detector version: " + config.VERSION)
 # Set output options for pandas and numpy, minimize TensorFlow output
 set_output()
 env['TF_CPP_MIN_LOG_LEVEL'] = '2'
@@ -38,11 +37,11 @@ input_list = [data.status, data.byte, data.rtime, data.method, urldata]
 #print(input_list)
 output = model.predict(input_list)
 
-print("Mean squared errors of the prediction:")
-print("Status:              ", output[0])
-print("Response bytes:      ", output[1])
-print("Response time error: ", output[2])
-print("Method error:        ", output[3])
-print("Url error vector:\n", output[4])
+#print("Mean squared errors of the prediction:")
+print("Status:", output[0][0][0])
+print("Response bytes:", output[1][0][0])
+print("Response time error:", output[2][0][0])
+print("Method error:", output[3][0][0])
+print("Url error vector:\n", output[4][0])
 
 # Now make some sense from that output...
