@@ -42,6 +42,8 @@ print("Status:", output[0][0][0])
 print("Response bytes:", output[1][0][0])
 print("Response time error:", output[2][0][0])
 print("Method error:", output[3][0][0])
-print("Url error vector:\n", output[4][0])
+print("Url error vector:")
+for i in range(64):
+    print(output[4][0][i])
 
 # Now make some sense from that output...
