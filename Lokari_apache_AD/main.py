@@ -37,7 +37,12 @@ input_list = [data.status, data.byte, data.rtime, data.method, urldata]
 # Predict!
 #print(input_list)
 output = model.predict(input_list)
-print(output)
 
-# TODO: format output
+print("Mean squared errors of the prediction:")
+print("Status:              ", output[0])
+print("Response bytes:      ", output[1])
+print("Response time error: ", output[2])
+print("Method error:        ", output[3])
+print("Url error vector:\n", output[4])
+
 # Now make some sense from that output...
