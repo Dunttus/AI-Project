@@ -33,16 +33,25 @@ m_data, m_url = process_apache_log(model_data)
 m_before_ae = [m_data.status, m_data.byte, m_data.rtime,
                m_data.method, m_url]
 m_after_ae = model.predict(m_before_ae)
-print("Model Status MSE:", msescore(m_after_ae[0], m_before_ae[0]))
-print("Model Byte MSE:", msescore(m_after_ae[1], m_before_ae[1]))
-print("Model Rtime MSE:", msescore(m_after_ae[2], m_before_ae[2]))
-print("Model Method MSE:", msescore(m_after_ae[3], m_before_ae[3]))
-print("Model URL MSE:", msescore(m_after_ae[4], m_url))
+
+m_status_score = msescore(m_after_ae[0], m_before_ae[0])
+m_byte_score = msescore(m_after_ae[1], m_before_ae[1])
+m_rtime_score = msescore(m_after_ae[2], m_before_ae[2])
+m_method_score = msescore(m_after_ae[3], m_before_ae[3])
+m_url_score = msescore(m_after_ae[4], m_url)
+
+print("***MODEL ERROR NUMBERS***")
+print("Model Status MSE:", m_status_score)
+print("Model Byte MSE:", m_byte_score)
+print("Model Rtime MSE:", m_rtime_score)
+print("Model Method MSE:", m_method_score)
+print("Model URL MSE:", m_url_score)
 
 # This is where the monitoring loop should start!
 
 # The data that is fed to the model, can be multi-line
-incoming_data = read('training_dataset/single.log')
+incoming_data = read('training_dataset/bad_single.log')
+# TODO: loop through individual lines to find anomalies in training data?
 # Process new log line(s)
 data, url = process_apache_log(incoming_data)
 # The data that has not been through autoencoder yet
@@ -51,11 +60,32 @@ before_ae = [data.status, data.byte, data.rtime,
 # Run the incoming data through autoencoder
 after_ae = model.predict(before_ae)
 
-# Calculate error scores for before autoencoding and
-# after autoencoding.
+# Calculate error scores
+status_score = msescore(after_ae[0], before_ae[0])
+byte_score = msescore(after_ae[1], before_ae[1])
+rtime_score = msescore(after_ae[2], before_ae[2])
+method_score = msescore(after_ae[3], before_ae[3])
+url_score = msescore(after_ae[4], url)
 
-print("Status MSE:", msescore(after_ae[0], before_ae[0]))
-print("Byte MSE:", msescore(after_ae[1], before_ae[1]))
-print("Rtime MSE:", msescore(after_ae[2], before_ae[2]))
-print("Method MSE:", msescore(after_ae[3], before_ae[3]))
-print("URL MSE:", msescore(after_ae[4], url))
+print("***INCOMING DATA ERROR NUMBERS***")
+print("Status MSE:", status_score)
+print("Byte MSE:", byte_score)
+print("Rtime MSE:", rtime_score)
+print("Method MSE:", method_score)
+print("URL MSE:", url_score)
+
+# Compare the error scores: if the MSEs on incoming data are higher, the
+# probability of an anomaly is higher.
+
+d_status_score = status_score - m_status_score
+d_byte_score = byte_score - m_byte_score
+d_rtime_score = rtime_score - m_rtime_score
+d_method_score = method_score - m_method_score
+d_url_score = url_score - m_url_score
+
+print("***DIFFERENCE - POSITIVE IS TOWARDS ANOMALY***")
+print("Status MSE:", d_status_score)
+print("Byte MSE:", d_byte_score)
+print("Rtime MSE:", d_rtime_score)
+print("Method MSE:", d_method_score)
+print("URL MSE:", d_url_score)
