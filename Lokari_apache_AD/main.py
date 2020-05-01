@@ -15,7 +15,7 @@ import Lokari_apache_AD.config as config
 
 # This works across the modules: overrides config.py parameters
 # When loading a model, these 2 are the only relevant parameters
-config.VERSION = "0.32-combined"
+config.VERSION = "0.32-1"
 config.SAVE = False
 
 print("Lokari anomaly detector version: " + config.VERSION)
@@ -28,16 +28,23 @@ model_file = 'saved_models/' + config.VERSION + \
              '/Lokari-v' + config.VERSION + '.h5'
 model = load_model(model_file)
 
+# We need to know the baseline error scores to be able to compare them
+# with new incoming data.
+
+
+
 # The data that is fed to the model, can be multi-line
-sampledata = read('training_dataset/bad_access.log')
+sampledata = read('training_dataset/single.log')
 # Process new log lines
 data, url = process_apache_log(sampledata)
+# The data that has not been through autoencoder yet
 test = [data.status, data.byte, data.rtime,
         data.method, url]
-# Make a prediction
+# Run the incoming data through autoencoder
 sample = model.predict(test)
 
-# Calculate error scores for inputted data
+# Calculate error scores for before autoencoding and
+# after autoencoding.
 p_status = sample[0]
 p_status = pandas.DataFrame(p_status)
 t_status = test[0]
@@ -56,9 +63,9 @@ t_rtime = test[2]
 rtime_score = numpy.sqrt(metrics.mean_squared_error(p_rtime,t_rtime))
 print("Rtime MSE:", rtime_score)
 
-p_method = sample[2]
+p_method = sample[3]
 p_method = pandas.DataFrame(p_method)
-t_method = test[2]
+t_method = test[3]
 method_score = numpy.sqrt(metrics.mean_squared_error(p_method,t_method))
 print("Method MSE:", method_score)
 
