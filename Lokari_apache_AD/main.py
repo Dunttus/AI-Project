@@ -5,7 +5,9 @@
 # Lokari Apache log anomaly detector:
 # Train the baseline model
 from os import environ as env
+import numpy, pandas
 from tensorflow.keras.models import load_model
+from sklearn import metrics
 from Lokari_apache_AD.read_data import read
 from Lokari_apache_AD.output_opts import set_output
 from Lokari_apache_AD.process import process_apache_log
@@ -21,29 +23,47 @@ print("Lokari anomaly detector version: " + config.VERSION)
 set_output()
 env['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
-# Read data
-data = read('training_dataset/single.log')
-
 # Load model
 model_file = 'saved_models/' + config.VERSION + \
              '/Lokari-v' + config.VERSION + '.h5'
 model = load_model(model_file)
 
+# Test with a single line, status code only
+sampledata = read('training_dataset/single.log')
+
 # Process new log lines
-data, urldata = process_apache_log(data)
-input_list = [data.status, data.byte, data.rtime, data.method, urldata]
 
-# Predict!
-#print(input_list)
-output = model.predict(input_list)
+data, url = process_apache_log(sampledata)
+test = [data.status, data.byte, data.rtime,
+        data.method, url]
+sample = model.predict(test)
+p_status = sample[0]
+p_status = pandas.DataFrame(p_status)
+t_status = test[0]
 
-#print("Mean squared errors of the prediction:")
-print("Status:", output[0][0][0])
-print("Response bytes:", output[1][0][0])
-print("Response time error:", output[2][0][0])
-print("Method error:", output[3][0][0])
-print("Url error vector:")
-for i in range(64):
-    print(output[4][0][i])
+status_score = numpy.sqrt(metrics.mean_squared_error(p_status,t_status))
+print("Status MSE:", status_score)
 
-# Now make some sense from that output...
+p_byte = sample[1]
+p_byte = pandas.DataFrame(p_byte)
+t_byte = test[1]
+byte_score = numpy.sqrt(metrics.mean_squared_error(p_byte,t_byte))
+print("Byte MSE:", byte_score)
+
+p_rtime = sample[2]
+p_rtime = pandas.DataFrame(p_rtime)
+t_rtime = test[2]
+rtime_score = numpy.sqrt(metrics.mean_squared_error(p_rtime,t_rtime))
+print("Rtime MSE:", rtime_score)
+
+p_method = sample[2]
+p_method = pandas.DataFrame(p_method)
+t_method = test[2]
+method_score = numpy.sqrt(metrics.mean_squared_error(p_method,t_method))
+print("Method MSE:", method_score)
+
+# Take the pre-trained autoencoder
+# Use it to make predictions (i.e., reconstruct the digits in our dataset)
+# Measure the MSE between the original input and reconstructions
+# Compute quantiles for the MSEs, and use these quantiles to identify outliers
+# and anomalies
