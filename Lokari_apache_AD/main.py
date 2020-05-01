@@ -11,7 +11,7 @@ import pandas
 
 # This works across the modules: overrides config.py parameters
 # When loading a model, these 2 are the only relevant parameters
-config.VERSION = "0.32-combined"
+config.VERSION = "test"
 config.SAVE = False
 
 print("Lokari anomaly detector version: " + config.VERSION)
@@ -29,7 +29,7 @@ model = load_model(model_file)
 # NOTE: the original dataset is needed here!
 # TODO: This really should be done in the training process!
 
-model_data = read('training_dataset/combine_access.log')
+model_data = read('training_dataset/good_access.log')
 m_data, m_url = process_apache_log(model_data)
 m_before_ae = [m_data.status, m_data.byte, m_data.rtime,
                m_data.method, m_url]
@@ -51,7 +51,7 @@ print("Model URL MSE:", m_url_score)
 
 # This is where the monitoring loop should start!
 # The data that is fed to the model
-FILENAME = 'training_dataset/combine_access.log'
+FILENAME = 'training_dataset/good_access.log'
 
 incoming_data = readlines(FILENAME)
 line_number = 1
@@ -100,6 +100,5 @@ for line in incoming_data:
 
     if d_status_score > 0:
         print(f"Anomaly in status: Line {line_number}, score: {d_status_score}")
-
 
     line_number += 1
