@@ -85,6 +85,7 @@ for line in incoming_data:
     # Compare the error scores: if the MSEs on incoming data are higher, the
     # probability of an anomaly is higher.
 
+    print(line_number)
     d_status_score = status_score - m_status_score
     d_byte_score = byte_score - m_byte_score
     d_rtime_score = rtime_score - m_rtime_score
@@ -92,13 +93,13 @@ for line in incoming_data:
     d_url_score = url_score - m_url_score
 
     #print("***DIFFERENCE - POSITIVE IS TOWARDS ANOMALY***")
-    #print("Status MSE:", d_status_score)
-    #print("Byte MSE:", d_byte_score)
-    #print("Rtime MSE:", d_rtime_score)
-    #print("Method MSE:", d_method_score)
-    #print("URL MSE:", d_url_score)
+    print("Status MSE:", d_status_score)
+    print("Byte MSE:", d_byte_score)
+    print("Rtime MSE:", d_rtime_score)
+    print("Method MSE:", d_method_score)
+    print("URL MSE:", d_url_score)
 
-    if d_status_score > 0:
-        print(f"Anomaly in status: Line {line_number}, score: {d_status_score}")
+    #if d_status_score > 0:
+    #    print(f"Anomaly in status: Line {line_number}, score: {d_status_score}")
 
     line_number += 1
