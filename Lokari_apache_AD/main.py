@@ -11,11 +11,12 @@ from sklearn import metrics
 from Lokari_apache_AD.read_data import read
 from Lokari_apache_AD.output_opts import set_output
 from Lokari_apache_AD.process import process_apache_log
+from Lokari_apache_AD.msecalc import msescore
 import Lokari_apache_AD.config as config
 
 # This works across the modules: overrides config.py parameters
 # When loading a model, these 2 are the only relevant parameters
-config.VERSION = "0.32-1"
+config.VERSION = "0.32-combined"
 config.SAVE = False
 
 print("Lokari anomaly detector version: " + config.VERSION)
@@ -29,12 +30,17 @@ model_file = 'saved_models/' + config.VERSION + \
 model = load_model(model_file)
 
 # We need to know the baseline error scores to be able to compare them
-# with new incoming data.
+# with new incoming data. This part needs to be run only once.
 
-
+# TODO: make a function to calculate MSEs from the data
+# TODO: make sense of url MSE
+# NOTE: url MSE might not be needed for basic functionality, as URL data
+# affects the inputs, outputs and the training process anyway. Test it.
+# NOTE: the original dataset is needed here!
+# TODO: This could be done in the training process!
 
 # The data that is fed to the model, can be multi-line
-sampledata = read('training_dataset/single.log')
+sampledata = read('training_dataset/bad_access.log')
 # Process new log lines
 data, url = process_apache_log(sampledata)
 # The data that has not been through autoencoder yet
