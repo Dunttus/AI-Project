@@ -15,7 +15,7 @@ import Lokari_apache_AD.config as config
 
 # This works across the modules: overrides config.py parameters
 # When loading a model, these 2 are the only relevant parameters
-config.VERSION = "0.32-1"
+config.VERSION = "0.32-combined"
 config.SAVE = False
 
 print("Lokari anomaly detector version: " + config.VERSION)
@@ -28,19 +28,19 @@ model_file = 'saved_models/' + config.VERSION + \
              '/Lokari-v' + config.VERSION + '.h5'
 model = load_model(model_file)
 
-# Test with a single line, status code only
-sampledata = read('training_dataset/single.log')
-
+# The data that is fed to the model, can be multi-line
+sampledata = read('training_dataset/bad_access.log')
 # Process new log lines
-
 data, url = process_apache_log(sampledata)
 test = [data.status, data.byte, data.rtime,
         data.method, url]
+# Make a prediction
 sample = model.predict(test)
+
+# Calculate error scores for inputted data
 p_status = sample[0]
 p_status = pandas.DataFrame(p_status)
 t_status = test[0]
-
 status_score = numpy.sqrt(metrics.mean_squared_error(p_status,t_status))
 print("Status MSE:", status_score)
 
