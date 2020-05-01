@@ -37,9 +37,12 @@ print("Model Status MSE:", msescore(m_after_ae[0], m_before_ae[0]))
 print("Model Byte MSE:", msescore(m_after_ae[1], m_before_ae[1]))
 print("Model Rtime MSE:", msescore(m_after_ae[2], m_before_ae[2]))
 print("Model Method MSE:", msescore(m_after_ae[3], m_before_ae[3]))
+print("Model URL MSE:", msescore(m_after_ae[4], m_url))
+
+# This is where the monitoring loop should start!
 
 # The data that is fed to the model, can be multi-line
-incoming_data = read('training_dataset/bad_single.log')
+incoming_data = read('training_dataset/single.log')
 # Process new log line(s)
 data, url = process_apache_log(incoming_data)
 # The data that has not been through autoencoder yet
@@ -55,4 +58,4 @@ print("Status MSE:", msescore(after_ae[0], before_ae[0]))
 print("Byte MSE:", msescore(after_ae[1], before_ae[1]))
 print("Rtime MSE:", msescore(after_ae[2], before_ae[2]))
 print("Method MSE:", msescore(after_ae[3], before_ae[3]))
-# TODO: make sense of url MSE
+print("URL MSE:", msescore(after_ae[4], url))
