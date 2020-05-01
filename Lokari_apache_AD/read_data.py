@@ -3,9 +3,20 @@ import pandas
 
 def read(target):
 
-    # TODO: Check how this works with a single line coming from the monitor
     dataframe = pandas.read_csv(
         target, sep=' ', quotechar='"', escapechar=' ', header=None)
+    dataframe.columns = [
+        "time", "ip", "status", "byte", "rtime", "method", "url", "protocol"]
+
+    return dataframe
+
+
+def readlines(target):
+
+    # Returns an iterator with chunksize
+    dataframe = pandas.read_csv(
+        target, sep=' ', quotechar='"', escapechar=' ', header=None,
+        chunksize=1)
     dataframe.columns = [
         "time", "ip", "status", "byte", "rtime", "method", "url", "protocol"]
 
