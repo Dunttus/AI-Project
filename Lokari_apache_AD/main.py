@@ -40,43 +40,20 @@ model = load_model(model_file)
 # TODO: This could be done in the training process!
 
 # The data that is fed to the model, can be multi-line
-sampledata = read('training_dataset/bad_access.log')
-# Process new log lines
-data, url = process_apache_log(sampledata)
+incoming_data = read('training_dataset/single.log')
+# Process new log line(s)
+data, url = process_apache_log(incoming_data)
 # The data that has not been through autoencoder yet
-test = [data.status, data.byte, data.rtime,
-        data.method, url]
+before_ae = [data.status, data.byte, data.rtime,
+             data.method, url]
 # Run the incoming data through autoencoder
-sample = model.predict(test)
+after_ae = model.predict(before_ae)
 
 # Calculate error scores for before autoencoding and
 # after autoencoding.
-p_status = sample[0]
-p_status = pandas.DataFrame(p_status)
-t_status = test[0]
-status_score = numpy.sqrt(metrics.mean_squared_error(p_status,t_status))
-print("Status MSE:", status_score)
 
-p_byte = sample[1]
-p_byte = pandas.DataFrame(p_byte)
-t_byte = test[1]
-byte_score = numpy.sqrt(metrics.mean_squared_error(p_byte,t_byte))
-print("Byte MSE:", byte_score)
+print("Status MSE:", msescore(after_ae[0], before_ae[0]))
+print("Byte MSE:", msescore(after_ae[1], before_ae[1]))
+print("Rtime MSE:", msescore(after_ae[2], before_ae[2]))
+print("Method MSE:", msescore(after_ae[3], before_ae[3]))
 
-p_rtime = sample[2]
-p_rtime = pandas.DataFrame(p_rtime)
-t_rtime = test[2]
-rtime_score = numpy.sqrt(metrics.mean_squared_error(p_rtime,t_rtime))
-print("Rtime MSE:", rtime_score)
-
-p_method = sample[3]
-p_method = pandas.DataFrame(p_method)
-t_method = test[3]
-method_score = numpy.sqrt(metrics.mean_squared_error(p_method,t_method))
-print("Method MSE:", method_score)
-
-# Take the pre-trained autoencoder
-# Use it to make predictions (i.e., reconstruct the digits in our dataset)
-# Measure the MSE between the original input and reconstructions
-# Compute quantiles for the MSEs, and use these quantiles to identify outliers
-# and anomalies
