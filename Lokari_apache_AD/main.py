@@ -2,12 +2,11 @@
 # Lokari Apache log anomaly detector:
 from os import environ as env
 from tensorflow.keras.models import load_model
-from Lokari_apache_AD.read_data import read, readlines
+from Lokari_apache_AD.read_data import readlines
 from Lokari_apache_AD.output_opts import set_output
 from Lokari_apache_AD.process import process_apache_log
-from Lokari_apache_AD.msecalc import msescore
+from Lokari_apache_AD.msecalc import msescore, load_baseline_scores
 import Lokari_apache_AD.config as config
-import pandas
 
 # This works across the modules: overrides config.py parameters
 # When loading a model, these 2 are the only relevant parameters
@@ -24,30 +23,13 @@ model_file = 'saved_models/' + config.VERSION + \
              '/Lokari-v' + config.VERSION + '.h5'
 model = load_model(model_file)
 
-# We need to know the baseline error scores to be able to compare them
-# with new incoming data. This part needs to be run only once.
-# NOTE: the original dataset is needed here!
-# TODO: This really should be done in the training process!
-
-model_data = read('training_dataset/good_access.log')
-m_data, m_url = process_apache_log(model_data)
-m_before_ae = [m_data.status, m_data.byte, m_data.rtime,
-               m_data.method, m_url]
-m_after_ae = model.predict(m_before_ae)
-
-m_status_score = msescore(m_after_ae[0], m_before_ae[0])
-m_byte_score = msescore(m_after_ae[1], m_before_ae[1])
-m_rtime_score = msescore(m_after_ae[2], m_before_ae[2])
-m_method_score = msescore(m_after_ae[3], m_before_ae[3])
-m_url_score = msescore(m_after_ae[4], m_url)
-
-print("***MODEL ERROR NUMBERS***")
-print("Model Status MSE:", m_status_score)
-print("Model Byte MSE:", m_byte_score)
-print("Model Rtime MSE:", m_rtime_score)
-print("Model Method MSE:", m_method_score)
-print("Model URL MSE:", m_url_score)
-
+# Load the baseline model scores
+model_scores = load_baseline_scores()
+m_status_score = model_scores[0]
+m_byte_score = model_scores[1]
+m_rtime_score = model_scores[2]
+m_method_score = model_scores[3]
+m_url_score = model_scores[4]
 
 # This is where the monitoring loop should start!
 # The data that is fed to the model
@@ -85,7 +67,6 @@ for line in incoming_data:
     # Compare the error scores: if the MSEs on incoming data are higher, the
     # probability of an anomaly is higher.
 
-    print(line_number)
     d_status_score = status_score - m_status_score
     d_byte_score = byte_score - m_byte_score
     d_rtime_score = rtime_score - m_rtime_score
@@ -93,13 +74,25 @@ for line in incoming_data:
     d_url_score = url_score - m_url_score
 
     #print("***DIFFERENCE - POSITIVE IS TOWARDS ANOMALY***")
-    print("Status MSE:", d_status_score)
-    print("Byte MSE:", d_byte_score)
-    print("Rtime MSE:", d_rtime_score)
-    print("Method MSE:", d_method_score)
-    print("URL MSE:", d_url_score)
+    #print("Status MSE:", d_status_score)
+    #print("Byte MSE:", d_byte_score)
+    #print("Rtime MSE:", d_rtime_score)
+    #print("Method MSE:", d_method_score)
+    #print("URL MSE:", d_url_score)
 
-    #if d_status_score > 0:
-    #    print(f"Anomaly in status: Line {line_number}, score: {d_status_score}")
+    if d_status_score > 0:
+        print(f"Anomaly in status: Line {line_number}, score: {d_status_score}")
+
+    if d_byte_score > 0:
+        print(f"Anomaly in byte: Line {line_number}, score: {d_byte_score}")
+
+    if d_rtime_score > 0:
+        print(f"Anomaly in rtime: Line {line_number}, score: {d_rtime_score}")
+
+    if d_method_score > 0:
+        print(f"Anomaly in method: Line {line_number}, score: {d_method_score}")
+
+    if d_url_score > 0:
+        print(f"Anomaly in url: Line {line_number}, score: {d_url_score}")
 
     line_number += 1

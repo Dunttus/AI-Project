@@ -42,6 +42,8 @@ def construct_model(data, urldata):
         model.save(model_file)
         plot_training(history)
 
+    return model
+
 
 def add_autoencoding_layers(merged_input):
 

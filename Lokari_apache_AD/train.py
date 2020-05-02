@@ -5,6 +5,7 @@ from Lokari_apache_AD.read_data import read
 from Lokari_apache_AD.output_opts import set_output
 from Lokari_apache_AD.process import process_apache_log
 from Lokari_apache_AD.model.construct import construct_model
+from Lokari_apache_AD.msecalc import mse_calc
 import Lokari_apache_AD.config as config
 
 print("Lokari anomaly detector: training version: " + config.VERSION)
@@ -24,3 +25,6 @@ data, urldata = process_apache_log(data)
 
 # Construct, train and save the model
 model = construct_model(data, urldata)
+
+# Calculate and save the baseline MSE score for the trained model
+baseline_score = mse_calc(data, urldata, model)
