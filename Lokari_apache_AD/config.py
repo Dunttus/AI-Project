@@ -26,3 +26,9 @@ def save_config():
     # TODO: save these in a json format
 
     return
+
+
+def load_config():
+    # TODO: make it possible to reuse saved configs
+
+    return

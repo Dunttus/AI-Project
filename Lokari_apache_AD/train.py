@@ -4,7 +4,7 @@ from os import environ as env
 from Lokari_apache_AD.read_data import read
 from Lokari_apache_AD.output_opts import set_output
 from Lokari_apache_AD.process import process_apache_log
-from Lokari_apache_AD.autoencoder.model import construct_model
+from Lokari_apache_AD.model.construct import construct_model
 import Lokari_apache_AD.config as config
 
 print("Lokari anomaly detector: training version: " + config.VERSION)
