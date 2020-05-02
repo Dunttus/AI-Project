@@ -7,6 +7,7 @@ from Lokari_apache_AD.output_opts import set_output
 from Lokari_apache_AD.process import process_apache_log
 from Lokari_apache_AD.msecalc import msescore, load_baseline_scores
 import Lokari_apache_AD.config as config
+import matplotlib.pyplot as plt
 
 # This works across the modules: overrides config.py parameters
 # When loading a model, these 2 are the only relevant parameters
@@ -37,6 +38,7 @@ FILENAME = 'training_dataset/good_access.log'
 
 incoming_data = readlines(FILENAME)
 line_number = 1
+statustest = []
 
 for line in incoming_data:
 
@@ -80,6 +82,12 @@ for line in incoming_data:
     #print("Method MSE:", d_method_score)
     #print("URL MSE:", d_url_score)
 
+    statustest.append([d_status_score,
+                       d_byte_score,
+                       d_rtime_score,
+                       d_method_score,
+                       d_url_score])
+
     if d_status_score > 0:
         print(f"Anomaly in status: Line {line_number}, score: {d_status_score}")
 
@@ -96,3 +104,10 @@ for line in incoming_data:
         print(f"Anomaly in url: Line {line_number}, score: {d_url_score}")
 
     line_number += 1
+
+
+# Save the results
+plt.plot(statustest)
+plot_file = 'saved_models/' + config.VERSION + \
+            '/validation_plot-' + config.VERSION + '.png'
+plt.savefig(plot_file)
