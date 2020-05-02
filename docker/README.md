@@ -11,5 +11,8 @@ $ docker build -t lokari:test .
 Start the container in interactive mode:  
 $ docker run --name lokaritest -it lokari:test
 
+Docker container in Bash, with Github project folder and auto removed on exit:
+docker run --rm -v /home/USERNAME/AI-Project/:/AI-Project -it lokari:test
+
 ## Environment
 ![Environment picture](./img/environment.PNG)
