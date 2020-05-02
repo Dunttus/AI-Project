@@ -108,6 +108,7 @@ for line in incoming_data:
 
 # Save the results
 plt.plot(statustest)
+plt.legend(['status','byte','rtime','method','url'])
 plot_file = 'saved_models/' + config.VERSION + \
             '/validation_plot-' + config.VERSION + '.png'
 plt.savefig(plot_file)
