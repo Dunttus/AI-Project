@@ -1,5 +1,5 @@
 # Global parameters
-VERSION = "test"
+VERSION = "0.33-C"
 
 # Saving model & tokenizers is set in train.py or main.py
 SAVE = True
@@ -8,7 +8,7 @@ SAVE = True
 URL_LENGTH = 64
 
 # Model settings
-EPOCHS = 1000
+EPOCHS = 2000
 
 
 # Model monitor settings
@@ -17,7 +17,7 @@ EPOCHS = 1000
 # NOTE: when the EarlyStopping monitor stops, the loss values of the
 # saved model can be read from  epochs trained minus patience.
 # If the EarlyStopping doesn't trigger, last epoch is saved.
-PATIENCE = 100
+PATIENCE = 200
 # Minimum loss improvement required
 MIN_DELTA = 1e-3
 
