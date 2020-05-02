@@ -1,6 +1,5 @@
 # Convert the log data into fully numerical presentation.
 import pickle, numpy
-import math
 from os import mkdir
 from keras_preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences as pad
@@ -35,7 +34,6 @@ def process_apache_log(data):
 
 def tokenize_http_status(data):
 
-    # This tokenizer needs OOV handling!
     if config.SAVE:
         tokenizer = Tokenizer(num_words=20, filters='', oov_token=0)
         tokenizer.fit_on_texts(data.astype(str))
@@ -112,7 +110,6 @@ def tokenize_http_methods(data):
 
 def tokenize_url(data):
 
-    # TODO: Check word-level tokenizing, tf-idf is probably better
     if config.SAVE:
         tokenizer = Tokenizer(num_words=128, filters='', char_level=True,
                               lower=False)
@@ -127,6 +124,7 @@ def tokenize_url(data):
                maxlen=64,
                padding='post')
 
+    # TODO: Test word-level tokenizer
     # TODO: Test tfidf tokenizing
     # tfidf tokenizer code
     #data = tokenizer.texts_to_matrix(data, mode='tfidf')
@@ -152,8 +150,7 @@ def save_tokenizer(tokenizer, name):
 
 def save_numbers(mean, std, name):
 
-    filename = filename = 'saved_models/' + config.VERSION + '/' + name + '.txt'
-    # TODO: better readable format...
+    filename = 'saved_models/' + config.VERSION + '/' + name + '.txt'
     data = str(mean) + "\n" + str(std) + "\n"
 
     with open(filename, 'w') as file:
@@ -182,10 +179,3 @@ def load_numbers(name):
     std = float(std)
 
     return mean, std
-
-
-def save_config():
-
-    # TODO: save configuration parameters so nothing gets lost!
-    return
-

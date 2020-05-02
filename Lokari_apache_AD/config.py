@@ -20,3 +20,9 @@ EPOCHS = 1000
 PATIENCE = 100
 # Minimum loss improvement required
 MIN_DELTA = 1e-3
+
+
+def save_config():
+    # TODO: save these in a json format
+
+    return
