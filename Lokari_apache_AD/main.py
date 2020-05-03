@@ -2,12 +2,9 @@
 # Lokari Apache log anomaly detector:
 from os import environ as env
 from tensorflow.keras.models import load_model
-from Lokari_apache_AD.read_data import readlines
 from Lokari_apache_AD.output_opts import set_output
-from Lokari_apache_AD.process import process_apache_log
-from Lokari_apache_AD.rmsdcalc import rmsdscore, load_baseline_scores
+from Lokari_apache_AD.rmsdcalc import load_baseline_scores
 import Lokari_apache_AD.config as config
-import matplotlib.pyplot as plt
 
 # This works across the modules: overrides config.py parameters
 # When loading a model, these 2 are the only relevant parameters
