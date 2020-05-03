@@ -5,6 +5,7 @@ from tensorflow.keras.models import Model
 from tensorflow.keras.callbacks import EarlyStopping
 from tensorflow.keras.layers import Dense, Concatenate
 from Lokari_apache_AD.model.inputs import fill_io_lists
+from Lokari_apache_AD.plots import draw_training_history
 import Lokari_apache_AD.config as config
 import matplotlib.pyplot as plt
 
@@ -40,7 +41,7 @@ def construct_model(data, urldata):
         model_file = 'saved_models/' + config.VERSION + \
                      '/Lokari-v' + config.VERSION + '.h5'
         model.save(model_file)
-        plot_training(history)
+        draw_training_history(history)
 
     return model
 
@@ -74,22 +75,3 @@ def model_monitor():
             )
 
     return mon
-
-
-def plot_training(history):
-
-    plt.plot(history.history['loss'], label='loss')
-    plt.plot(history.history['status_loss'], label='Status')
-    plt.plot(history.history['byte_loss'], label='Byte')
-    plt.plot(history.history['rtime_loss'], label='Request time')
-    plt.plot(history.history['method_loss'], label='Method')
-    plt.plot(history.history['url_loss'], label='Url')
-    plt.yscale('log')
-    plt.legend()
-    plt.ylabel('Loss')
-    plt.xlabel('Epoch')
-    plot_file = 'saved_models/' + config.VERSION + \
-                '/training_plot-' + config.VERSION + '.png'
-    plt.savefig(plot_file)
-
-    return

@@ -4,6 +4,7 @@ from Lokari_apache_AD.read_data import readlines, put_columns
 from Lokari_apache_AD.rmsdcalc import load_baseline_scores
 from Lokari_apache_AD.process import process_apache_log
 from Lokari_apache_AD.rmsdcalc import rmsdscore
+from Lokari_apache_AD.plots import draw_anomaly_check
 
 
 def check_training_data(model):
@@ -67,6 +68,6 @@ def check_training_data(model):
 
         line_number += 1
 
-    #make_plot(training_plot)
+    draw_anomaly_check(training_plot)
 
     return
