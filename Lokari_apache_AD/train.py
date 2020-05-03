@@ -6,6 +6,7 @@ from Lokari_apache_AD.output_opts import set_output
 from Lokari_apache_AD.process import process_apache_log
 from Lokari_apache_AD.model.construct import construct_model
 from Lokari_apache_AD.rmsdcalc import rmsd_calc
+from Lokari_apache_AD.checks import check_training_data
 import Lokari_apache_AD.config as config
 
 print("Lokari anomaly detector: training version: " + config.VERSION)
@@ -28,3 +29,6 @@ model = construct_model(data, urldata)
 
 # Calculate and save the baseline MSE score for the trained model
 baseline_score = rmsd_calc(data, urldata, model)
+
+# Find anomalies from the training data
+check_training_data(model)

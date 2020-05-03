@@ -19,3 +19,11 @@ def readlines(target):
         chunksize=1)
 
     return iterator
+
+
+def put_columns(dataframe):
+
+    dataframe.columns = [
+        "time", "ip", "status", "byte", "rtime", "method", "url", "protocol"]
+
+    return dataframe

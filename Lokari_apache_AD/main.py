@@ -13,8 +13,8 @@ import matplotlib.pyplot as plt
 # When loading a model, these 2 are the only relevant parameters
 config.VERSION = "test"
 config.SAVE = False
-
 print("Lokari anomaly detector version: " + config.VERSION)
+
 # Set output options for pandas and numpy, minimize TensorFlow output
 set_output()
 env['TF_CPP_MIN_LOG_LEVEL'] = '2'
@@ -33,92 +33,4 @@ m_method_score = model_scores[3]
 m_url_score = model_scores[4]
 
 # This is where the monitoring loop should start!
-# The data that is fed to the model
-FILENAME = config.TRAINING_DATA
 
-incoming_data = readlines(FILENAME)
-line_number = 1
-statustest = []
-
-# Todo: make the testing of the training data a separate process
-
-for line in incoming_data:
-
-    line.columns = [
-        "time", "ip", "status", "byte", "rtime", "method", "url", "protocol"]
-    # Process new log line(s)
-    data, url = process_apache_log(line)
-    # The data that has not been through autoencoder yet
-    before_ae = [data.status, data.byte, data.rtime,
-                 data.method, url]
-    # Run the incoming data through autoencoder
-    after_ae = model.predict(before_ae)
-
-    # Calculate error scores
-    status_score = rmsdscore(after_ae[0], before_ae[0])
-    byte_score = rmsdscore(after_ae[1], before_ae[1])
-    rtime_score = rmsdscore(after_ae[2], before_ae[2])
-    method_score = rmsdscore(after_ae[3], before_ae[3])
-    url_score = rmsdscore(after_ae[4], url)
-
-    #print("***INCOMING DATA ERROR NUMBERS***")
-    #print("Status MSE:", status_score)
-    #print("Byte MSE:", byte_score)
-    #print("Rtime MSE:", rtime_score)
-    #print("Method MSE:", method_score)
-    #print("URL MSE:", url_score)
-
-    # Compare the error scores: if the MSEs on incoming data are higher, the
-    # probability of an anomaly is higher.
-
-    d_status_score = status_score - m_status_score
-    d_byte_score = byte_score - m_byte_score
-    d_rtime_score = rtime_score - m_rtime_score
-    d_method_score = method_score - m_method_score
-    d_url_score = url_score - m_url_score
-
-    #print("***DIFFERENCE - POSITIVE IS TOWARDS ANOMALY***")
-    #print("Status MSE:", d_status_score)
-    #print("Byte MSE:", d_byte_score)
-    #print("Rtime MSE:", d_rtime_score)
-    #print("Method MSE:", d_method_score)
-    #print("URL MSE:", d_url_score)
-
-    statustest.append([d_url_score,
-                       d_byte_score,
-                       d_rtime_score,
-                       d_method_score,
-                       d_status_score])
-
-    if d_status_score > 0.4:
-        print(f"Anomaly in status: Line {line_number}, score: {d_status_score}")
-
-    if d_byte_score > 0.4:
-        print(f"Anomaly in byte: Line {line_number}, score: {d_byte_score}")
-
-    if d_rtime_score > 0.4:
-        print(f"Anomaly in rtime: Line {line_number}, score: {d_rtime_score}")
-
-    if d_method_score > 0.4:
-        print(f"Anomaly in method: Line {line_number}, score: {d_method_score}")
-
-    if d_url_score > 0.4:
-        print(f"Anomaly in url: Line {line_number}, score: {d_url_score}")
-
-    # TODO: pick the anomalous lines automatically to a file
-
-    line_number += 1
-
-
-# TODO: make a file out of these and make different plots
-# Validation graphics
-plt.plot(statustest)
-plt.grid(True)
-#plt.yscale('symlog', linthreshy=0.1)
-#plt.ylim(-1,10)
-plt.ylabel('Root-mean-square deviation difference')
-plt.xlabel('Log line number')
-plt.legend(['url','byte','rtime','method','status'])
-plot_file = 'saved_models/' + config.VERSION + \
-            '/validation_plot-' + config.VERSION + '.png'
-plt.savefig(plot_file)

@@ -23,6 +23,11 @@ PATIENCE = 200
 MIN_DELTA = 1e-3
 
 
+# Anomaly detection settings:
+# Higher threshold yields less anomalies
+RMSD_THRESHOLD = 0.2
+
+
 def save_config():
     # TODO: save these in a json format
 
