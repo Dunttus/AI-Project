@@ -14,5 +14,8 @@ $ docker run --name lokaritest -it lokari:test
 Docker container in Bash, with Github project folder and auto removed on exit:  
 $ docker run --rm -v /home/USERNAME/AI-Project/:/AI-Project -it lokari:test
 
+Docker container in Bash, with Github folder and Apache access.logs:  
+docker run --rm -v /home/USER/AI-Project/:/AI-Project -v /var/log/apache2:/accesslog  -it lokari:test
+
 ## Environment
 ![Environment picture](./img/environment.PNG)
