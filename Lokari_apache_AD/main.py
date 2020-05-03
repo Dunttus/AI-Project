@@ -5,7 +5,9 @@ from tensorflow.keras.models import load_model
 from Lokari_apache_AD.output_opts import set_output
 from Lokari_apache_AD.rmsdcalc import load_baseline_scores
 from Lokari_apache_AD.monitor import follow
+from Lokari_apache_AD.checks import check_line
 import Lokari_apache_AD.config as config
+
 
 # This works across the modules: overrides config.py parameters
 # When loading a model, these 2 are the only relevant parameters
@@ -34,10 +36,5 @@ m_url_score = model_scores[4]
 with open(config.MONITORED_LOG, 'r') as file:
 
     print(f"Started monitoring: {config.MONITORED_LOG}")
-
     for new_line in follow(file):
-        # 1. read_data
-        # 2. process
-        # 3. compare
-        # 4. report result
-        print(new_line, end='')
+        check_line(new_line)

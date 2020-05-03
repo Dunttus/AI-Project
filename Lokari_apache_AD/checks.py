@@ -71,3 +71,11 @@ def check_training_data(model):
     draw_anomaly_check(training_plot)
 
     return
+
+
+def check_line(line):
+
+    line = process_apache_log(line)
+    print(line)
+
+    return
