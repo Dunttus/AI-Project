@@ -40,6 +40,8 @@ incoming_data = readlines(FILENAME)
 line_number = 1
 statustest = []
 
+# Todo: make the testing of the training data a separate process
+
 for line in incoming_data:
 
     line.columns = [
@@ -108,6 +110,7 @@ for line in incoming_data:
     line_number += 1
 
 
+# TODO: make a file out of these and make different plots
 # Validation graphics
 plt.plot(statustest)
 plt.grid(True)
@@ -117,5 +120,5 @@ plt.ylabel('Root-mean-square deviation difference')
 plt.xlabel('Log line number')
 plt.legend(['url','byte','rtime','method','status'])
 plot_file = 'saved_models/' + config.VERSION + \
-            '/validation_plot_bads-' + config.VERSION + '.png'
+            '/validation_plot-' + config.VERSION + '.png'
 plt.savefig(plot_file)
