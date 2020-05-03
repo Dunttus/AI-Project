@@ -16,7 +16,7 @@ def draw_anomaly_check(data):
 
     plot_file = 'saved_models/' + config.VERSION + \
                 '/training_data_analysis-' + config.VERSION + '.png'
-    plt.savefig(plot_file)
+    plt.savefig(plot_file, dpi=300)
     plt.clf()
 
     return
@@ -24,21 +24,21 @@ def draw_anomaly_check(data):
 
 def draw_training_history(model):
 
-    plt.plot(linewidth=0.5)
-    plt.plot(model.history['loss'], label='loss')
-    plt.plot(model.history['status_loss'], label='Status')
-    plt.plot(model.history['byte_loss'], label='Byte')
-    plt.plot(model.history['rtime_loss'], label='Request time')
-    plt.plot(model.history['method_loss'], label='Method')
-    plt.plot(model.history['url_loss'], label='Url')
+    plt.plot(model.history['loss'], label='loss', linewidth=0.5)
+    plt.plot(model.history['status_loss'], label='Status', linewidth=0.5)
+    plt.plot(model.history['byte_loss'], label='Byte', linewidth=0.5)
+    plt.plot(model.history['rtime_loss'], label='Request time', linewidth=0.5)
+    plt.plot(model.history['method_loss'], label='Method', linewidth=0.5)
+    plt.plot(model.history['url_loss'], label='Url', linewidth=0.5)
     plt.yscale('log')
-    plt.legend()
     plt.ylabel('Loss')
     plt.xlabel('Epoch')
+    plt.legend()
+    plt.grid(True)
 
     plot_file = 'saved_models/' + config.VERSION + \
                 '/training_history_plot-' + config.VERSION + '.png'
-    plt.savefig(plot_file)
+    plt.savefig(plot_file, dpi=300)
     plt.clf()
 
     return
