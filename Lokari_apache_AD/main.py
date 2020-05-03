@@ -34,7 +34,7 @@ m_url_score = model_scores[4]
 
 # This is where the monitoring loop should start!
 # The data that is fed to the model
-FILENAME = 'training_dataset/good_access.log'
+FILENAME = config.TRAINING_DATA
 
 incoming_data = readlines(FILENAME)
 line_number = 1

@@ -14,10 +14,8 @@ def read(target):
 def readlines(target):
 
     # Returns an iterator with chunksize
-    dataframe = pandas.read_csv(
+    iterator = pandas.read_csv(
         target, sep=' ', quotechar='"', escapechar=' ', header=None,
         chunksize=1)
-    dataframe.columns = [
-        "time", "ip", "status", "byte", "rtime", "method", "url", "protocol"]
 
-    return dataframe
+    return iterator

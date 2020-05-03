@@ -1,5 +1,6 @@
 # Global parameters
 VERSION = "test"
+TRAINING_DATA = "training_dataset/good_access.log"
 
 # Saving model & tokenizers is set in train.py or main.py
 SAVE = True
