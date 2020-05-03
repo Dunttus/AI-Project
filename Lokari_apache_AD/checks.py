@@ -71,18 +71,3 @@ def check_training_data(model):
     draw_anomaly_check(training_plot)
 
     return
-
-
-def check_line(line):
-
-    try:
-        dataframe = read_text(line)
-
-    except:
-        print("Could not process line:")
-        print(line)
-        return
-
-    data, url = process_apache_log(dataframe)
-
-    return
