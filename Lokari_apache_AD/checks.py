@@ -1,6 +1,6 @@
-import matplotlib.pyplot as plt
+import pandas, io
 import Lokari_apache_AD.config as config
-from Lokari_apache_AD.read_data import readlines, put_columns
+from Lokari_apache_AD.read_data import readlines, put_columns, read_text
 from Lokari_apache_AD.rmsdcalc import load_baseline_scores
 from Lokari_apache_AD.process import process_apache_log
 from Lokari_apache_AD.rmsdcalc import rmsdscore
@@ -75,7 +75,14 @@ def check_training_data(model):
 
 def check_line(line):
 
-    line = process_apache_log(line)
-    print(line)
+    try:
+        dataframe = read_text(line)
+
+    except:
+        print("Could not process line:")
+        print(line)
+        return
+
+    data, url = process_apache_log(dataframe)
 
     return

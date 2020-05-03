@@ -1,4 +1,5 @@
 import pandas
+import io
 
 
 def read(target):
@@ -25,5 +26,15 @@ def put_columns(dataframe):
 
     dataframe.columns = [
         "time", "ip", "status", "byte", "rtime", "method", "url", "protocol"]
+
+    return dataframe
+
+
+def read_text(text):
+
+    stream = io.StringIO(text)
+    dataframe = pandas.read_csv(
+        stream, sep=' ', quotechar='"', escapechar=' ', header=None)
+    put_columns(dataframe)
 
     return dataframe
