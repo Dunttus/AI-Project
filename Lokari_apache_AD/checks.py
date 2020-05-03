@@ -8,7 +8,7 @@ from Lokari_apache_AD.rmsdcalc import rmsdscore
 
 def check_training_data(model):
 
-    # This has to be set not to overwrite tokenizers!
+    # This has to be for process_apache_log not to overwrite tokenizers!
     config.SAVE = False
 
     model_scores = load_baseline_scores()
@@ -21,7 +21,7 @@ def check_training_data(model):
     training_plot = []
     line_number = 1
 
-    print("Checking training data for anomalies:")
+    print("***Checking training data for anomalies:***")
 
     for line in readlines(config.TRAINING_DATA):
 
