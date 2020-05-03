@@ -1,5 +1,5 @@
 # Global parameters
-VERSION = "0.33-C"
+VERSION = "test"
 
 # Saving model & tokenizers is set in train.py or main.py
 SAVE = True

@@ -5,7 +5,7 @@ from tensorflow.keras.models import load_model
 from Lokari_apache_AD.read_data import readlines
 from Lokari_apache_AD.output_opts import set_output
 from Lokari_apache_AD.process import process_apache_log
-from Lokari_apache_AD.msecalc import msescore, load_baseline_scores
+from Lokari_apache_AD.rmsdcalc import rmsdscore, load_baseline_scores
 import Lokari_apache_AD.config as config
 import matplotlib.pyplot as plt
 
@@ -53,11 +53,11 @@ for line in incoming_data:
     after_ae = model.predict(before_ae)
 
     # Calculate error scores
-    status_score = msescore(after_ae[0], before_ae[0])
-    byte_score = msescore(after_ae[1], before_ae[1])
-    rtime_score = msescore(after_ae[2], before_ae[2])
-    method_score = msescore(after_ae[3], before_ae[3])
-    url_score = msescore(after_ae[4], url)
+    status_score = rmsdscore(after_ae[0], before_ae[0])
+    byte_score = rmsdscore(after_ae[1], before_ae[1])
+    rtime_score = rmsdscore(after_ae[2], before_ae[2])
+    method_score = rmsdscore(after_ae[3], before_ae[3])
+    url_score = rmsdscore(after_ae[4], url)
 
     #print("***INCOMING DATA ERROR NUMBERS***")
     #print("Status MSE:", status_score)
