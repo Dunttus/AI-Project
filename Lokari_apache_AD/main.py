@@ -103,6 +103,8 @@ for line in incoming_data:
     if d_url_score > 0.4:
         print(f"Anomaly in url: Line {line_number}, score: {d_url_score}")
 
+    # TODO: pick the anomalous lines automatically to a file
+
     line_number += 1
 
 
@@ -110,9 +112,10 @@ for line in incoming_data:
 plt.plot(statustest)
 plt.grid(True)
 #plt.yscale('symlog', linthreshy=0.1)
+#plt.ylim(-1,10)
 plt.ylabel('Root-mean-square deviation difference')
 plt.xlabel('Log line number')
 plt.legend(['url','byte','rtime','method','status'])
 plot_file = 'saved_models/' + config.VERSION + \
-            '/validation_plot-' + config.VERSION + '.png'
+            '/validation_plot_bads-' + config.VERSION + '.png'
 plt.savefig(plot_file)
