@@ -4,6 +4,7 @@ from os import environ as env
 from tensorflow.keras.models import load_model
 from Lokari_apache_AD.output_opts import set_output
 from Lokari_apache_AD.rmsdcalc import load_baseline_scores
+from Lokari_apache_AD.monitor import follow
 import Lokari_apache_AD.config as config
 
 # This works across the modules: overrides config.py parameters
@@ -29,5 +30,14 @@ m_rtime_score = model_scores[2]
 m_method_score = model_scores[3]
 m_url_score = model_scores[4]
 
-# This is where the monitoring loop should start!
+# Start monitoring a file
+with open(config.MONITORED_LOG, 'r') as file:
 
+    print(f"Started monitoring: {config.MONITORED_LOG}")
+
+    for new_line in follow(file):
+        # 1. read_data
+        # 2. process
+        # 3. compare
+        # 4. report result
+        print(new_line, end='')
