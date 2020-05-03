@@ -82,33 +82,37 @@ for line in incoming_data:
     #print("Method MSE:", d_method_score)
     #print("URL MSE:", d_url_score)
 
-    statustest.append([d_status_score,
+    statustest.append([d_url_score,
                        d_byte_score,
                        d_rtime_score,
                        d_method_score,
-                       d_url_score])
+                       d_status_score])
 
-    if d_status_score > 0:
+    if d_status_score > 0.4:
         print(f"Anomaly in status: Line {line_number}, score: {d_status_score}")
 
-    if d_byte_score > 0:
+    if d_byte_score > 0.4:
         print(f"Anomaly in byte: Line {line_number}, score: {d_byte_score}")
 
-    if d_rtime_score > 0:
+    if d_rtime_score > 0.4:
         print(f"Anomaly in rtime: Line {line_number}, score: {d_rtime_score}")
 
-    if d_method_score > 0:
+    if d_method_score > 0.4:
         print(f"Anomaly in method: Line {line_number}, score: {d_method_score}")
 
-    if d_url_score > 0:
+    if d_url_score > 0.4:
         print(f"Anomaly in url: Line {line_number}, score: {d_url_score}")
 
     line_number += 1
 
 
-# Save the results
+# Validation graphics
 plt.plot(statustest)
-plt.legend(['status','byte','rtime','method','url'])
+plt.grid(True)
+#plt.yscale('symlog', linthreshy=0.1)
+plt.ylabel('Root-mean-square deviation difference')
+plt.xlabel('Log line number')
+plt.legend(['url','byte','rtime','method','status'])
 plot_file = 'saved_models/' + config.VERSION + \
             '/validation_plot-' + config.VERSION + '.png'
 plt.savefig(plot_file)
