@@ -18,7 +18,7 @@ EPOCHS = 2000
 # NOTE: when the EarlyStopping monitor stops, the loss values of the
 # saved model can be read from  epochs trained minus patience.
 # If the EarlyStopping doesn't trigger, last epoch is saved.
-PATIENCE = 200
+PATIENCE = 50
 # Minimum loss improvement required
 MIN_DELTA = 1e-3
 

@@ -6,7 +6,7 @@ import Lokari_apache_AD.config as config
 def draw_anomaly_check(data):
 
     # Validation graphics
-    plt.plot(data)
+    plt.plot(data, linewidth=1)
     plt.grid(True)
     # plt.yscale('symlog', linthreshy=0.1)
     # plt.ylim(-1,10)
@@ -24,12 +24,12 @@ def draw_anomaly_check(data):
 
 def draw_training_history(model):
 
-    plt.plot(model.history['loss'], label='loss', linewidth=0.5)
-    plt.plot(model.history['status_loss'], label='Status', linewidth=0.5)
-    plt.plot(model.history['byte_loss'], label='Byte', linewidth=0.5)
-    plt.plot(model.history['rtime_loss'], label='Request time', linewidth=0.5)
-    plt.plot(model.history['method_loss'], label='Method', linewidth=0.5)
-    plt.plot(model.history['url_loss'], label='Url', linewidth=0.5)
+    plt.plot(model.history['loss'], label='loss', linewidth=1)
+    plt.plot(model.history['status_loss'], label='Status', linewidth=1)
+    plt.plot(model.history['byte_loss'], label='Byte', linewidth=1)
+    plt.plot(model.history['rtime_loss'], label='Request time', linewidth=1)
+    plt.plot(model.history['method_loss'], label='Method', linewidth=1)
+    plt.plot(model.history['url_loss'], label='Url', linewidth=1)
     plt.yscale('log')
     plt.ylabel('Loss')
     plt.xlabel('Epoch')
