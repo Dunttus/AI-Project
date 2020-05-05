@@ -1,4 +1,5 @@
-# AI-Project: Anomaly detection with Tensorflow.
+# Lokari - anomaly detector 
+### Apache web server log anomaly detector
 
 ## SPRING CLEANING IN PROGRESS
 
@@ -14,9 +15,9 @@ First command line demo is available in archives/Lokari_classifier/demo_model
 #### Follow the project blog: [https://ailogs.design.blog/](https://ailogs.design.blog/)
 ### Directories:
 **/.idea** - PyCharm configuration files \
-**/archives** - The past
+**/archives** - The past \
 **/datasets** -  \
-**/docker** - Project runtime container
+**/docker** - Project runtime container \
 
 
 ### Working environment:
