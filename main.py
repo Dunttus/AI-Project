@@ -81,15 +81,20 @@ with open(config.MONITORED_LOG, 'r') as file:
 
         if d_status_score > config.RMSD_THRESHOLD:
             print(f"Hit in status: {d_status_score}")
+            print("-->" + dataframe.status.to_string(index=False))
 
         if d_byte_score > config.RMSD_THRESHOLD:
             print(f"Hit in byte: {d_byte_score}")
+            print("-->" + dataframe.byte.to_string(index=False))
 
         if d_rtime_score > config.RMSD_THRESHOLD:
             print(f"Hit in rtime: {d_rtime_score}")
+            print("-->" + dataframe.rtime.to_string(index=False))
 
         if d_method_score > config.RMSD_THRESHOLD:
             print(f"Hit in method: {d_method_score}")
+            print("-->" + dataframe.method.to_string(index=False))
 
         if d_url_score > config.RMSD_THRESHOLD:
             print(f"Hit in url: {d_url_score}")
+            print("-->" + dataframe.url.to_string(index=False))
