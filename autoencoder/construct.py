@@ -24,6 +24,7 @@ def construct_model(data, urldata):
     monitor = model_monitor()
 
     # TODO: Check additional compiling options
+    # TODO: tune learning rate of the optimizer
     model.compile(optimizer='adam',
                   loss='mse')
     print(model.summary())
