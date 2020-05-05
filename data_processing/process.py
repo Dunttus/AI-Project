@@ -110,25 +110,18 @@ def tokenize_http_methods(data):
 
 def tokenize_url(data):
 
+    # TODO: check how many characters we really have?
     if config.SAVE:
-        tokenizer = Tokenizer(num_words=128, filters='', char_level=True,
+        tokenizer = Tokenizer(num_words=64, filters='', char_level=True,
                               lower=False)
-        tokenizer.fit_on_texts(data)
         save_tokenizer(tokenizer, "url")
 
     if not config.SAVE:
         tokenizer = load_tokenizer("url")
 
-    # We have maximum of 64 character long requests.
-    data = pad(tokenizer.texts_to_sequences(data),
-               maxlen=64,
-               padding='post')
+    tokenizer.fit_on_texts(data)
+    data = tokenizer.texts_to_matrix(data, mode='tfidf')
 
-    # TODO: Test word-level tokenizer
-    # TODO: Test tfidf tokenizing
-    # tfidf tokenizer code
-    #data = tokenizer.texts_to_matrix(data, mode='tfidf')
-    #print(padded)
     return data
 
 

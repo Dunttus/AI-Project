@@ -6,13 +6,18 @@ MONITORED_LOG = "datasets/public/monitoring_test.log"
 # Saving model & tokenizers is set in train.py or main.py
 SAVE = True
 
+
 # Tokenizer settings
+
+# How many characters from url are processed?
 URL_LENGTH = 64
+
 
 # Model settings
 EPOCHS = 2000
 # Autoencoder bottleneck layer size, lower values generalize more
 BOTTLENECK = 16
+
 
 # Model monitor settings
 
