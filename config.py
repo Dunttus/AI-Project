@@ -11,7 +11,8 @@ URL_LENGTH = 64
 
 # Model settings
 EPOCHS = 2000
-
+# Autoencoder bottleneck layer size, lower values generalize more
+BOTTLENECK = 16
 
 # Model monitor settings
 
