@@ -1,10 +1,3 @@
-log_parsing/testdataset
-log_parsing/*.json
-datasets/loglevels/*_logs.json
-datasets/apache_access_log/access.log
-/Lokari_apache_AD/training_dataset/1_access.log
-/Lokari_apache_AD/training_dataset/2_access.log
-/Lokari_apache_AD/training_dataset/3_access.log
-/Lokari_apache_AD/training_dataset/bad_access.log
-/Lokari_apache_AD/training_dataset/combine_access.log
-/Lokari_apache_AD/training_dataset/combine_access_12bads.log
+datasets/private/*
+.idea/dictionaries
+.idea/workspace.xml

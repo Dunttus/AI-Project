@@ -1,3 +1,0 @@
-import pandas
-
-print("hello")

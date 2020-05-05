@@ -1,0 +1,15 @@
+{% extends "index.html" %}
+{% block content %}
+<table border="5">
+    {% for key,value in result.items() %}
+    <tr>
+        <th>
+            {{key}}
+        </th>
+        <td>
+            {{value}}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

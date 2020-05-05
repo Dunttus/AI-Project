@@ -1,5 +1,7 @@
 # AI-Project: Anomaly detection with Tensorflow.
 
+## SPRING CLEANING IN PROGRESS
+
 School project by Tuomo Kuure (tqre) and Joni Hakala (Dunttus).  
 Supervising teacher: Tero Karvinen - http://terokarvinen.com  
 [Haaga-Helia University of Applied Sciences](http://www.haaga-helia.fi/en/frontpage)  
@@ -7,20 +9,15 @@ Course: Monialaprojekti - Multisectoral project (ICT-infrastructures) PRO4TN004-
 
 This repository is designed to be cloned with PyCharm Pro.  
 Runtime environment is containerized with Docker.  
-First command line demo is available in /Lokari_classifier/demo_model
+First command line demo is available in archives/Lokari_classifier/demo_model
 
 #### Follow the project blog: [https://ailogs.design.blog/](https://ailogs.design.blog/)
 ### Directories:
-**/Lokari_apache_AD** - Anomaly detection for Apache2 access.logs \
-**/Lokari_anomaly_detector** - Anomaly detection testing \
-**/Lokari_classifier** - Lokari log classifier machine learning model construction code \
 **/.idea** - PyCharm configuration files \
-**/classifier** - classifier code snippets \
-**/datasets** - datasets live here (big sets are .gitignored) \
-**/docker** - Project runtime container \
-**/log_parsing** - Journalctl JSON scripts and ElasticSearch database population \
-**/memos** - Memorandums \
-**/testing** - Testing or studying code bits
+**/archives** - The past
+**/datasets** -  \
+**/docker** - Project runtime container
+
 
 ### Working environment:
 * Ubuntu 18.04/Arch Linux
