@@ -33,7 +33,7 @@ def draw_anomaly_check_log(data):
     plt.legend(['url', 'byte', 'rtime', 'method', 'status'])
 
     plot_file = 'saved_models/' + config.VERSION + \
-                '/training_data_analysis-' + config.VERSION + '.png'
+                '/training_data_analysis_log-' + config.VERSION + '.png'
     plt.savefig(plot_file, dpi=300)
     plt.clf()
 
