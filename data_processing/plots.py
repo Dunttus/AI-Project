@@ -6,7 +6,7 @@ import config as config
 def draw_anomaly_check(data):
 
     # Validation graphics
-    plt.plot(data, linewidth=1)
+    plt.plot(data, linewidth=0.5)
     plt.grid(True)
     # plt.ylim(-1,10)
     plt.ylabel('Root-mean-square deviation difference')
@@ -15,7 +15,7 @@ def draw_anomaly_check(data):
 
     plot_file = 'saved_models/' + config.VERSION + \
                 '/training_data_analysis-' + config.VERSION + '.png'
-    plt.savefig(plot_file, dpi=300)
+    plt.savefig(plot_file, dpi=600)
     plt.clf()
 
     return
@@ -24,7 +24,7 @@ def draw_anomaly_check(data):
 def draw_anomaly_check_log(data):
 
     # Validation graphics, logarithmic scale
-    plt.plot(data, linewidth=1)
+    plt.plot(data, linewidth=0.5)
     plt.grid(True)
     plt.yscale('symlog', linthreshy=0.1)
     # plt.ylim(-1,10)
@@ -34,7 +34,7 @@ def draw_anomaly_check_log(data):
 
     plot_file = 'saved_models/' + config.VERSION + \
                 '/training_data_analysis_log-' + config.VERSION + '.png'
-    plt.savefig(plot_file, dpi=300)
+    plt.savefig(plot_file, dpi=600)
     plt.clf()
 
     return
@@ -42,12 +42,12 @@ def draw_anomaly_check_log(data):
 
 def draw_training_history(model):
 
-    plt.plot(model.history['loss'], label='loss', linewidth=1)
-    plt.plot(model.history['status_loss'], label='Status', linewidth=1)
-    plt.plot(model.history['byte_loss'], label='Byte', linewidth=1)
-    plt.plot(model.history['rtime_loss'], label='Request time', linewidth=1)
-    plt.plot(model.history['method_loss'], label='Method', linewidth=1)
-    plt.plot(model.history['url_loss'], label='Url', linewidth=1)
+    plt.plot(model.history['loss'], label='loss', linewidth=0.5)
+    plt.plot(model.history['status_loss'], label='Status', linewidth=0.5)
+    plt.plot(model.history['byte_loss'], label='Byte', linewidth=0.5)
+    plt.plot(model.history['rtime_loss'], label='Request time', linewidth=0.5)
+    plt.plot(model.history['method_loss'], label='Method', linewidth=0.5)
+    plt.plot(model.history['url_loss'], label='Url', linewidth=0.5)
     plt.yscale('log')
     plt.ylabel('Loss')
     plt.xlabel('Epoch')
@@ -56,7 +56,7 @@ def draw_training_history(model):
 
     plot_file = 'saved_models/' + config.VERSION + \
                 '/training_history_plot-' + config.VERSION + '.png'
-    plt.savefig(plot_file, dpi=300)
+    plt.savefig(plot_file, dpi=600)
     plt.clf()
 
     return

@@ -32,6 +32,7 @@ MIN_DELTA = 1e-3
 
 # Anomaly detection settings:
 # Higher threshold yields less anomalies
+# TODO: determine good threshold according to the training data check values
 RMSD_THRESHOLD = 0.2
 
 
