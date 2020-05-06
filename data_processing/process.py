@@ -96,7 +96,7 @@ def tokenize_http_methods(data):
     # doesn't work.
     # TODO: test one-hot-encoding
     if config.SAVE:
-        tokenizer = Tokenizer(num_words=10, filters='')
+        tokenizer = Tokenizer(num_words=10, filters='', oov_token=0)
         tokenizer.fit_on_texts(data)
         save_tokenizer(tokenizer, "method")
 
