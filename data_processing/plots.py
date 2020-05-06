@@ -8,7 +8,25 @@ def draw_anomaly_check(data):
     # Validation graphics
     plt.plot(data, linewidth=1)
     plt.grid(True)
-    # plt.yscale('symlog', linthreshy=0.1)
+    # plt.ylim(-1,10)
+    plt.ylabel('Root-mean-square deviation difference')
+    plt.xlabel('Log line number')
+    plt.legend(['url', 'byte', 'rtime', 'method', 'status'])
+
+    plot_file = 'saved_models/' + config.VERSION + \
+                '/training_data_analysis-' + config.VERSION + '.png'
+    plt.savefig(plot_file, dpi=300)
+    plt.clf()
+
+    return
+
+
+def draw_anomaly_check_log(data):
+
+    # Validation graphics, logarithmic scale
+    plt.plot(data, linewidth=1)
+    plt.grid(True)
+    plt.yscale('symlog', linthreshy=0.1)
     # plt.ylim(-1,10)
     plt.ylabel('Root-mean-square deviation difference')
     plt.xlabel('Log line number')

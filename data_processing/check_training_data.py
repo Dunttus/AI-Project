@@ -4,7 +4,7 @@ from data_processing.read_data import readlines, put_columns
 from data_processing.rmsdcalc import load_baseline_scores
 from data_processing.process import process_apache_log
 from data_processing.rmsdcalc import rmsdscore
-from data_processing.plots import draw_anomaly_check
+from data_processing.plots import draw_anomaly_check, draw_anomaly_check_log
 
 
 def check_training_data(model):
@@ -69,5 +69,6 @@ def check_training_data(model):
         line_number += 1
 
     draw_anomaly_check(training_plot)
+    draw_anomaly_check_log(training_plot)
 
     return
