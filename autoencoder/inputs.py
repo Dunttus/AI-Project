@@ -60,7 +60,7 @@ def rtime_input(data):
 
 def method_input(data):
     inp = Input(name='method_input', shape=1)
-    emb = Embedding(input_dim=7, output_dim=4, input_length=1)(inp)
+    emb = Embedding(input_dim=10, output_dim=4, input_length=1)(inp)
     outp = Flatten()(emb)
     return inp, outp
 
