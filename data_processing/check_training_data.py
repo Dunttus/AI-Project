@@ -20,11 +20,14 @@ def check_training_data(model):
     m_url_score = model_scores[4]
 
     training_plot = []
+    log_lines = []
     line_number = 1
 
     print("***Checking training data for anomalies:***")
 
     for line in readlines(config.TRAINING_DATA):
+
+        log_lines.append(line)
 
         put_columns(line)
         data, url = process_apache_log(line)
@@ -64,12 +67,13 @@ def check_training_data(model):
         if d_url_score > config.RMSD_THRESHOLD:
             print(f"Hit in url: Line {line_number}, score: {d_url_score}")
 
-        # TODO: pick the anomalous lines automatically to a file
-
         line_number += 1
 
     draw_anomaly_check(training_plot)
     draw_anomaly_check_log(training_plot)
+
+    print(training_plot)
+    print(log_lines[0])
 
     # TODO: Calculate a good default value for RMSD_THRESHOLD
     # TODO: maybe have to separate all 5 values?
