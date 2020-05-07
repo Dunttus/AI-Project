@@ -6,7 +6,7 @@ import config as config
 def draw_anomaly_check(data):
 
     # Validation graphics
-    plt.plot(data, linewidth=0.5)
+    plt.plot(data, linewidth=config.LINE_WIDTH)
     plt.grid(True)
     # plt.ylim(-1,10)
     plt.ylabel('Root-mean-square deviation difference')
@@ -24,7 +24,7 @@ def draw_anomaly_check(data):
 def draw_anomaly_check_log(data):
 
     # Validation graphics, logarithmic scale
-    plt.plot(data, linewidth=0.5)
+    plt.plot(data, linewidth=config.LINE_WIDTH)
     plt.grid(True)
     plt.yscale('symlog', linthreshy=0.1)
     # plt.ylim(-1,10)
@@ -42,12 +42,18 @@ def draw_anomaly_check_log(data):
 
 def draw_training_history(model):
 
-    plt.plot(model.history['loss'], label='loss', linewidth=0.5)
-    plt.plot(model.history['status_loss'], label='Status', linewidth=0.5)
-    plt.plot(model.history['byte_loss'], label='Byte', linewidth=0.5)
-    plt.plot(model.history['rtime_loss'], label='Request time', linewidth=0.5)
-    plt.plot(model.history['method_loss'], label='Method', linewidth=0.5)
-    plt.plot(model.history['url_loss'], label='Url', linewidth=0.5)
+    plt.plot(model.history['loss'], label='loss',
+             linewidth=config.LINE_WIDTH)
+    plt.plot(model.history['status_loss'], label='Status',
+             linewidth=config.LINE_WIDTH)
+    plt.plot(model.history['byte_loss'], label='Byte',
+             linewidth=config.LINE_WIDTH)
+    plt.plot(model.history['rtime_loss'], label='Request time',
+             linewidth=config.LINE_WIDTH)
+    plt.plot(model.history['method_loss'], label='Method',
+             linewidth=config.LINE_WIDTH)
+    plt.plot(model.history['url_loss'], label='Url',
+             linewidth=config.LINE_WIDTH)
     plt.yscale('log')
     plt.ylabel('Loss')
     plt.xlabel('Epoch')

@@ -6,6 +6,8 @@ MONITORED_LOG = "datasets/public/monitoring_test.log"
 # Saving model & tokenizers is set in train.py or main.py
 SAVE = True
 
+# Plot chart settings
+LINE_WIDTH = 0.2
 
 # Tokenizer settings
 
@@ -25,7 +27,7 @@ BOTTLENECK = 12
 # NOTE: when the EarlyStopping monitor stops, the loss values of the
 # saved model can be read from  epochs trained minus patience.
 # If the EarlyStopping doesn't trigger, last epoch is saved.
-PATIENCE = 50
+PATIENCE = 100
 # Minimum loss improvement required
 MIN_DELTA = 1e-3
 
