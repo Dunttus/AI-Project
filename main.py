@@ -98,3 +98,5 @@ with open(config.MONITORED_LOG, 'r') as file:
         if d_url_score > config.RMSD_THRESHOLD:
             print(f"Hit in url: {d_url_score}")
             print("-->" + dataframe.url.to_string(index=False))
+
+        # TODO: Write anomalies to a file

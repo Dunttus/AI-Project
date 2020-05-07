@@ -71,4 +71,7 @@ def check_training_data(model):
     draw_anomaly_check(training_plot)
     draw_anomaly_check_log(training_plot)
 
+    # TODO: Calculate a good default value for RMSD_THRESHOLD
+    # TODO: maybe have to separate all 5 values?
+
     return

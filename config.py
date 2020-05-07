@@ -7,7 +7,7 @@ MONITORED_LOG = "datasets/public/monitoring_test.log"
 SAVE = True
 
 # Plot chart settings
-LINE_WIDTH = 0.2
+LINE_WIDTH = 0.7
 
 # Tokenizer settings
 
