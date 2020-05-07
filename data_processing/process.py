@@ -110,7 +110,6 @@ def tokenize_http_methods(data):
 
 def tokenize_url(data):
 
-    # TODO: check how many characters we really have?
     if config.SAVE:
         tokenizer = Tokenizer(num_words=64, filters='', char_level=True,
                               lower=False)
@@ -120,7 +119,9 @@ def tokenize_url(data):
         tokenizer = load_tokenizer("url")
 
     tokenizer.fit_on_texts(data)
-    data = tokenizer.texts_to_matrix(data, mode='tfidf')
+    data = pad(tokenizer.texts_to_sequences(data),
+               maxlen=64,
+               padding='post')
 
     return data
 
