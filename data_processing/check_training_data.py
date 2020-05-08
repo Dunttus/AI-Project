@@ -49,11 +49,11 @@ def check_training_data(model):
         d_method_score = method_score - m_method_score
         d_url_score = url_score - m_url_score
 
-        training_data.append([d_url_score,
+        training_data.append([d_status_score,
                               d_byte_score,
                               d_rtime_score,
                               d_method_score,
-                              d_status_score])
+                              d_url_score])
 
     # Draw the plots and save them
     print("Drawing and saving plots...")
