@@ -13,6 +13,7 @@ def rmsdscore(after_ae, before_ae):
 
 def rmsd_calc(data, urldata, model):
 
+    # This measures how well in general the autoencoder was trained
     before_ae = [data.status, data.byte, data.rtime, data.method, urldata]
     after_ae = model.predict(before_ae)
 
