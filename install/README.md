@@ -1,4 +1,4 @@
-# Help for install
+# Help for setting-up
 # Log format
 Model to work correctly requires normal state of Apache2 server logs in right format. \
 Log format sample:
@@ -88,9 +88,9 @@ After training your model to use it chance what log you want to monitor in /AI-P
 python3 ./main.py
 ```
 Now machine learning model is monitoring your Apache2 log anomalies. Simplest way to put program to run in foreground is CTRL+Z and to return it just type command fg. Monitoring can be stopped with CTRL+C.
-\
-\
-# Docker install
+  
+  
+# Docker installation
 ### Docker: Latest version of Docker
 Dockers latest version installation from [docker.com](https://docs.docker.com/engine/install/ubuntu/). \
 If you have old docker installations “docker, docker-engine, docker.io, containerd and runc” they need to be uninstalled and Linux version info updated with “sudo apt-get update“.
@@ -139,20 +139,56 @@ git clone https://github.com/Dunttus/AI-Project.git
 
 Navigate to folder with Dockerfile /AI-Project/docker/ and build image from Dockerfile.
 ```
-docker build -t lokari:test .
+sudo docker build -t lokari:test .
 ```
 
-### Docker: train model
-**WARNING COMMAND MAKES DYNAMICAL COPY OF LOCAL FOLDERS IN CONTAINER DO NOT EDIT ANYTHING INSIDE CONTAINER AS ITS RUN AS ROOT.** \
+### Docker: Make dataset
+We will make all preparations for files in local computer as we will import them to 1-time use Docker container in dynamical mode.
+Manually combine all access.logs to 1 file or use combine_apachelogs.sh Bash script with AI-Project main folder as shown below.
+```
+cp -rp combine_apachelogs.sh ../
+```
+```
+cd ..
+```
+```
+bash ./combine_apachelogs.sh
+```
+File for model training "train_access.log" is now located in /AI-Project/datasets/training_dataset/ and should look similar to this test file https://github.com/Dunttus/AI-Project/blob/master/datasets/public/good_access.log \
 \
+**Skip to "Local: Train model" if you used combine_apachelogs.sh** \
+If you wan't to use different folder folder structure you can change Bash script variables manually to absolute paths in DATASAVING FOLDER and ACCESS.LOG LOCATION or by making dataset manually with Linux commands.
+```
+#!/bin/bash
+folderdata=DATASAVING FOLDER
+folderlog=APACHE2 ACCESS.LOG LOCATION
+
+cp $folderlog/access.log.* $folderdata
+gunzip $folderdata/access.log.*
+cat $folderdata/access.log.* > $folderdata/train_access.log
+rm $folderdata/access.log.*
+```
+
+### Docker: Training model
 Navigate to settings file in local computer /AI-Project/config.py and edit TRAINING_DATA = "datasets/training_dataset/train_access.log" to mach your new log file.
 Make sure config file is pointing at correct directories. \
-Docker command for debugging and training model. Contrainer open docker container in Bash, removed when exit, with local Github folder and Apache access.logs, replace USER in command to mach your directory structure:
+Contrainer run train.py inside container, removed when exit or done, with local AI-Project and Apache2 log folders dynamically, replace USER in command to mach your directory structure:
 ```
-docker run --rm -v /home/USER/AI-Project/:/AI-Project -v /var/log/apache2:/var/log/apache2/ -it lokari:test
+sudo docker run -it --rm -v /home/USER/AI-Project/:/AI-Project/ -v /var/log/apache2:/var/log/apache2/ -w /AI-Project lokari:test python3 ./train.py
 ```
-### Docker: Use model
+
+### Docker: Using model
 After training your model to use it chance what log you want to monitor in local computer file /AI-Project/config.py edit MONITORED_LOG = "/var/log/access.log". Start monitoring access.log by running main.py in container with Python3.
+Contrainer run main.py inside container, removed when exit or done, with local AI-Project and Apache2 log folders dynamically, replace USER in command to mach your directory structure:
 ```
-python3 ./main.py
+sudo docker run -it --rm -v /home/USER/AI-Project/:/AI-Project/ -v /var/log/apache2:/var/log/apache2/ -w /AI-Project lokari:test python3 ./main.py
+```
+
+
+
+**WARNING COMMAND MAKES DYNAMICAL COPY OF LOCAL FOLDERS IN CONTAINER DO NOT EDIT ANYTHING INSIDE CONTAINER AS ITS RUN AS ROOT.** \
+\
+Docker command for debugging. Container open docker container in Bash, removed when exit, with local Github folder and Apache access.logs, replace USER in command to mach your directory structure:
+```
+sudo docker run --rm -v /home/USER/AI-Project/:/AI-Project -v /var/log/apache2:/var/log/apache2/ -it lokari:test
 ```
