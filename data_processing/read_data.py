@@ -30,6 +30,14 @@ def put_columns(dataframe):
     return dataframe
 
 
+def put_final_columns(dataframe):
+
+    dataframe.columns = [
+        "status", "byte", "rtime", "method", "url"]
+
+    return dataframe
+
+
 def read_text(text):
 
     stream = io.StringIO(text)
