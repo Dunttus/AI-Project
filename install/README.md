@@ -1,10 +1,11 @@
 # Help for install
+# Log format
 Model to work correctly requires normal state of Apache2 server logs in right format. \
 Log format sample:
 ```
 "11/Apr/2020/10:13:18" "192.168.10.61" "200" "12" "157" "GET" "/index.html/?hello" "HTTP/1.1"
 ```
-## Apache2 access.log formatting
+### Log format: Apache2 access.log formatting
 Simplest way to use Apache2 logs in Machine learning model is to reformat logs directly from Apache2. Open settings file from /etc/apache2/apache2.conf, log formats for access.log and other_vhost_access.log are located on lines 212-213 change it to mach new format as show in picture below.
 \
 ![Log formats](./img/install_pic_1.png)
@@ -28,8 +29,69 @@ Log tags explained:
 %U%q = Path and query
 %H = Protocol
 ```
-## Docker install
-### Latest version of Docker
+
+# Local installation
+
+First Install Python3.
+```
+sudo apt-get install python3
+```
+This part might take a while since Tensorflow packets are quite big. \
+Pip3 install Tensorflow, Pandas, Scikit-Learn and Matplotlib.
+```
+pip3 install tensorflow pandas scikit-learn matplotlib
+```
+Install git
+```
+sudo apt-get install git
+```
+Clone project folder.
+```
+git clone https://github.com/Dunttus/AI-Project.git
+```
+### Local: Make dataset
+Manually combine all access.logs to 1 file or use combine_apachelogs.sh Bash script with AI-Project main folder as shown below.
+```
+cp -rp combine_apachelogs.sh ../
+```
+```
+cd ..
+```
+```
+bash ./combine_apachelogs.sh
+```
+File for model training "train_access.log" is now located in /AI-Project/datasets/training_dataset/ and should look similar to this test file https://github.com/Dunttus/AI-Project/blob/master/datasets/public/good_access.log \
+\
+**Skip to "Local: Train model" if you used combine_apachelogs.sh** \
+If you wan't to use different folder folder structure you can change Bash script variables manually to absolute paths in DATASAVING FOLDER and ACCESS.LOG LOCATION or by making dataset manually with Linux commands.
+```
+#!/bin/bash
+folderdata=DATASAVING FOLDER
+folderlog=APACHE2 ACCESS.LOG LOCATION
+
+cp $folderlog/access.log.* $folderdata
+gunzip $folderdata/access.log.*
+cat $folderdata/access.log.* > $folderdata/train_access.log
+rm $folderdata/access.log.*
+```
+### Local: Train model
+Using Tensorflow in GPU mode requires local Nvidia drivers and CUDA installation, else it will train model with CPU by default. CUDA supported GPU can be found in NVIDIAs site https://developer.nvidia.com/cuda-gpus. \
+\
+Next navigate to settings file in /AI-Project/config.py and edit TRAINING_DATA = "datasets/training_dataset/train_access.log" to mach your new log file.
+Then just run /AI-Project/train.py with Python3
+```
+python3 ./train.py
+```
+### Local: Using trained model
+After training your model to use it chance what log you want to monitor in /AI-Project/config.py file edit MONITORED_LOG = "/var/log/access.log". Start monitoring access.log by running main.py with Python3.
+```
+python3 ./main.py
+```
+Now machine learning model is monitoring your Apache2 log anomalies. Simplest way to put program to run in foreground is CTRL+Z and to return it just type command fg. Monitoring can be stopped with CTRL+C.
+\
+\
+# Docker install
+### Docker: Latest version of Docker
 Dockers latest version installation from [docker.com](https://docs.docker.com/engine/install/ubuntu/). \
 If you have old docker installations “docker, docker-engine, docker.io, containerd and runc” they need to be uninstalled and Linux version info updated with “sudo apt-get update“.
 \
@@ -65,56 +127,32 @@ Check version information of Docker.
 docker --version
 ```
 ### Project container setup and files
+
+Install git
+```
+sudo apt-get install git
+```
+Clone project folder.
+```
+git clone https://github.com/Dunttus/AI-Project.git
+```
+
 Navigate to folder with Dockerfile /AI-Project/docker/ and build image from Dockerfile.
 ```
 docker build -t lokari:test .
 ```
-Open docker container in Bash, removed when exit, with local Github folder and Apache access.logs:
-```
-docker run --rm -v /home/USER/AI-Project/:/AI-Project -v /var/log/apache2:/accesslog -it lokari:test
-```
 
-## Manual install
-Skip this if you did Docker installation. \
-Install Python3.
+### Docker: train model
+**WARNING COMMAND MAKES DYNAMICAL COPY OF LOCAL FOLDERS IN CONTAINER DO NOT EDIT ANYTHING INSIDE CONTAINER AS ITS RUN AS ROOT.** \
+\
+Navigate to settings file in local computer /AI-Project/config.py and edit TRAINING_DATA = "datasets/training_dataset/train_access.log" to mach your new log file.
+Make sure config file is pointing at correct directories. \
+Docker command for debugging and training model. Contrainer open docker container in Bash, removed when exit, with local Github folder and Apache access.logs, replace USER in command to mach your directory structure:
 ```
-sudo apt-get install python3
+docker run --rm -v /home/USER/AI-Project/:/AI-Project -v /var/log/apache2:/var/log/apache2/ -it lokari:test
 ```
-Install Tensorflow.
+### Docker: Use model
+After training your model to use it chance what log you want to monitor in local computer file /AI-Project/config.py edit MONITORED_LOG = "/var/log/access.log". Start monitoring access.log by running main.py in container with Python3.
 ```
-pip3 install tensorflow
-```
-Install Pandas.
-```
-pip3 install pandas
-```
-Install Scikit-Learn.
-```
-pip3 install scikit-learn
-```
-Install Matplotlib.
-```
-pip3 install matplotlib
-```
-## Train model
-Using Tensorflow in GPU mode requires local Nvidia drivers and CUDA installation, else Tensorflow will train model with CPU by default. CUDA supported GPU can be found in NVIDIAs site https://developer.nvidia.com/cuda-gpus. \
-Manually combine all access.logs to 1 file or use this Bash script with right folders (will work by default in Docker container).
-```
-#!/bin/bash
-folder=/AI-Project/datasets/training_dataset
-cp /accesslog/access.log.* $folder
-gunzip $folder/access.log.*
-cat $folder/access.log.* > $folder/train_access.log
-rm $folder/access.log.*
-```
-Next navigate to settings file in /AI-Project/config.py and edit TRAINING_DATA = "datasets/training_dataset/train_access.log" to mach your new log file.
-Then just run /AI-Project/train.py with Python3
-```
-python3 ./train.py
-```
-## Using trained model
-To use trained model just chance what log you want to monitor in /AI-Project/config.py file edit MONITORED_LOG = "accesslog/access.log". Start monitoring access.log by running main.py with Python3.
-
-```
-python3 ./train.py
+python3 ./main.py
 ```

@@ -1,6 +1,9 @@
 #!/bin/bash
-folder=/AI-Project/datasets/training_dataset
-cp /accesslog/access.log.* $folder
-gunzip $folder/access.log.*
-cat $folder/access.log.* > $folder/train_access.log
-rm $folder/access.log.*
+localdir=$(pwd)
+folderdata=/datasets/training_dataset
+folderlog=/var/log/apache2
+
+cp $folderlog/access.log.* $localdir$folderdata
+gunzip $localdir$folderdata/access.log.*
+cat $localdir$folderdata/access.log.* > $localdir$folderdata/train_access.log
+rm $localdir$folderdata/access.log.*
