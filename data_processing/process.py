@@ -113,12 +113,12 @@ def tokenize_url(data):
     if config.SAVE:
         tokenizer = Tokenizer(num_words=64, filters='', char_level=True,
                               lower=False)
+        tokenizer.fit_on_texts(data)
         save_tokenizer(tokenizer, "url")
 
     if not config.SAVE:
         tokenizer = load_tokenizer("url")
 
-    tokenizer.fit_on_texts(data)
     data = pad(tokenizer.texts_to_sequences(data),
                maxlen=64,
                padding='post')
