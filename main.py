@@ -87,8 +87,5 @@ with open(config.MONITORED_LOG, 'r') as file:
 
         if anomaly:
             print("Anomaly detected:")
-            print(new_line)
-            print(reason)
+            print(new_line, reason)
             save_interesting_log(new_line, reason)
-
-
