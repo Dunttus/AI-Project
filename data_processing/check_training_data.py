@@ -75,41 +75,37 @@ def get_anomalies(log_lines, training_data):
 
     for scores in training_data:
 
-        # TODO: tune the
         anomaly = False
         reason = ""
-        if scores[0] > 0.2:
-            reason += "status "
+        if scores[0] > config.RMSD_STATUS:
+            reason += " status: " + str(round(scores[0],3))
             anomaly = True
 
-        if scores[1] > 0.2:
-            reason += "byte "
+        if scores[1] > config.RMSD_BYTE:
+            reason += " byte: " + str(round(scores[1],3))
             anomaly = True
 
-        if scores[2] > 0.2:
-            reason += "rtime "
+        if scores[2] > config.RMSD_RTIME:
+            reason += " rtime: " + str(round(scores[2],3))
             anomaly = True
 
-        if scores[3] > 0.2:
-            reason += "method "
+        if scores[3] > config.RMSD_METHOD:
+            reason += " method: " + str(round(scores[3],3))
             anomaly = True
 
-        if scores[4] > 0.2:
-            reason += "url "
+        if scores[4] > config.RMSD_URL:
+            reason += " url: " + str(round(scores[4],3))
             anomaly = True
 
         if anomaly:
-            print("Anomaly found from line ", line + 1)
-            data = str(log_lines[line]) + reason
-            anomalous_entries.append(log_lines[line])
+            print("Anomaly found from line", line + 1, "\n  ", reason)
+            anomalous_entries.append(str(log_lines[line]))
+            reason += "\n"
+            anomalous_entries.append(reason)
 
         line += 1
-        #print(scores)
-        #print(mean)
-        #print(std)
 
     anomalies_file = config.TRAINING_DATA + '.anomalies'
-
     print("Writing anomalous entries in training data to: ", anomalies_file)
 
     with open(anomalies_file, 'w') as file:

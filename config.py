@@ -31,8 +31,12 @@ PATIENCE = 100
 MIN_DELTA = 1e-3
 
 
-# Anomaly detection settings:
+# Training data detection thresholds
 RMSD_STATUS = 0.2
+RMSD_BYTE = 0.2
+RMSD_RTIME = 0.2
+RMSD_METHOD = 0.2
+RMSD_URL = 0.2
 
 
 def save_to_json():
