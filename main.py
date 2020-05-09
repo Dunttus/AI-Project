@@ -43,7 +43,7 @@ def save_interesting_log(line, reasoning):
     anomalies_file = config.MONITORED_LOG + '.anomalies'
     print("Wrote anomaly to ", anomalies_file)
     reasoning += "\n"
-    data = line + "  " + reasoning + "\n"
+    data = line + "  " + reasoning
     with open(anomalies_file, 'a') as file:
         file.write(data)
 
