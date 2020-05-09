@@ -68,6 +68,7 @@ def check_training_data(model):
 
     return
 
+
 def get_anomalies(log_lines, training_data):
 
     line = 0
