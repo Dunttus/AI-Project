@@ -82,6 +82,12 @@ def put_final_columns(dataframe):
 def read_text(text):
 
     stream = io.StringIO(text)
+
+    if config.DEFAULT_FLAG:
+        df = pandas.read_csv(stream, sep=' ', header=None)
+        dataframe = put_columns(df)
+        return dataframe
+
     dataframe = pandas.read_csv(
         stream, sep=' ', quotechar='"', escapechar=' ', header=None)
     put_columns(dataframe)

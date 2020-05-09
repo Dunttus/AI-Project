@@ -57,10 +57,16 @@ with open(config.MONITORED_LOG, 'r') as file:
         try:
             dataframe = read_text(new_line)
 
-        except:
-            print("Could not process line:")
-            print(new_line)
-            continue
+        except ValueError:
+
+            try:
+                config.DEFAULT_FLAG = True
+                dataframe = read_text(new_line)
+
+            except ValueError:
+                print("Could not process line:")
+                print(new_line)
+                continue
 
         scores = evaluate_log_line(dataframe, model)
         anomaly = False
