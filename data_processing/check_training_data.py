@@ -25,15 +25,8 @@ def check_training_data(model):
 
     for line in readlines(config.TRAINING_DATA):
 
-        # Checking if we have default log format
-        try:
-            put_columns(line)
-
-        except ValueError:
-            print("Handle the default log format here!")
-            continue
-
-        scores = evaluate_log_line(line, model)
+        newline = put_columns(line)
+        scores = evaluate_log_line(newline, model)
         training_data.append(scores)
 
     print("Started anomaly detection...")
