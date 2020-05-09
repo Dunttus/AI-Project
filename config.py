@@ -1,5 +1,5 @@
 # Global parameters
-VERSION = "test"
+VERSION = "raw"
 TRAINING_DATA = "datasets/private/raw_logs"
 MONITORED_LOG = "datasets/public/monitoring_test.log"
 
@@ -15,7 +15,7 @@ LINE_WIDTH = 0.7
 URL_LENGTH = 64
 
 # Model settings
-EPOCHS = 2000
+EPOCHS = 20
 # Autoencoder bottleneck layer size, lower values generalize more
 BOTTLENECK = 12
 
@@ -38,6 +38,8 @@ RMSD_RTIME = 0.2
 RMSD_METHOD = 0.2
 RMSD_URL = 0.2
 
+# This is set automatically, if the custom log format cannot be read
+DEFAULT_FLAG = False
 
 def save_to_json():
     # TODO: save these in a json format
