@@ -6,8 +6,18 @@ def read(target):
 
     dataframe = pandas.read_csv(
         target, sep=' ', quotechar='"', escapechar=' ', header=None)
-    dataframe.columns = [
-        "time", "ip", "status", "byte", "rtime", "method", "url", "protocol"]
+
+    # If the log is not in correct format, the next line fails
+    try:
+        dataframe.columns = [
+            "time", "ip", "status", "byte", "rtime", "method", "url", "protocol"]
+
+    # We assume default log format
+    except ValueError:
+        print("Error: Not the custom log format with rtime")
+        print("Trying to parse default apache/nginx log format...")
+
+        dataframe = parsedefault(target)
 
     return dataframe
 
@@ -44,5 +54,28 @@ def read_text(text):
     dataframe = pandas.read_csv(
         stream, sep=' ', quotechar='"', escapechar=' ', header=None)
     put_columns(dataframe)
+
+    return dataframe
+
+
+def parsedefault(target):
+
+    dataframe = pandas.read_csv(target, sep=' ', header=None)
+    dataframe.columns = ["ip", "user", "authuser", "time", "tz",
+                         "method+request+protocol", "status", "byte", "unknown",
+                         "agent"]
+    # Split method+request+protocol
+    mrpframe = dataframe["method+request+protocol"]
+    splitted = mrpframe.str.split(pat=" ",expand=True)
+    splitted.columns = ["method", "url", "protocol"]
+    dataframe = dataframe.join(splitted)
+    # Drop the extras
+    dataframe = dataframe.drop(columns=["user", "authuser", "tz",
+                                        "method+request+protocol",
+                                        "unknown", "agent"])
+    # We have to add a dummy 'rtime' column
+
+
+    print(dataframe)
 
     return dataframe
