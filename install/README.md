@@ -10,7 +10,7 @@ Simplest way to use Apache2 logs in Machine learning model is to reformat logs d
 \
 ![Log formats](./img/install_pic_1.png)
 \
-A) /var/log/apache2/other_vhosts_access.log – These logs are used for virtual host page. </p> 
+A) /var/log/apache2/other_vhosts_access.log – These logs are used for virtual host page. 
 B) /var/log/apache2/access.log – These are for Apache2 default page logs.
 \
 Log formats:
@@ -50,13 +50,7 @@ Clone project folder.
 git clone https://github.com/Dunttus/AI-Project.git
 ```
 ### Local: Make dataset
-Manually combine all access.logs to 1 file or use combine_apachelogs.sh Bash script with AI-Project main folder as shown below.
-```
-cp -rp combine_apachelogs.sh ../
-```
-```
-cd ..
-```
+Manually combine all access.logs to 1 file or run combine_apachelogs.sh Bash script inside install folder as shown below.
 ```
 bash ./combine_apachelogs.sh
 ```
@@ -77,13 +71,25 @@ rm $folderdata/access.log.*
 ### Local: Train model
 Using Tensorflow in GPU mode requires local Nvidia drivers and CUDA installation, else it will train model with CPU by default. CUDA supported GPU can be found in NVIDIAs site https://developer.nvidia.com/cuda-gpus. \
 \
-Next navigate to settings file in /AI-Project/config.py and edit TRAINING_DATA = "datasets/training_dataset/train_access.log" to mach your new log file.
-Then just run /AI-Project/train.py with Python3
+Next navigate to settings file in /AI-Project/config.py and open it with nano.
+```
+nano config.py
+```
+Change TRAINING_DATA = "datasets/training_dataset/train_access.log" to mach your new log file. \
+We will also change MONITORED_LOG = "/var/log/access.log" to target monitoring in apache2 logs folder access.log we will use this after training the model. \
+Picture of old config.py and new config.py below.
+\
+![Log formats](./img/install_pic_2.png)
+\
+A) /var/log/apache2/other_vhosts_access.log – These logs are used for virtual host page.
+B) /var/log/apache2/access.log – These are for Apache2 default page logs.
+\
+Then run we /AI-Project/train.py with Python3 to train the model.
 ```
 python3 ./train.py
 ```
 ### Local: Using trained model
-After training your model to use it chance what log you want to monitor in /AI-Project/config.py file edit MONITORED_LOG = "/var/log/access.log". Start monitoring access.log by running main.py with Python3.
+After model is trainded we can start monitoring access.log by running /AI-Project/main.py with Python3.
 ```
 python3 ./main.py
 ```
@@ -143,14 +149,8 @@ sudo docker build -t lokari:test .
 ```
 
 ### Docker: Make dataset
-We will make all preparations for files in local computer as we will import them to 1-time use Docker container in dynamical mode.
-Manually combine all access.logs to 1 file or use combine_apachelogs.sh Bash script with AI-Project main folder as shown below.
-```
-cp -rp combine_apachelogs.sh ../
-```
-```
-cd ..
-```
+We will make all preparations for files in local computer as we will import them to 1-time use Docker container in dynamical mode. \
+Manually combine all access.logs to 1 file or run combine_apachelogs.sh Bash script inside install folder as shown below.
 ```
 sudo bash ./combine_apachelogs.sh
 ```
@@ -170,8 +170,20 @@ rm $folderdata/access.log.*
 ```
 
 ### Docker: Training model
-Navigate to settings file in local computer /AI-Project/config.py and edit TRAINING_DATA = "datasets/training_dataset/train_access.log" to mach your new log file.
-Make sure config file is pointing at correct directories. \
+Next navigate to settings file in /AI-Project/config.py and open it with nano.
+```
+nano config.py
+```
+Change TRAINING_DATA = "datasets/training_dataset/train_access.log" to mach your new log file. \
+We will also change MONITORED_LOG = "/var/log/access.log" to target monitoring in apache2 logs folder access.log we will use this after training the model. \
+Picture of old config.py and new config.py below.
+\
+![Log formats](./img/install_pic_2.png)
+\
+A) /var/log/apache2/other_vhosts_access.log – These logs are used for virtual host page.
+B) /var/log/apache2/access.log – These are for Apache2 default page logs.
+\
+
 Contrainer run train.py inside container, removed when exit or done, with local AI-Project and Apache2 log folders dynamically, replace USER in command to mach your directory structure:
 ```
 sudo docker run -it --rm -v /home/USER/AI-Project/:/AI-Project/ -v /var/log/apache2:/var/log/apache2/ -w /AI-Project lokari:test python3 ./train.py
