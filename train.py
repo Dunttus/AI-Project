@@ -11,6 +11,7 @@ import config
 
 print("Lokari anomaly detector: training version: " + config.VERSION)
 config.SAVE = True
+config.save_to_json()
 
 # Set output options for pandas and numpy, minimize TensorFlow output
 set_output()
@@ -31,4 +32,5 @@ model = construct_model(data, urldata)
 baseline_score = rmsd_calc(data, urldata, model)
 
 # Find anomalies from the training data
+# TODO: ask user if this is desired
 check_training_data(model)

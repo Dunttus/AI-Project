@@ -14,7 +14,6 @@ LINE_WIDTH = 0.7
 # How many characters from url are processed?
 URL_LENGTH = 64
 
-
 # Model settings
 EPOCHS = 2000
 # Autoencoder bottleneck layer size, lower values generalize more
@@ -33,18 +32,16 @@ MIN_DELTA = 1e-3
 
 
 # Anomaly detection settings:
-# Higher threshold yields less anomalies
-# TODO: determine good threshold according to the training data check values
-RMSD_THRESHOLD = 0.2
+RMSD_STATUS = 0.2
 
 
-def save_config():
+def save_to_json():
     # TODO: save these in a json format
 
     return
 
 
-def load_config():
+def load_json():
     # TODO: make it possible to reuse saved configs
 
     return

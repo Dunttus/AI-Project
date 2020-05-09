@@ -23,12 +23,14 @@ def rmsd_calc(data, urldata, model):
     method_score = rmsdscore(after_ae[3], before_ae[3])
     url_score = rmsdscore(after_ae[4], urldata)
 
-    print("***MODEL ERROR NUMBERS***")
-    print("Model Status RMSD:", status_score)
-    print("Model Byte RMSD:", byte_score)
-    print("Model Rtime RMSD:", rtime_score)
-    print("Model Method RMSD:", method_score)
-    print("Model URL RMSD:", url_score)
+    print("Autoencoder reconstruction stats:")
+    print(" Model Status RMSD:", status_score)
+    print(" Model Byte RMSD:", byte_score)
+    print(" Model Rtime RMSD:", rtime_score)
+    print(" Model Method RMSD:", method_score)
+    print(" Model URL RMSD:", url_score)
+    print("These should be ~0.05 or less, increase patience in config to")
+    print("get better reconstruction scores.")
 
     scores = [status_score, byte_score, rtime_score, method_score, url_score]
     if config.SAVE:

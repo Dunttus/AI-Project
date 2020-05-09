@@ -15,6 +15,10 @@ def check_training_data(model):
     training_data = []
     log_lines = []
 
+    print("Checking training data for anomalies.")
+    print("With big training set, this might take a while")
+
+    print("\nLoading the training set...")
     with open(config.TRAINING_DATA, 'r') as file:
         for line in file:
             log_lines.append(line)
@@ -26,8 +30,7 @@ def check_training_data(model):
     m_method_score = model_scores[3]
     m_url_score = model_scores[4]
 
-    print("***Checking training data for anomalies...***")
-    print("This takes a bit depending on the dataset size...")
+    print("Calculating anomaly scores for the logs...")
 
     for line in readlines(config.TRAINING_DATA):
 
@@ -54,46 +57,49 @@ def check_training_data(model):
                               d_method_score,
                               d_url_score])
 
-    # Draw the plots and save them
-    print("Drawing and saving plots...")
+    print("Started anomaly detection...")
+    get_anomalies(log_lines, training_data)
+
+    print("Drawing and saving plots to saved_models directory...")
     draw_anomaly_check(training_data)
     draw_anomaly_check_log(training_data)
 
-    # We need to calculate the anomaly thresholds depending how the model
-    # performs against the training data.
+    print("All done, ready to deploy!")
 
+    return
 
-def notworkingyettest(log_lines, training_data):
+def get_anomalies(log_lines, training_data):
 
     line = 0
     anomalous_entries = []
 
     for scores in training_data:
-        #print("Line number:", line)
+
+        # TODO: tune the
         anomaly = False
         reason = ""
-        if scores[0] > 0:
+        if scores[0] > 0.2:
             reason += "status "
             anomaly = True
 
-        if scores[1] > 0:
+        if scores[1] > 0.2:
             reason += "byte "
             anomaly = True
 
-        if scores[2] > 0:
+        if scores[2] > 0.2:
             reason += "rtime "
             anomaly = True
 
-        if scores[3] > 0:
+        if scores[3] > 0.2:
             reason += "method "
             anomaly = True
 
-        if scores[4] > 0:
+        if scores[4] > 0.2:
             reason += "url "
             anomaly = True
 
         if anomaly:
-            print("Anomaly found from line ", line)
+            print("Anomaly found from line ", line + 1)
             data = str(log_lines[line]) + reason
             anomalous_entries.append(log_lines[line])
 
@@ -102,9 +108,10 @@ def notworkingyettest(log_lines, training_data):
         #print(mean)
         #print(std)
 
-    #print(anomalous_entries)
-
     anomalies_file = config.TRAINING_DATA + '.anomalies'
+
+    print("Writing anomalous entries in training data to: ", anomalies_file)
+
     with open(anomalies_file, 'w') as file:
         for line in anomalous_entries:
             file.write(line)
