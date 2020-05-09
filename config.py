@@ -1,6 +1,6 @@
 # Global parameters
 VERSION = "test"
-TRAINING_DATA = "datasets/public/good_access.log"
+TRAINING_DATA = "datasets/private/raw_logs"
 MONITORED_LOG = "datasets/public/monitoring_test.log"
 
 # Saving model & tokenizers is set in train.py or main.py

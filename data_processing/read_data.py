@@ -64,18 +64,19 @@ def parsedefault(target):
     dataframe.columns = ["ip", "user", "authuser", "time", "tz",
                          "method+request+protocol", "status", "byte", "unknown",
                          "agent"]
+
     # Split method+request+protocol
     mrpframe = dataframe["method+request+protocol"]
     splitted = mrpframe.str.split(pat=" ",expand=True)
     splitted.columns = ["method", "url", "protocol"]
     dataframe = dataframe.join(splitted)
+
     # Drop the extras
     dataframe = dataframe.drop(columns=["user", "authuser", "tz",
                                         "method+request+protocol",
                                         "unknown", "agent"])
-    # We have to add a dummy 'rtime' column
 
-
-    print(dataframe)
+    # Addd a dummy 'rtime' column
+    dataframe['rtime'] = 0
 
     return dataframe
