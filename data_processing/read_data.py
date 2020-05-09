@@ -76,7 +76,7 @@ def parsedefault(target):
                                         "method+request+protocol",
                                         "unknown", "agent"])
 
-    # Addd a dummy 'rtime' column
-    dataframe['rtime'] = 0
+    # Add a dummy 'rtime' column
+    dataframe['rtime'] = 1
 
     return dataframe

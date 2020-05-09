@@ -1,6 +1,6 @@
 # This code runs the training data against the newly trained model
 import config
-from data_processing.read_data import readlines, put_columns, put_final_columns
+from data_processing.read_data import readlines, put_columns
 from data_processing.evaluate import evaluate_log_line
 from data_processing.plots import draw_anomaly_check, draw_anomaly_check_log
 
@@ -25,7 +25,14 @@ def check_training_data(model):
 
     for line in readlines(config.TRAINING_DATA):
 
-        put_columns(line)
+        # Checking if we have default log format
+        try:
+            put_columns(line)
+
+        except ValueError:
+            print("Handle the default log format here!")
+            continue
+
         scores = evaluate_log_line(line, model)
         training_data.append(scores)
 
