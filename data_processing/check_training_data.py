@@ -1,9 +1,7 @@
 # This code runs the training data against the newly trained model
 import config
 from data_processing.read_data import readlines, put_columns, put_final_columns
-from data_processing.rmsdcalc import load_baseline_scores
-from data_processing.process import process_apache_log
-from data_processing.rmsdcalc import rmsdscore
+from data_processing.evaluate import evaluate_log_line
 from data_processing.plots import draw_anomaly_check, draw_anomaly_check_log
 
 
@@ -23,39 +21,13 @@ def check_training_data(model):
         for line in file:
             log_lines.append(line)
 
-    model_scores = load_baseline_scores()
-    m_status_score = model_scores[0]
-    m_byte_score = model_scores[1]
-    m_rtime_score = model_scores[2]
-    m_method_score = model_scores[3]
-    m_url_score = model_scores[4]
-
     print("Calculating anomaly scores for the logs...")
 
     for line in readlines(config.TRAINING_DATA):
 
         put_columns(line)
-        data, url = process_apache_log(line)
-        before_ae = [data.status, data.byte, data.rtime, data.method, url]
-        after_ae = model.predict(before_ae)
-
-        status_score = rmsdscore(after_ae[0], before_ae[0])
-        byte_score = rmsdscore(after_ae[1], before_ae[1])
-        rtime_score = rmsdscore(after_ae[2], before_ae[2])
-        method_score = rmsdscore(after_ae[3], before_ae[3])
-        url_score = rmsdscore(after_ae[4], url)
-
-        d_status_score = status_score - m_status_score
-        d_byte_score = byte_score - m_byte_score
-        d_rtime_score = rtime_score - m_rtime_score
-        d_method_score = method_score - m_method_score
-        d_url_score = url_score - m_url_score
-
-        training_data.append([d_status_score,
-                              d_byte_score,
-                              d_rtime_score,
-                              d_method_score,
-                              d_url_score])
+        scores = evaluate_log_line(line, model)
+        training_data.append(scores)
 
     print("Started anomaly detection...")
     get_anomalies(log_lines, training_data)

@@ -2,7 +2,7 @@ from data_processing.process import process_apache_log
 from data_processing.rmsdcalc import rmsdscore, load_baseline_scores
 
 
-def check_log_line(line, model):
+def evaluate_log_line(line, model):
 
     # Load the baseline model scores
     model_scores = load_baseline_scores()

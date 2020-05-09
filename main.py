@@ -4,7 +4,7 @@ from os import environ as env
 from tensorflow.keras.models import load_model
 from data_processing.output_opts import set_output
 from data_processing.read_data import read_text
-from data_processing.detect import check_log_line
+from data_processing.evaluate import evaluate_log_line
 import config as config
 from time import sleep
 
@@ -52,7 +52,7 @@ with open(config.MONITORED_LOG, 'r') as file:
             print(new_line)
             continue
 
-        scores = check_log_line(dataframe, model)
+        scores = evaluate_log_line(dataframe, model)
         anomaly = False
         reason = ""
         if scores[0] > config.RMSD_STATUS:
