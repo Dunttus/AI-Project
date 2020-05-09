@@ -63,7 +63,7 @@ def check_training_data(model):
     # performs against the training data.
 
 
-def notworkingyettest():
+def notworkingyettest(log_lines, training_data):
 
     line = 0
     anomalous_entries = []
@@ -72,23 +72,23 @@ def notworkingyettest():
         #print("Line number:", line)
         anomaly = False
         reason = ""
-        if scores[0] > :
+        if scores[0] > 0:
             reason += "status "
             anomaly = True
 
-        if scores[1] > :
+        if scores[1] > 0:
             reason += "byte "
             anomaly = True
 
-        if scores[2] > :
+        if scores[2] > 0:
             reason += "rtime "
             anomaly = True
 
-        if scores[3] > :
+        if scores[3] > 0:
             reason += "method "
             anomaly = True
 
-        if scores[4] > :
+        if scores[4] > 0:
             reason += "url "
             anomaly = True
 
@@ -108,34 +108,5 @@ def notworkingyettest():
     with open(anomalies_file, 'w') as file:
         for line in anomalous_entries:
             file.write(line)
-
-    return
-
-
-
-
-def check_training_log_lines(line_number):
-
-    model_scores = load_baseline_scores()
-    m_status_score = model_scores[0]
-    m_byte_score = model_scores[1]
-    m_rtime_score = model_scores[2]
-    m_method_score = model_scores[3]
-    m_url_score = model_scores[4]
-
-    if d_status_score > 0:
-        print(f"Hit in status: Line {line_number}, score: {d_status_score}")
-
-    if d_byte_score > 0:
-        print(f"Hit in byte: Line {line_number}, score: {d_byte_score}")
-
-    if d_rtime_score > 0:
-        print(f"Hit in rtime: Line {line_number}, score: {d_rtime_score}")
-
-    if d_method_score > 0:
-        print(f"Hit in method: Line {line_number}, score: {d_method_score}")
-
-    if d_url_score > 0:
-        print(f"Hit in url: Line {line_number}, score: {d_url_score}")
 
     return
