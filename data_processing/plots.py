@@ -44,7 +44,7 @@ def draw_training_history(model):
 
     plt.plot(model.history['loss'], label='loss',
              linewidth=config.LINE_WIDTH)
-    plt.plot(model.history['status_loss'], label='URL',
+    plt.plot(model.history['status_loss'], label='Status',
              linewidth=config.LINE_WIDTH)
     plt.plot(model.history['byte_loss'], label='Byte',
              linewidth=config.LINE_WIDTH)
@@ -52,7 +52,7 @@ def draw_training_history(model):
              linewidth=config.LINE_WIDTH)
     plt.plot(model.history['method_loss'], label='Method',
              linewidth=config.LINE_WIDTH)
-    plt.plot(model.history['url_loss'], label='Status',
+    plt.plot(model.history['url_loss'], label='URL',
              linewidth=config.LINE_WIDTH)
     plt.yscale('log')
     plt.ylabel('Loss')
