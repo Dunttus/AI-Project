@@ -38,6 +38,15 @@ def follow(target):
         yield line
 
 
+def save_interesting_log(line, reasoning):
+
+    anomalies_file = config.MONITORED_LOG + '.anomalies'
+    print("Wrote anomaly to ", anomalies_file)
+    data = line + reasoning
+    with open(anomalies_file, 'a') as file:
+        file.write(data)
+
+
 # Start monitoring a file
 with open(config.MONITORED_LOG, 'r') as file:
 
@@ -76,6 +85,9 @@ with open(config.MONITORED_LOG, 'r') as file:
             anomaly = True
 
         if anomaly:
-            print("HIT", reason)
+            print("Anomaly detected:")
             print(new_line)
-        # TODO: Write anomalies to a file
+            print(reason)
+            save_interesting_log(new_line, reason)
+
+
