@@ -52,7 +52,21 @@ def put_columns(dataframe):
         # Split method+request+protocol
         mrpframe = dataframe["method+request+protocol"]
         splitted = mrpframe.str.split(pat=" ", expand=True)
-        splitted.columns = ["method", "url", "protocol"]
+
+        # Bad lines have only one or 2 elements here...
+        # Get number of columns:
+        if len(splitted.columns) == 1:
+            splitted.columns = ["method"]
+            splitted["url"] = ""
+            splitted["protocol"] = ""
+
+        if len(splitted.columns) == 2:
+            splitted.columns = ["method", "url"]
+            splitted["protocol"] = ""
+
+        if len(splitted.columns) == 3:
+            splitted.columns = ["method", "url", "protocol"]
+
         dataframe = dataframe.join(splitted)
 
         # Drop the extras
@@ -99,20 +113,26 @@ def parsedefault(target):
 
     dataframe = pandas.read_csv(target, sep=' ', header=None)
     dataframe.columns = ["ip", "user", "authuser", "time", "tz",
-                         "method+request+protocol", "status", "byte", "unknown",
+                         "methodrequestprotocol", "status", "byte", "unknown",
                          "agent"]
 
     # Split method+request+protocol
-    mrpframe = dataframe["method+request+protocol"]
+    mrpframe = dataframe["methodrequestprotocol"]
     splitted = mrpframe.str.split(pat=" ",expand=True)
+    # This is where the default format varies
+    # Drop the extra columns that might appear
+    splitted = splitted.iloc[:,0:3]
     splitted.columns = ["method", "url", "protocol"]
+    # So far so good, now we just drop the bad apples
+    splitted = splitted.dropna()
     dataframe = dataframe.join(splitted)
 
     # Drop the extras
     dataframe = dataframe.drop(columns=["user", "authuser", "tz",
-                                        "method+request+protocol",
+                                        "methodrequestprotocol",
                                         "unknown", "agent"])
-
+    # Drop na values again...
+    dataframe = dataframe.dropna()
     # Add a dummy 'rtime' column
     dataframe['rtime'] = 1
 
