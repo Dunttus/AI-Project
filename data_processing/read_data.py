@@ -54,14 +54,9 @@ def put_columns(dataframe):
         # If this is null, return a dummy as str.split fails if there is no
         # string to split
         if mrpframe.hasnans:
-            dummy = {'method': ['dummy'],
-                     'url': ['dummy'],
-                     'protocol' : ['dummy']}
-            splitted = pandas.DataFrame(data=dummy)
-            ("Null found")
-        else:
-            splitted = mrpframe.str.split(pat=" ",expand=True)
+            mrpframe.loc[1] = "dummy"
 
+        splitted = mrpframe.str.split(pat=" ",expand=True)
         splitted = splitted.iloc[:, 0:3]
 
         # Bad lines have only one or 2 elements here...
