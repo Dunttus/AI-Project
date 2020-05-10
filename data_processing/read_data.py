@@ -50,7 +50,7 @@ def put_columns(dataframe):
                              "agent"]
 
         # Split method+request+protocol
-        mrpframe = dataframe["method+request+protocol"].astype(str)
+        mrpframe = dataframe["method+request+protocol"]
         # If this is null, return a dummy as str.split fails if there is no
         # string to split
         if mrpframe.hasnans:
