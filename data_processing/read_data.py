@@ -54,7 +54,7 @@ def put_columns(dataframe):
         # If this is null, return a dummy as str.split fails if there is no
         # string to split
         if mrpframe.hasnans:
-            mrpframe.loc[1] = "dummy"
+            mrpframe.fillna("-", inplace=True)
 
         splitted = mrpframe.str.split(pat=" ",expand=True)
         splitted = splitted.iloc[:, 0:3]
@@ -85,6 +85,8 @@ def put_columns(dataframe):
 
         return dataframe
 
+    # This is the normal behaviour, above spaghetti is error handling for
+    # default log format.
     dataframe.columns = [
         "time", "ip", "status", "byte", "rtime", "method", "url", "protocol"]
 

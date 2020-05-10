@@ -15,7 +15,7 @@ LINE_WIDTH = 0.7
 URL_LENGTH = 64
 
 # Model settings
-EPOCHS = 5
+EPOCHS = 1
 # Autoencoder bottleneck layer size, lower values generalize more
 BOTTLENECK = 12
 
