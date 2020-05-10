@@ -1,5 +1,6 @@
 # This code runs the training data against the newly trained model
 import config
+import sys
 from data_processing.read_data import readlines, put_columns
 from data_processing.evaluate import evaluate_log_line
 from data_processing.plots import draw_anomaly_check, draw_anomaly_check_log
@@ -14,22 +15,26 @@ def check_training_data(model):
     log_lines = []
 
     print("Checking training data for anomalies.")
-    print("With big training set, this might take a while")
-
-    print("\nLoading the training set...")
+    print("Loading the training set...")
     with open(config.TRAINING_DATA, 'r') as file:
         for line in file:
             log_lines.append(line)
 
     print("Calculating anomaly scores for the logs...")
 
+    length = len(log_lines)
+    progress = 1
+
     for line in readlines(config.TRAINING_DATA):
 
+        sys.stdout.write("\rLine " + str(progress) + "/" + str(length))
+        sys.stdout.flush()
         newline = put_columns(line)
         scores = evaluate_log_line(newline, model)
         training_data.append(scores)
+        progress += 1
 
-    print("Started anomaly detection...")
+    print("\nStarted anomaly detection...")
     get_anomalies(log_lines, training_data)
 
     print("Drawing and saving plots to saved_models directory...")

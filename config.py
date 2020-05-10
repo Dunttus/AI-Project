@@ -1,6 +1,6 @@
 # Global parameters
-VERSION = "raw"
-TRAINING_DATA = "datasets/private/raw_logs"
+VERSION = "nginxtest"
+TRAINING_DATA = "datasets/public/good_access.log"
 MONITORED_LOG = "datasets/public/monitoring_test.log"
 
 # Saving model & tokenizers is set in train.py or main.py
@@ -15,7 +15,7 @@ LINE_WIDTH = 0.7
 URL_LENGTH = 64
 
 # Model settings
-EPOCHS = 20
+EPOCHS = 50
 # Autoencoder bottleneck layer size, lower values generalize more
 BOTTLENECK = 12
 

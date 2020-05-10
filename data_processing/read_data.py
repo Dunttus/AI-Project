@@ -51,18 +51,29 @@ def put_columns(dataframe):
 
         # Split method+request+protocol
         mrpframe = dataframe["method+request+protocol"]
-        splitted = mrpframe.str.split(pat=" ", expand=True)
+        # If this is null, return a dummy as str.split fails if there is no
+        # string to split
+        if mrpframe.hasnans:
+            dummy = {'method': ['dummy'],
+                     'url': ['dummy'],
+                     'protocol' : ['dummy']}
+            splitted = pandas.DataFrame(data=dummy)
+            ("Null found")
+        else:
+            splitted = mrpframe.str.split(pat=" ", n=3,expand=True)
+
+
 
         # Bad lines have only one or 2 elements here...
         # Get number of columns:
         if len(splitted.columns) == 1:
             splitted.columns = ["method"]
-            splitted["url"] = ""
-            splitted["protocol"] = ""
+            splitted["url"] = "-"
+            splitted["protocol"] = "-"
 
         if len(splitted.columns) == 2:
             splitted.columns = ["method", "url"]
-            splitted["protocol"] = ""
+            splitted["protocol"] = "-"
 
         if len(splitted.columns) == 3:
             splitted.columns = ["method", "url", "protocol"]
