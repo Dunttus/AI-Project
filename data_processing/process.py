@@ -85,10 +85,6 @@ def normalize_response_time(data):
     if not config.SAVE:
         mean, std = load_numbers("rtime")
 
-    # We have to provide this exception in case of dummy rtime
-    if std == 0:
-        std = 1
-
     data = (data - mean) / std
 
     return data

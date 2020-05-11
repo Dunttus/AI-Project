@@ -11,7 +11,7 @@ def draw_anomaly_check(data):
     # plt.ylim(-1,10)
     plt.ylabel('Root-mean-square deviation difference')
     plt.xlabel('Log line number')
-    plt.legend(['url', 'byte', 'rtime', 'method', 'status'])
+    plt.legend(['status', 'byte', 'rtime', 'method', 'url'])
 
     plot_file = 'saved_models/' + config.VERSION + \
                 '/training_data_analysis-' + config.VERSION + '.png'
@@ -30,7 +30,7 @@ def draw_anomaly_check_log(data):
     # plt.ylim(-1,10)
     plt.ylabel('Root-mean-square deviation difference')
     plt.xlabel('Log line number')
-    plt.legend(['url', 'byte', 'rtime', 'method', 'status'])
+    plt.legend(['status', 'byte', 'rtime', 'method', 'url'])
 
     plot_file = 'saved_models/' + config.VERSION + \
                 '/training_data_analysis_log-' + config.VERSION + '.png'

@@ -1,6 +1,6 @@
 # Global parameters
 VERSION = "test"
-TRAINING_DATA = "datasets/private/nginx_raw_small.log"
+TRAINING_DATA = "datasets/private/1_access.log"
 MONITORED_LOG = "datasets/public/monitoring_test.log"
 
 # Saving model & tokenizers is set in train.py or main.py
@@ -15,7 +15,7 @@ LINE_WIDTH = 0.7
 URL_LENGTH = 64
 
 # Model settings
-EPOCHS = 2
+EPOCHS = 2000
 # Autoencoder bottleneck layer size, lower values generalize more
 BOTTLENECK = 12
 
@@ -26,7 +26,7 @@ BOTTLENECK = 12
 # NOTE: when the EarlyStopping monitor stops, the loss values of the
 # saved model can be read from  epochs trained minus patience.
 # If the EarlyStopping doesn't trigger, last epoch is saved.
-PATIENCE = 200
+PATIENCE = 20
 # Minimum loss improvement required
 MIN_DELTA = 1e-3
 
@@ -38,8 +38,6 @@ RMSD_RTIME = 0.2
 RMSD_METHOD = 0.2
 RMSD_URL = 0.2
 
-# This is set automatically, if the custom log format cannot be read
-DEFAULT_FLAG = False
 
 def save_to_json():
     # TODO: save these in a json format
