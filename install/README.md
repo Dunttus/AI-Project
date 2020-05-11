@@ -6,11 +6,11 @@ Log format sample:
 "11/Apr/2020/10:13:18" "192.168.10.61" "200" "12" "157" "GET" "/index.html/?hello" "HTTP/1.1"
 ```
 ### Log format: Apache2 access.log formatting
-Simplest way to use Apache2 logs in Machine learning model is to reformat logs directly from Apache2. Open settings file from /etc/apache2/apache2.conf, log formats for access.log and other_vhost_access.log are located on lines 212-213 change it to mach new format as show in picture below.
+Simplest way to use Apache2 logs in Machine learning model is to reformat logs directly from Apache2. Open settings file from /etc/apache2/apache2.conf, log formats for access.log and other_vhost_access.log are located on lines 212-213 change it to match new format as show in picture below.
 \
 ![Log formats](./img/install_pic_1.png)
 \
-A) /var/log/apache2/other_vhosts_access.log – These logs are used for virtual host page. 
+A) /var/log/apache2/other_vhosts_access.log – These logs are used for virtual host page. \
 B) /var/log/apache2/access.log – These are for Apache2 default page logs.
 \
 Log formats:
@@ -57,7 +57,7 @@ bash ./combine_apachelogs.sh
 File for model training "train_access.log" is now located in /AI-Project/datasets/training_dataset/ and should look similar to this test file https://github.com/Dunttus/AI-Project/blob/master/datasets/public/good_access.log \
 \
 **Skip to "Local: Train model" if you used combine_apachelogs.sh** \
-If you wan't to use different folder folder structure you can change Bash script variables manually to absolute paths in DATASAVING FOLDER and ACCESS.LOG LOCATION or by making dataset manually with Linux commands.
+If you want to use different folder structure you can change Bash script variables manually to absolute paths in DATASAVING FOLDER and ACCESS.LOG LOCATION or by making dataset manually with Linux commands.
 ```
 #!/bin/bash
 folderdata=DATASAVING FOLDER
@@ -75,21 +75,19 @@ Next navigate to settings file in /AI-Project/config.py and open it with nano.
 ```
 nano config.py
 ```
-Change TRAINING_DATA = "datasets/training_dataset/train_access.log" to mach your new log file. \
+Change TRAINING_DATA = "datasets/training_dataset/train_access.log" to match your new log file. \
 We will also change MONITORED_LOG = "/var/log/access.log" to target monitoring in apache2 logs folder access.log we will use this after training the model. \
-Picture of old config.py and new config.py below.
-\
+Picture of old config.py and new config.py below. \
 ![Log formats](./img/install_pic_2.png)
 \
-A) /var/log/apache2/other_vhosts_access.log – These logs are used for virtual host page.
-B) /var/log/apache2/access.log – These are for Apache2 default page logs.
-\
-Then run we /AI-Project/train.py with Python3 to train the model.
+A) TRAINING_DATA is used to train model. \
+B) MONITORED_LOG is to monitor incoming Apache2 logs. \
+Then we run /AI-Project/train.py with Python3 to train the model.
 ```
 python3 ./train.py
 ```
 ### Local: Using trained model
-After model is trainded we can start monitoring access.log by running /AI-Project/main.py with Python3.
+After model is trained we can start monitoring access.log by running /AI-Project/main.py with Python3.
 ```
 python3 ./main.py
 ```
@@ -132,7 +130,7 @@ Check version information of Docker.
 ```
 docker --version
 ```
-### Project container setup and files
+### Docker: Project container setup and files
 
 Install git
 ```
@@ -157,7 +155,7 @@ sudo bash ./combine_apachelogs.sh
 File for model training "train_access.log" is now located in /AI-Project/datasets/training_dataset/ and should look similar to this test file https://github.com/Dunttus/AI-Project/blob/master/datasets/public/good_access.log \
 \
 **Skip to "Local: Train model" if you used combine_apachelogs.sh** \
-If you wan't to use different folder folder structure you can change Bash script variables manually to absolute paths in DATASAVING FOLDER and ACCESS.LOG LOCATION or by making dataset manually with Linux commands.
+If you want to use different folder structure you can change Bash script variables manually to absolute paths in DATASAVING FOLDER and ACCESS.LOG LOCATION or by making dataset manually with Linux commands.
 ```
 #!/bin/bash
 folderdata=DATASAVING FOLDER
@@ -174,17 +172,14 @@ Next navigate to settings file in /AI-Project/config.py and open it with nano.
 ```
 nano config.py
 ```
-Change TRAINING_DATA = "datasets/training_dataset/train_access.log" to mach your new log file. \
+Change TRAINING_DATA = "datasets/training_dataset/train_access.log" to match your new log file. \
 We will also change MONITORED_LOG = "/var/log/access.log" to target monitoring in apache2 logs folder access.log we will use this after training the model. \
 Picture of old config.py and new config.py below.
 \
 ![Log formats](./img/install_pic_2.png)
-\
-A) /var/log/apache2/other_vhosts_access.log – These logs are used for virtual host page.
-B) /var/log/apache2/access.log – These are for Apache2 default page logs.
-\
-
-Contrainer run train.py inside container, removed when exit or done, with local AI-Project and Apache2 log folders dynamically, replace USER in command to mach your directory structure:
+A) TRAINING_DATA is used to train model. \
+B) MONITORED_LOG is to monitor incoming Apache2 logs. \
+Container run train.py inside container, removed when exit or done, with local AI-Project and Apache2 log folders dynamically, replace USER in command to match your directory structure:
 ```
 sudo docker run -it --rm -v /home/USER/AI-Project/:/AI-Project/ -v /var/log/apache2:/var/log/apache2/ -w /AI-Project lokari:test python3 ./train.py
 ```
@@ -192,20 +187,30 @@ Stop container with CTRL+C.
 
 ### Docker: Using model
 After training your model to use it chance what log you want to monitor in local computer file /AI-Project/config.py edit MONITORED_LOG = "/var/log/access.log". Start monitoring access.log by running main.py in container with Python3.
-Contrainer run main.py inside container, removed when exit or done, with local AI-Project and Apache2 log folders dynamically, replace USER in command to mach your directory structure:
+Container run main.py inside container, removed when exit or done, with local AI-Project and Apache2 log folders dynamically, replace USER in command to match your directory structure:
 ```
 sudo docker run -it --rm -v /home/USER/AI-Project/:/AI-Project/ -v /var/log/apache2:/var/log/apache2/ -w /AI-Project lokari:test python3 ./main.py
 ```
 Stop container with CTRL+C.
 
 ### Docker: Monitoring main.py container in foreground
-Contrainer run main.py inside container, removed when exit or done, with local AI-Project and Apache2 log folders dynamically, replace USER in command to mach your directory structure:
+Container run main.py inside container, removed when exit or done, with local AI-Project and Apache2 log folders dynamically, replace USER in command to mach your directory structure:
 ```
 sudo docker run -d --rm -v /home/USER/AI-Project/:/AI-Project/ -v /var/log/apache2:/var/log/apache2/ -w /AI-Project lokari:test python3 ./main.py
 ```
+When you want to close main.py container use generated name as shown below.
+```
+sudo docker ps -a
+```
+Kill container with generated id shown by ps docker -a command. \
+![Log formats](./img/install_pic_3.png)
+```
+sudo docker kill sharp_jones
+```
+If monitoring tool has found any anomaly logs you can find then from /var/log/apache2/access.log.anomalies.
 
 **WARNING COMMAND BELOW MAKES DYNAMICAL COPY OF LOCAL FOLDERS IN CONTAINER DO NOT EDIT ANYTHING INSIDE CONTAINER AS ITS RUN AS ROOT.** \
-Docker command for debugging. Open docker container with Bash, removed when exit, copy local Github folder and Apache access.logs, replace USER in command to mach your directory structure:  
+Docker command for debugging. Open docker container with Bash, removed when exit, copy local Github folder and Apache access.logs, replace USER in command to match your directory structure:  
 ```
 sudo docker run --rm -v /home/USER/AI-Project/:/AI-Project -v /var/log/apache2:/var/log/apache2/ -it lokari:test
 ```
