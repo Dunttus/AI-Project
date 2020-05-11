@@ -1,33 +1,39 @@
-# Lokari - anomaly detector 
-### Apache web server log anomaly detector
+# Lokari - Web server anomaly detector 
+##### Machine learning based monitoring application for anomalies in web server logs.
 
-## SPRING CLEANING IN PROGRESS
-
-School project by Tuomo Kuure (tqre) and Joni Hakala (Dunttus).  
+Machine learning project by Tuomo Kuure [(tqre)](tqre.wordpress.com) and Joni Hakala [(Dunttus)](dunttus.com).  
 Supervising teacher: Tero Karvinen - http://terokarvinen.com  
 [Haaga-Helia University of Applied Sciences](http://www.haaga-helia.fi/en/frontpage)  
 Course: Monialaprojekti - Multisectoral project (ICT-infrastructures) PRO4TN004-3005.
 
-This repository is designed to be cloned with PyCharm Pro.  
-Runtime environment is containerized with Docker.  
-First command line demo is available in archives/Lokari_classifier/demo_model
-
-#### Follow the project blog: [https://ailogs.design.blog/](https://ailogs.design.blog/)
+#### Project blog: [https://ailogs.design.blog/](https://ailogs.design.blog/)
 ### Directories:
 **/.idea** - PyCharm configuration files \
-**/archives** - The past \
-**/datasets** -  \
+**/archives** - Project history \
+**/archives/Lokari_classifier** - First demo model \
+**/data_processing** - Data processing modules \
+**/datasets** - Datasets used in training \
 **/docker** - Project runtime container \
+**/install** - Installation instructions \
+**/saved_models** - Directory to save model data
 
+###Files:
+**config.py** - Main configuration file \
+**main.py** - Log monitor \
+**train.py** - Detector training
 
-### Working environment:
-* Ubuntu 18.04/Arch Linux
-* PyCharm 2019.3 Professional Edition
-  * docker plugin  
-  * custom Dockerfile based on tensorflow:latest
-    * Python 3.6.9
-    * Tensorflow 2.1.0
-* Docker 19.03  
-* nvidia-container-toolkit 
-* nvidia-container-runtime
+###Usage:
+1. Configure logs to right format (see install)
+2. Gather training material (logs)
+3. Train the model running train.py
+4. Start monitoring
+
+###Requirements
+* Python 3.6.9
+* Tensorflow 2.1.0 plus a few other libraries
+* Linux with Apache/Nginx web server
+* GPU Support with Docker 19.03
+  + tensorflow/tensorflow:latest-gpu-py3 (see our Dockerfile)
+  + nvidia-container-toolkit
+  + nvidia-container-runtime
 
