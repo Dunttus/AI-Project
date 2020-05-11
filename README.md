@@ -17,18 +17,19 @@ Course: Monialaprojekti - Multisectoral project (ICT-infrastructures) PRO4TN004-
 **/install** - Installation instructions \
 **/saved_models** - Directory to save model data
 
-###Files:
+### Files:
 **config.py** - Main configuration file \
 **main.py** - Log monitor \
 **train.py** - Detector training
 
-###Usage:
+### Usage:
 1. Configure logs to right format (see install)
 2. Gather training material (logs)
-3. Train the model running train.py
-4. Start monitoring
+3. Clone this repo and train the model
+4. Analyze your training material with graphs from the training process
+5. Tune the thresholds and start monitoring
 
-###Requirements
+### Requirements
 * Python 3.6.9
 * Tensorflow 2.1.0 plus a few other libraries
 * Linux with Apache/Nginx web server
