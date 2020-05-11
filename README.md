@@ -1,4 +1,4 @@
-# Lokari - Web server anomaly detector 
+# Lokari - Web server log anomaly detector 
 ### Machine learning based monitoring application for anomalies in web server logs.
 
 Machine learning project by Tuomo Kuure [(tqre)](tqre.wordpress.com) and Joni Hakala [(Dunttus)](dunttus.com).  
