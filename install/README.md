@@ -1,12 +1,11 @@
-# Help for setting-up
+# Lokari installation
 # Log format
-Model to work correctly requires normal state of Apache2 server logs in right format. \
-Log format sample:
+Web server logs have to be in right format for Lokari to work:
 ```
 "11/Apr/2020/10:13:18" "192.168.10.61" "200" "12" "157" "GET" "/index.html/?hello" "HTTP/1.1"
 ```
-### Log format: Apache2 access.log formatting
-Simplest way to use Apache2 logs in Machine learning model is to reformat logs directly from Apache2. Open settings file from /etc/apache2/apache2.conf, log formats for access.log and other_vhost_access.log are located on lines 212-213 change it to match new format as show in picture below.
+### Log format configuration: Apache2
+Log format is configured in /etc/apache2/apache2.conf:
 \
 ![Log formats](./img/install_pic_1.png)
 \
@@ -30,27 +29,35 @@ Log tags explained:
 %H = Protocol
 ```
 
+## Log format: Nginx
+The following configurations make Nginx logs compatible with Lokari
+```
+/etc/nginx/nginx.conf
+http { 
+    log_format	lokari	'"$time_local" "$remote_addr" "$status" "$bytes_sent" "$request_time" "$request_method" "$request_uri" "$server_protocol"';
+    
+    server {
+        access_log /var/log/nginx/access.log lokari;
+    }
+}
+```
+
 # Local installation
 
-First Install Python3.
+First Install Python3 and git
 ```
-sudo apt-get install python3
+sudo apt-get install python3 git
 ```
-This part might take a while since Tensorflow packets are quite big. \
-Pip3 install Tensorflow, Pandas, Scikit-Learn and Matplotlib.
+This step might take a while since Tensorflow packets are quite big.
 ```
 pip3 install tensorflow pandas scikit-learn matplotlib
 ```
-Install git
-```
-sudo apt-get install git
-```
-Clone project folder.
+Clone the project folder.
 ```
 git clone https://github.com/Dunttus/AI-Project.git
 ```
 ### Local: Make dataset
-Manually combine all access.logs to 1 file or run combine_apachelogs.sh Bash script inside install folder as shown below.
+Manually combine all access.logs to 1 file or run combine_apachelogs.sh bash script as shown below.
 ```
 bash ./combine_apachelogs.sh
 ```
