@@ -183,7 +183,7 @@ Change TRAINING_DATA = "datasets/training_dataset/train_access.log" to match you
 We will also change MONITORED_LOG = "/var/log/access.log" to target monitoring in apache2 logs folder access.log we will use this after training the model. \
 Picture of old config.py and new config.py below.
 \
-![Log formats](./img/install_pic_2.png)
+![Log formats](./img/install_pic_2.png)  \
 A) TRAINING_DATA is used to train model. \
 B) MONITORED_LOG is to monitor incoming Apache2 logs. \
 Container run train.py inside container, removed when exit or done, with local AI-Project and Apache2 log folders dynamically, replace USER in command to match your directory structure:
