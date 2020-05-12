@@ -85,6 +85,10 @@ def normalize_response_time(data):
     if not config.SAVE:
         mean, std = load_numbers("rtime")
 
+    # Ensure a rare case for zero division doesn't crash
+    if std == 0:
+        std += 0.001
+
     data = (data - mean) / std
 
     return data
