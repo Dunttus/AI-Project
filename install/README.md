@@ -30,7 +30,7 @@ Log tags explained:
 ```
 
 ## Log format: Nginx
-The following configurations make Nginx logs compatible with Lokari
+The following configurations make Nginx logs compatible with Lokari. Note that all the logs have to be in this format, or the training phase fails.
 ```
 /etc/nginx/nginx.conf
 http { 
