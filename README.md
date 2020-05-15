@@ -1,7 +1,7 @@
 # Lokari - Web server log anomaly detector 
 ### Machine learning based monitoring application for anomalies in web server logs.
 
-Machine learning project by Tuomo Kuure [(tqre)](tqre.wordpress.com) and Joni Hakala [(Dunttus)](dunttus.com).  
+Machine learning project by Tuomo Kuure [(tqre)](https://tqre.wordpress.com/) and Joni Hakala [(Dunttus)](http://dunttus.com/).  
 Supervising teacher: Tero Karvinen - http://terokarvinen.com  
 [Haaga-Helia University of Applied Sciences](http://www.haaga-helia.fi/en/frontpage)  
 Course: Monialaprojekti - Multisectoral project (ICT-infrastructures) PRO4TN004-3005.
